@@ -1,0 +1,54 @@
+#EXTM3U
+# Regional
+#EXTINF:-1,Channel 1
+http://example.com/stream1
+#EXTINF:-1,Channel 2
+http://example.com/stream2
+
+# All Channels
+#EXTINF:-1,Channel 3
+http://example.com/stream3
+#EXTINF:-1,Channel 4
+http://example.com/stream4
+
+# Kids
+#EXTINF:-1,Kids Channel 1
+http://example.com/kids1
+#EXTINF:-1,Kids Channel 2
+http://example.com/kids2
+
+# Music
+#EXTINF:-1,Music Channel 1
+http://example.com/music1
+#EXTINF:-1,Music Channel 2
+http://example.com/music2
+
+# Sports
+#EXTINF:-1,Sports Channel 1
+http://example.com/sports1
+#EXTINF:-1,Sports Channel 2
+http://example.com/sports2
+
+# Education
+#EXTINF:-1,Education Channel 1
+http://example.com/education1
+#EXTINF:-1,Education Channel 2
+http://example.com/education2
+
+# Culture and Science
+#EXTINF:-1,Culture and Science Channel 1
+http://example.com/culture1
+#EXTINF:-1,Culture and Science Channel 2
+http://example.com/culture2
+
+# Documentary
+#EXTINF:-1,Documentary Channel 1
+http://example.com/documentary1
+#EXTINF:-1,Documentary Channel 2
+http://example.com/documentary2
+
+# Cinema
+#EXTINF:-1,Cinema Channel 1
+http://example.com/cinema1
+#EXTINF:-1,Cinema Channel 2
+http://example.com/cinema2
