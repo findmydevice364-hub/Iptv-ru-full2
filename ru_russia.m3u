@@ -1,54 +1,49 @@
 #EXTM3U
-# Regional
-#EXTINF:-1,Channel 1
-http://example.com/stream1
-#EXTINF:-1,Channel 2
-http://example.com/stream2
 
-# All Channels
-#EXTINF:-1,Channel 3
-http://example.com/stream3
-#EXTINF:-1,Channel 4
-http://example.com/stream4
+# Региональные
+#EXTINF:-1 tvg-id="channel_id1" tvg-name="Channel Name 1" tvg-logo="logo1.png" group-title="Региональные", Channel Name 1
+http://stream-url1.com
 
-# Kids
-#EXTINF:-1,Kids Channel 1
-http://example.com/kids1
-#EXTINF:-1,Kids Channel 2
-http://example.com/kids2
+#EXTINF:-1 tvg-id="channel_id2" tvg-name="Channel Name 2" tvg-logo="logo2.png" group-title="Региональные", Channel Name 2
+http://stream-url2.com
 
-# Music
-#EXTINF:-1,Music Channel 1
-http://example.com/music1
-#EXTINF:-1,Music Channel 2
-http://example.com/music2
+# Все каналы
+#EXTINF:-1 tvg-id="channel_id3" tvg-name="Channel Name 3" tvg-logo="logo3.png" group-title="Все каналы", Channel Name 3
+http://stream-url3.com
 
-# Sports
-#EXTINF:-1,Sports Channel 1
-http://example.com/sports1
-#EXTINF:-1,Sports Channel 2
-http://example.com/sports2
+#EXTINF:-1 tvg-id="channel_id4" tvg-name="Channel Name 4" tvg-logo="logo4.png" group-title="Все каналы", Channel Name 4
+http://stream-url4.com
 
-# Education
-#EXTINF:-1,Education Channel 1
-http://example.com/education1
-#EXTINF:-1,Education Channel 2
-http://example.com/education2
+# Детские
+#EXTINF:-1 tvg-id="channel_id5" tvg-name="Channel Name 5" tvg-logo="logo5.png" group-title="Детские", Channel Name 5
+http://stream-url5.com
 
-# Culture and Science
-#EXTINF:-1,Culture and Science Channel 1
-http://example.com/culture1
-#EXTINF:-1,Culture and Science Channel 2
-http://example.com/culture2
+#EXTINF:-1 tvg-id="channel_id6" tvg-name="Channel Name 6" tvg-logo="logo6.png" group-title="Детские", Channel Name 6
+http://stream-url6.com
 
-# Documentary
-#EXTINF:-1,Documentary Channel 1
-http://example.com/documentary1
-#EXTINF:-1,Documentary Channel 2
-http://example.com/documentary2
+# Музыкальные
+#EXTINF:-1 tvg-id="channel_id7" tvg-name="Channel Name 7" tvg-logo="logo7.png" group-title="Музыкальные", Channel Name 7
+http://stream-url7.com
 
-# Cinema
-#EXTINF:-1,Cinema Channel 1
-http://example.com/cinema1
-#EXTINF:-1,Cinema Channel 2
-http://example.com/cinema2
+#EXTINF:-1 tvg-id="channel_id8" tvg-name="Channel Name 8" tvg-logo="logo8.png" group-title="Музыкальные", Channel Name 8
+http://stream-url8.com
+
+# Спортивные
+#EXTINF:-1 tvg-id="channel_id9" tvg-name="Channel Name 9" tvg-logo="logo9.png" group-title="Спортивные", Channel Name 9
+http://stream-url9.com
+
+# Образование
+#EXTINF:-1 tvg-id="channel_id10" tvg-name="Channel Name 10" tvg-logo="logo10.png" group-title="Образование", Channel Name 10
+http://stream-url10.com
+
+# Культура и наука
+#EXTINF:-1 tvg-id="channel_id11" tvg-name="Channel Name 11" tvg-logo="logo11.png" group-title="Культура и наука", Channel Name 11
+http://stream-url11.com
+
+# Познавательные
+#EXTINF:-1 tvg-id="channel_id12" tvg-name="Channel Name 12" tvg-logo="logo12.png" group-title="Познавательные", Channel Name 12
+http://stream-url12.com
+
+# Кино
+#EXTINF:-1 tvg-id="channel_id13" tvg-name="Channel Name 13" tvg-logo="logo13.png" group-title="Кино", Channel Name 13
+http://stream-url13.com
