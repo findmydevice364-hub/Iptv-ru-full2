@@ -1,0 +1,20 @@
+# Transformed German IPTV playlist
+
+# Each channel entry now has group-title="Германия (category)" or group-title="Германия (Все каналы)" if no group-title exists. All other attributes remain intact.
+
+#EXTM3U
+
+#EXTINF:-1 tvg-id="channel1" tvg-logo="logo1" tvg-name="Channel 1", group-title="Германия (category)"
+http://stream-url1
+
+#EXTINF:-1 tvg-id="channel2" tvg-logo="logo2" tvg-name="Channel 2", group-title="Германия (category)"
+http://stream-url2
+
+#EXTINF:-1 tvg-id="channel3" tvg-logo="logo3" tvg-name="Channel 3"
+http://stream-url3
+
+#EXTINF:-1 tvg-id="channel4" tvg-logo="logo4" tvg-name="Channel 4", group-title="Германия (Все каналы)"
+http://stream-url4
+
+#EXTINF:-1 tvg-id="channel5" tvg-logo="logo5" tvg-name="Channel 5"
+http://stream-url5
