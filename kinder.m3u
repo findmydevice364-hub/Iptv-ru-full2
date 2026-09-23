@@ -1,0 +1,375 @@
+#EXTM3U
+#EXTINF:0,Ani
+http://zabava-htlive.cdn.ngenix.net/hls/CH_ANI/variant.m3u8
+#EXTINF:0,Ani
+http://185.184.233.174:5000/udp/225.1.2.178:1234
+#EXTINF:0,ANI
+http://185.184.233.174:5000/udp/225.1.2.178:1234
+#EXTINF:0,ANI
+http://zabava-htlive.cdn.ngenix.net/hls/CH_ANI/variant.m3u8
+#EXTINF:0,ANI
+http://185.184.233.174:5000/udp/225.1.2.178:1234
+#EXTINF:0,Boomerang
+http://zabava-htlive.cdn.ngenix.net/hls/CH_BOOMERANG/variant.m3u8
+#EXTINF:0,Cartoon Network
+http://37.194.191.17:81/udp/239.1.3.3:1234
+#EXTINF:0,Cartoon Network
+http://hls.peers.tv/streaming/cartoonnetwork/16/tvrecw/playlist.m3u8
+#EXTINF:0,Cartoon Network
+http://37.194.185.24:81/udp/239.1.3.3:1234
+#EXTINF:0,Cartoon Network
+http://zabava-htlive.cdn.ngenix.net/hls/CH_CN/variant.m3u8
+#EXTINF:0,Cartoon Network
+http://37.193.219.224:81/udp/239.1.3.3:1234
+#EXTINF:0,DISNEY
+http://158.46.65.252:81/udp/239.255.42.26:1234
+#EXTINF:0,DISNEY
+http://176.197.77.101:81/udp/239.255.42.26:1234
+#EXTINF:0,DISNEY
+http://176.197.179.41:81/udp/239.255.42.26:1234
+#EXTINF:0,DISNEY
+http://46.181.253.78:81/udp/239.255.42.26:1234
+#EXTINF:0,DISNEY
+http://109.171.45.109:81/udp/239.54.5.67:1224
+#EXTINF:0,DISNEY
+http://176.197.77.101:81/udp/239.255.42.26:1234
+#EXTINF:0,Disney Channel
+http://37.193.92.223:81/udp/239.1.15.12:1234
+#EXTINF:0,Disney Channel
+http://37.194.185.24:81/udp/239.1.15.12:1234
+#EXTINF:0,Disney Channel
+http://109.171.45.109:81/udp/239.54.5.67:1224
+#EXTINF:0,Disney Channel
+http://zabava-htlive.cdn.ngenix.net/hls/CH_DISNEY/variant.m3u8
+#EXTINF:0,Disney Channel
+http://hls.peers.tv/streaming/disney/126/tvrec/playlist.m3u8
+#EXTINF:0,Disney Channel
+http://37.195.11.150:81/udp/239.1.15.12:1234
+#EXTINF:0,Disney Channel
+http://37.193.74.27:81/udp/239.1.15.12:1234
+#EXTINF:0,Disney Channel
+http://37.194.39.68:81/udp/239.1.15.12:1234
+#EXTINF:0,Disney Канал
+http://zabava-htlive.cdn.ngenix.net/hls/CH_DISNEY/bw2000000/variant.m3u8?version=2
+#EXTINF:0,Ginger HD
+http://178.163.60.127:4022/udp/234.0.0.113:2000
+#EXTINF:0,GULLI
+http://zabava-htlive.cdn.ngenix.net/hls/CH_GULLI/variant.m3u8
+#EXTINF:0,Gulli
+http://zabava-htlive.cdn.ngenix.net/hls/CH_GULLI/variant.m3u8
+#EXTINF:0,Jim Jam
+http://178.163.60.127:4022/udp/234.0.0.152:2000
+#EXTINF:0,Jim Jam
+http://37.193.219.224:81/udp/239.1.3.2:1234
+#EXTINF:0,Jim Jam
+http://37.194.39.68:81/udp/239.1.3.2:1234
+#EXTINF:0,Jim Jam
+http://178.163.55.76:4022/udp/234.0.0.152:2000
+#EXTINF:0,Jim Jam
+http://hls.peers.tv/streaming/jim_jam/16/tvrec/playlist.m3u8
+#EXTINF:0,Jim Jam
+http://zabava-htlive.cdn.ngenix.net/hls/CH_JIMJAM/variant.m3u8
+#EXTINF:0,Jim Jam
+http://hls.peers.tv/streaming/jim_jam/16/tvrec/playlist.m3u8
+#EXTINF:0,JimJam
+http://hls.peers.tv/streaming/jim_jam/16/tvrec/playlist.m3u8
+#EXTINF:0,JimJam
+http://hls.peers.tv/streaming/jim_jam/16/tvrec/playlist.m3u8
+#EXTINF:0,JimJam
+http://37.193.219.224:81/udp/239.1.3.2:1234
+#EXTINF:0,JimJam
+http://37.194.39.68:81/udp/239.1.3.2:1234
+#EXTINF:0,JimJam
+http://178.163.60.127:4022/udp/234.0.0.152:2000
+#EXTINF:0,JimJam
+http://zabava-htlive.cdn.ngenix.net/hls/CH_JIMJAM/variant.m3u8
+#EXTINF:0,JimJam
+http://178.163.55.76:4022/udp/234.0.0.152:2000
+#EXTINF:0,Kanal Disney
+http://185.184.233.174:5000/udp/225.1.2.34:1234
+#EXTINF:0,Kaрусель
+http://37.194.191.17:81/udp/239.1.15.11:1234
+#EXTINF:0,Kaрусель
+http://37.194.185.24:81/udp/239.1.15.11:1234
+#EXTINF:0,Kaрусель
+http://37.195.11.150:81/udp/239.1.15.11:1234
+#EXTINF:0,Kaрусель
+http://37.193.74.27:81/udp/239.1.15.11:1234
+#EXTINF:0,Kaрусель
+http://37.193.92.223:81/udp/239.1.15.11:1234
+#EXTINF:0,Nick Jr.
+http://zabava-htlive.cdn.ngenix.net/hls/CH_NICKJUNIOR/variant.m3u8
+#EXTINF:0,Nick Jr. Интерсвязь
+http://46.181.253.78:81/udp/239.255.42.126:1234
+#EXTINF:0,Nick Jr. Интерсвязь
+http://176.197.179.41:81/udp/239.255.42.126:1234
+#EXTINF:0,Nick Jr. Интерсвязь
+http://176.197.77.101:81/udp/239.255.42.126:1234
+#EXTINF:0,Nick Jr. Интерсвязь
+http://158.46.65.252:81/udp/239.255.42.126:1234
+#EXTINF:0,Nick Jr. Интерсвязь
+http://176.197.77.101:81/udp/239.255.42.126:1234
+#EXTINF:0,Nickelodeon
+http://176.197.77.101:81/udp/239.255.42.32:1234
+#EXTINF:0,Nickelodeon
+http://158.46.65.252:81/udp/239.255.42.32:1234
+#EXTINF:0,Nickelodeon
+http://zabava-htlive.cdn.ngenix.net/hls/CH_NICKELODEON/variant.m3u8
+#EXTINF:0,Nickelodeon
+http://176.197.77.101:81/udp/239.255.42.32:1234
+#EXTINF:0,Nickelodeon
+http://176.197.179.41:81/udp/239.255.42.32:1234
+#EXTINF:0,Nickelodeon
+http://178.163.55.76:4022/udp/234.0.0.153:2000
+#EXTINF:0,Nickelodeon
+http://95.28.97.61:1234/udp/233.33.210.80:5050
+#EXTINF:0,Nickelodeon
+http://178.163.60.127:4022/udp/234.0.0.153:2000
+#EXTINF:0,Nickelodeon
+http://46.181.253.78:81/udp/239.255.42.32:1234
+#EXTINF:0,NICKELODEON HD
+http://176.197.179.41:81/udp/239.255.43.24:1234
+#EXTINF:0,NICKELODEON HD
+http://zabava-htlive.cdn.ngenix.net/hls/CH_C01_NICKELODEONHD/variant.m3u8
+#EXTINF:0,TiJi
+http://zabava-htlive.cdn.ngenix.net/hls/CH_TIJI/variant.m3u8
+#EXTINF:0,TiJi
+http://hls.peers.tv/streaming/tiji/16/tvrec/playlist.m3u8
+#EXTINF:0,TiJi
+http://37.194.185.24:81/udp/239.1.3.6:1234
+#EXTINF:0,TiJi
+http://178.163.55.76:4022/udp/234.0.0.252:2000
+#EXTINF:0,TiJi
+http://hls.peers.tv/streaming/tiji/16/tvrec/playlist.m3u8
+#EXTINF:0,TiJi
+http://37.193.92.223:81/udp/239.1.3.6:1234
+#EXTINF:0,TiJi
+http://37.193.74.27:81/udp/239.1.3.6:1234
+#EXTINF:0,TiJi
+http://37.194.191.17:81/udp/239.1.3.6:1234
+#EXTINF:0,TiJi
+http://178.163.60.127:4022/udp/234.0.0.252:2000
+#EXTINF:0,Детский
+http://37.194.81.221:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://37.194.32.82:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://37.193.219.224:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://37.193.74.27:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://37.195.11.150:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://94.73.235.233:4022/udp/239.255.4.5:1234
+#EXTINF:0,Детский
+http://37.194.191.17:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://176.197.77.101:81/udp/239.255.42.31:1234
+#EXTINF:0,Детский
+http://176.197.179.41:81/udp/239.255.42.31:1234
+#EXTINF:0,Детский
+http://178.163.60.127:4022/udp/234.0.0.217:2000
+#EXTINF:0,Детский
+http://109.171.45.109:81/udp/239.54.5.127:1224
+#EXTINF:0,Детский
+http://109.171.45.109:81/udp/239.54.5.127:1224
+#EXTINF:0,Детский
+http://176.197.77.101:81/udp/239.255.42.31:1234
+#EXTINF:0,Детский
+http://37.193.92.223:81/udp/239.1.3.5:1234
+#EXTINF:0,Детский
+http://178.163.55.76:4022/udp/234.0.0.217:2000
+#EXTINF:0,Детский
+http://158.46.65.252:81/udp/239.255.42.31:1234
+#EXTINF:0,Детский
+http://46.181.253.78:81/udp/239.255.42.31:1234
+#EXTINF:0,Детский HD
+http://176.197.179.41:81/udp/239.255.43.62:1234
+#EXTINF:0,Детский мир
+http://109.171.45.109:81/udp/239.54.5.97:1224
+#EXTINF:0,Детский мир
+http://hls.peers.tv/streaming/detskij_mir/16/tvrec/playlist.m3u8
+#EXTINF:0,Детский мир
+http://hls.peers.tv/streaming/detskij_mir/16/tvrec/playlist.m3u8
+#EXTINF:0,Детский мир
+http://zabava-htlive.cdn.ngenix.net/hls/CH_DETSKIJMIR/variant.m3u8
+#EXTINF:0,Детский мир
+http://109.171.45.109:81/udp/239.54.5.97:1224
+#EXTINF:0,Детский мир/Телеклуб
+http://37.193.92.223:81/udp/239.1.3.7:1234
+#EXTINF:0,Детский мир/Телеклуб
+http://37.194.185.24:81/udp/239.1.3.7:1234
+#EXTINF:0,Детский мир/Телеклуб
+http://37.194.39.68:81/udp/239.1.3.7:1234
+#EXTINF:0,Дисней
+http://95.28.97.61:1234/udp/233.33.210.7:5050
+#EXTINF:0,КАРУСЕЛЬ
+http://178.163.55.76:4022/udp/234.0.0.203:2000
+#EXTINF:0,КАРУСЕЛЬ
+http://zabava-htlive.cdn.ngenix.net/hls/CH_KARUSEL/variant.m3u8
+#EXTINF:0,КАРУСЕЛЬ
+http://zabava-htlive.cdn.ngenix.net/hls/CH_KARUSEL/bw2000000/variant.m3u8?version=2
+#EXTINF:0,КАРУСЕЛЬ
+http://185.184.233.174:5000/udp/225.1.2.7:1234
+#EXTINF:0,Канал Disney
+http://178.163.60.127:4022/udp/234.0.0.198:2000
+#EXTINF:0,Канал Disney
+http://178.163.60.127:4022/udp/234.0.0.198:2000
+#EXTINF:0,Канал Disney
+http://178.163.55.76:4022/udp/234.0.0.198:2000
+#EXTINF:0,Канал Disney
+http://178.163.55.76:4022/udp/234.0.0.198:2000
+#EXTINF:0,Карусель (+7)
+http://zabava-htlive.cdn.ngenix.net/hls/CH_KARUSEL_7/variant.m3u8
+#EXTINF:0,Карусель +0
+http://178.163.60.127:4022/udp/234.0.0.203:2000
+#EXTINF:0,Карусель +3
+http://109.171.45.109:81/udp/239.54.5.35:1224
+#EXTINF:0,МУЛЬТ
+http://hls.peers.tv/streaming/mult/16/tvrec/playlist.m3u8
+#EXTINF:0,Мульт
+http://37.193.219.224:81/udp/239.1.3.1:1234
+#EXTINF:0,Мульт
+http://37.193.74.27:81/udp/239.1.3.1:1234
+#EXTINF:0,Мульт
+http://37.195.11.150:81/udp/239.1.3.1:1234
+#EXTINF:0,Мульт
+http://176.197.179.41:81/udp/239.255.42.102:1234
+#EXTINF:0,Мульт
+http://109.171.45.109:81/udp/239.54.7.155:1224
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/04.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://185.184.233.174:5000/udp/225.1.2.153:1234
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://hls.peers.tv/streaming/mult/16/tvrec/playlist.m3u8
+#EXTINF:0,Мульт
+http://92.43.140.249/s58/04.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/04.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://92.43.140.249/s58/04.m3u8
+#EXTINF:0,Мульт
+http://92.43.140.249/s58/04.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/03.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/03.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://37.194.32.82:81/udp/239.1.3.1:1234
+#EXTINF:0,Мульт
+http://hls.peers.tv/streaming/mult/16/tvrec/playlist.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/04.m3u8
+#EXTINF:0,Мульт
+http://ott-cdn.ucom.am/s58/index.m3u8
+#EXTINF:0,Мульт
+http://zabava-htlive.cdn.ngenix.net/hls/CH_MULT/variant.m3u8
+#EXTINF:0,Мультимания
+http://zabava-htlive.cdn.ngenix.net/hls/CH_MULTIMANIA/variant.m3u8
+#EXTINF:0,Мультимания
+http://94.73.235.233:4022/udp/239.255.5.25:1234
+#EXTINF:0,Мультимания
+http://176.197.77.101:81/udp/239.255.42.65:1234
+#EXTINF:0,Мультимания
+http://94.73.235.233:4022/udp/239.255.5.25:1234
+#EXTINF:0,Мультимания
+http://176.197.179.41:81/udp/239.255.42.65:1234
+#EXTINF:0,Мультимания
+http://178.163.60.127:4022/udp/234.0.0.210:2000
+#EXTINF:0,Мультимания
+http://46.181.253.78:81/udp/239.255.42.65:1234
+#EXTINF:0,Мультимания
+http://109.171.45.109:81/udp/239.54.5.158:1224
+#EXTINF:0,Мультимания
+http://176.197.77.101:81/udp/239.255.42.65:1234
+#EXTINF:0,Мультимания
+http://109.171.45.109:81/udp/239.54.5.158:1224
+#EXTINF:0,Мультимания
+http://185.184.233.174:5000/udp/225.1.2.160:1234
+#EXTINF:0,Мультимания
+http://hls.peers.tv/streaming/multimania/16/tvrec/playlist.m3u8
+#EXTINF:0,Мультимания
+http://158.46.65.252:81/udp/239.255.42.65:1234
+#EXTINF:0,Мультимания
+http://178.163.55.76:4022/udp/234.0.0.210:2000
+#EXTINF:0,Мультимания HD
+http://176.197.179.41:81/udp/239.255.43.63:1234
+#EXTINF:0,О!
+http://158.46.65.252:81/udp/239.255.42.130:1234
+#EXTINF:0,О!
+http://185.184.233.174:5000/udp/225.1.2.148:1234
+#EXTINF:0,О!
+http://46.181.253.78:81/udp/239.255.42.130:1234
+#EXTINF:0,О!
+http://176.197.179.41:81/udp/239.255.42.130:1234
+#EXTINF:0,О!
+http://176.197.77.101:81/udp/239.255.42.130:1234
+#EXTINF:0,О!
+http://zabava-htlive.cdn.ngenix.net/hls/CH_O/variant.m3u8
+#EXTINF:0,О!
+http://176.197.77.101:81/udp/239.255.42.130:1234
+#EXTINF:0,О!
+http://185.184.233.174:5000/udp/225.1.2.148:1234
+#EXTINF:0,Пингвин Лоло
+http://185.184.233.174:5000/udp/225.1.2.50:1234
+#EXTINF:0,Правда ТУТ HD (Киев)
+http://pravdatytkievshina-hls2.cosmonova.net.ua/hls/pravdatytkievshina_ua_hi/index.m3u8
+#EXTINF:0,Прямий
+http://cdn10.live-tv.od.ua:8081/riood/tisod-abr/riood/tisod504/playlist.m3u8
+#EXTINF:0,Радость Моя
+http://46.181.253.78:81/udp/239.255.42.129:1234
+#EXTINF:0,Радость Моя
+http://176.197.179.41:81/udp/239.255.42.129:1234
+#EXTINF:0,Радость Моя
+http://176.197.77.101:81/udp/239.255.42.129:1234
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://109.171.45.109:81/udp/239.54.5.66:1224
+#EXTINF:0,Радость Моя
+http://158.46.65.252:81/udp/239.255.42.129:1234
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://176.197.77.101:81/udp/239.255.42.129:1234
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://109.171.45.109:81/udp/239.54.5.66:1224
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/tracks-v1a1/index.m3u8
+#EXTINF:0,Радость Моя
+http://cdn-01.bonus-tv.ru:8080/radostmoya_edge/index.m3u8
+#EXTINF:0,Ратник
+http://hls.peers.tv/streaming/ratnik/126/copy/playlist.m3u8
+#EXTINF:0,РыЖий
+http://176.197.179.41:81/udp/239.255.42.188:1234
