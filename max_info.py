@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Cinerama HLS stream probe
-Reads config from YAML and analyzes m3u8 playlist.
-Safe version.
+Cinerama MULTI-HLS stream probe
+TD = главный источник реального названия канала.
+YAML origin_detection = вторичный источник.
+Один TXT, полная картина маслом.
 """
 
 import argparse
@@ -17,52 +18,59 @@ import requests
 import yaml
 
 
-def load_config(path: str) -> Dict[str, Any]:
-    p = Path(path)
-    if not p.exists():
-        raise FileNotFoundError(f"Config file not found: {path}")
+# ============================
+#  LOAD M3U CHANNEL LIST
+# ============================
 
-    with p.open("r", encoding="utf-8") as f:
-        cfg = yaml.safe_load(f) or {}
+def load_channels_from_m3u(path: str) -> List[Dict[str, str]]:
+    channels = []
+    with open(path, "r", encoding="utf-8") as f:
+        lines = f.read().splitlines()
 
-    if not isinstance(cfg, dict) or "stream_probe" not in cfg:
-        raise ValueError("Config must contain top-level key 'stream_probe'")
-
-    return cfg["stream_probe"]
-
-
-def log_message(msg: str, logfile: Optional[str], enabled: bool) -> None:
-    if not enabled:
-        return
-
-    line = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}"
-    print(line, file=sys.stderr)
-
-    if logfile:
-        try:
-            with open(logfile, "a", encoding="utf-8") as f:
-                f.write(line + "\n")
-        except Exception:
-            pass
+    name = None
+    for line in lines:
+        if line.startswith("#EXTINF"):
+            name = line.split(",", 1)[1].strip()
+        elif line.startswith("http"):
+            channels.append({"name": name, "url": line.strip()})
+    return channels
 
 
-def detect_primary_source(
+# ============================
+#  TD-BASED REAL NAME DETECTOR
+# ============================
+
+def detect_real_name_td(td: Optional[int]) -> str:
+    if td == 2:
+        return "НТВ"
+    if td == 3:
+        return "ТВ3 International"
+    if td == 4:
+        return "ТВ3 Standard"
+    if td == 6:
+        return "ТВЦ"
+    if td == 8:
+        return "Россия 24"
+    if td == 10:
+        return "Россия 1"
+    return "Unknown"
+
+
+# ============================
+#  YAML ORIGIN DETECTOR (SECONDARY)
+# ============================
+
+def detect_primary_source_yaml(
     target_duration: Optional[int],
     variant: Optional[str],
     avg_size: Optional[float],
     sources: List[Dict[str, Any]],
 ) -> str:
-    """
-    Safe matching:
-    - if rule has variant => must match exact variant
-    - if rule has target_duration => must match exact duration
-    - for International checks avg_size when present
-    """
     if not sources:
-        return "Неизвестный первоисточник"
+        return "Unknown"
 
     for rule in sources:
-        rule_name = str(rule.get("name", "Неизвестный первоисточник"))
+        rule_name = str(rule.get("name", "Unknown"))
         rule_variant = rule.get("variant")
         rule_td = rule.get("target_duration")
 
@@ -83,14 +91,14 @@ def detect_primary_source(
         if rule_td is not None and target_duration is not None and target_duration == rule_td:
             return rule_name
 
-    return "Неизвестный первоисточник"
+    return "Unknown"
 
+
+# ============================
+#  SINGLE STREAM ANALYSIS
+# ============================
 
 def analyze_stream(url: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
-    log_cfg = cfg.get("log", {})
-    log_enabled = bool(log_cfg.get("enabled", True))
-    logfile = log_cfg.get("file") if log_enabled else None
-
     req_cfg = cfg.get("requests", {})
     timeout = int(req_cfg.get("timeout", 5))
     retry_count = max(0, int(req_cfg.get("retry_count", 1)))
@@ -104,155 +112,158 @@ def analyze_stream(url: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
         "target_duration": None,
         "segment_count": 0,
         "avg_segment_size": None,
-        "primary_source": None,
         "first_segment": None,
+        "primary_source_yaml": None,
+        "primary_source_td": None,
+        "master_playlist": False,
+        "segment_fetch_errors": 0,
     }
 
-    log_message("=== START PROBE ===", logfile, log_enabled)
-    log_message(f"STREAM_URL={url}", logfile, log_enabled)
-
-    # 1. Download playlist
+    # Download playlist
     text: Optional[str] = None
-    last_error: Optional[Exception] = None
     for attempt in range(retry_count + 1):
         try:
             resp = requests.get(url, timeout=timeout)
             resp.raise_for_status()
             text = resp.text
-            log_message("Playlist downloaded OK", logfile, log_enabled)
             break
-        except Exception as e:
-            last_error = e
-            log_message(f"ERROR downloading playlist (attempt {attempt + 1}): {e}", logfile, log_enabled)
+        except Exception:
+            pass
 
     if text is None:
-        log_message(f"Failed to download playlist after retries: {last_error}", logfile, log_enabled)
-        log_message("=== END PROBE ===\n", logfile, log_enabled)
         return result
 
-    # 2. CDN analysis
-    cdn_cfg = cfg.get("cdn_analysis", {})
-    if cdn_cfg.get("enabled", True):
-        parsed = urlparse(url)
-        if cdn_cfg.get("detect_host", True):
-            result["cdn_host"] = parsed.netloc
-            log_message(f"CDN_HOST={result['cdn_host']}", logfile, log_enabled)
+    # CDN
+    parsed = urlparse(url)
+    result["cdn_host"] = parsed.netloc
+    result["cdn_path"] = parsed.path
 
-        if cdn_cfg.get("detect_path", True):
-            result["cdn_path"] = parsed.path
-            log_message(f"CDN_PATH={result['cdn_path']}", logfile, log_enabled)
-
-    # 3. Variant / quality
+    # Variant / quality
     if "mono.m3u8" in url:
         result["variant"] = "International"
+        result["quality"] = "SD"
     elif "tracks-v3a1" in url:
         result["variant"] = "Standard"
+        result["quality"] = "HD"
     elif "tracks-v1a1" in url:
         result["variant"] = "Standard"
+        result["quality"] = "SD"
     else:
         result["variant"] = "Unknown"
 
-    if "tracks-v3a1" in url:
-        result["quality"] = "HD"
-    elif "tracks-v1a1" in url or "mono.m3u8" in url:
-        result["quality"] = "SD"
-    else:
-        result["quality"] = None
+    # Master playlist?
+    if "#EXT-X-STREAM-INF" in text:
+        result["master_playlist"] = True
 
-    log_message(f"VARIANT={result['variant']}", logfile, log_enabled)
-    log_message(f"QUALITY={result['quality']}", logfile, log_enabled)
-
-    # 4. Target duration
+    # TD
     m = re.search(r"#EXT-X-TARGETDURATION:(\d+)", text)
     if m:
         result["target_duration"] = int(m.group(1))
-        log_message(f"TARGET_DURATION={result['target_duration']}", logfile, log_enabled)
 
-    # 5. Segments
+    # Segments
     segments = re.findall(r"(https?://[^\s]+\.ts)", text)
     result["segment_count"] = len(segments)
-    log_message(f"SEGMENT_COUNT={result['segment_count']}", logfile, log_enabled)
 
     if segments:
         result["first_segment"] = segments[0]
-        log_message(f"FIRST_SEGMENT={result['first_segment']}", logfile, log_enabled)
 
-    # 6. Average segment size
-    pl_cfg = cfg.get("playlist_analysis", {})
-    if pl_cfg.get("detect_segment_size", True) and segments:
-        sample_size = min(int(pl_cfg.get("segment_sample_size", 5)), len(segments))
-        sizes: List[int] = []
-
-        for s in segments[:sample_size]:
+        sizes = []
+        for s in segments[:5]:
             try:
                 rs = requests.get(s, timeout=timeout)
                 rs.raise_for_status()
                 sizes.append(len(rs.content))
-            except Exception as e:
-                log_message(f"Failed to fetch segment size for {s}: {e}", logfile, log_enabled)
+            except Exception:
+                result["segment_fetch_errors"] += 1
 
         if sizes:
             result["avg_segment_size"] = sum(sizes) / len(sizes)
-            log_message(f"AVG_SEGMENT_SIZE={result['avg_segment_size']}", logfile, log_enabled)
 
-    # 7. Primary source
+    # YAML origin (secondary)
     origin_cfg = cfg.get("origin_detection", {})
     if origin_cfg.get("enabled", True):
         sources = origin_cfg.get("sources", [])
-        result["primary_source"] = detect_primary_source(
+        result["primary_source_yaml"] = detect_primary_source_yaml(
             result["target_duration"],
             result["variant"],
             result["avg_segment_size"],
             sources,
         )
-        log_message(f"PRIMARY_SOURCE={result['primary_source']}", logfile, log_enabled)
 
-    log_message("=== END PROBE ===\n", logfile, log_enabled)
+    # TD origin (PRIMARY)
+    result["primary_source_td"] = detect_real_name_td(result["target_duration"])
+
     return result
 
 
-def print_summary(info: Dict[str, Any], out_cfg: Dict[str, Any]) -> None:
-    if not out_cfg.get("print_summary", True):
-        return
+# ============================
+#  SAVE ONE BIG TXT
+# ============================
 
-    print("=== STREAM ANALYSIS RESULT ===")
-    mapping = [
-        ("include_url", "URL", "url"),
-        ("include_cdn_host", "CDN_HOST", "cdn_host"),
-        ("include_cdn_path", "CDN_PATH", "cdn_path"),
-        ("include_variant", "VARIANT", "variant"),
-        ("include_quality", "QUALITY", "quality"),
-        ("include_target_duration", "TARGET_DURATION", "target_duration"),
-        ("include_segment_count", "SEGMENT_COUNT", "segment_count"),
-        ("include_avg_segment_size", "AVG_SEG_SIZE", "avg_segment_size"),
-        ("include_first_segment", "FIRST_SEGMENT", "first_segment"),
-        ("include_primary_source", "PRIMARY_SOURCE", "primary_source"),
-    ]
+def save_full_report(channels: List[Dict[str, str]], results: List[Dict[str, Any]]):
+    with open("stream_full_report.txt", "w", encoding="utf-8") as f:
+        f.write("=== FULL STREAM ANALYSIS REPORT ===\n")
+        f.write(f"Generated at: {datetime.now()}\n\n")
 
-    for flag, label, key in mapping:
-        if out_cfg.get(flag, True):
-            print(f"{label + ':':<18} {info.get(key)}")
+        for ch, info in zip(channels, results):
+            real_name = info["primary_source_td"]  # TD = главный
+            yaml_name = info["primary_source_yaml"]
+
+            f.write("============================================================\n")
+            f.write(f"CHANNEL: {real_name} ({ch['name']})\n")
+            f.write(f"URL: {info['url']}\n\n")
+
+            f.write(f"CDN_HOST: {info['cdn_host']}\n")
+            f.write(f"CDN_PATH: {info['cdn_path']}\n\n")
+
+            f.write(f"VARIANT: {info['variant']}\n")
+            f.write(f"QUALITY: {info['quality']}\n\n")
+
+            f.write(f"TARGET_DURATION: {info['target_duration']}\n")
+            f.write(f"SEGMENT_COUNT: {info['segment_count']}\n")
+            f.write(f"FIRST_SEGMENT: {info['first_segment']}\n")
+            f.write(f"AVG_SEG_SIZE: {info['avg_segment_size']}\n\n")
+
+            f.write(f"PRIMARY_SOURCE_TD: {info['primary_source_td']}\n")
+            f.write(f"PRIMARY_SOURCE_YAML: {yaml_name}\n\n")
+
+            f.write(f"MASTER_PLAYLIST: {info['master_playlist']}\n")
+            f.write(f"SEGMENTS_PRESENT: {info['segment_count'] > 0}\n")
+            f.write(f"SEGMENT_FETCH_ERRORS: {info['segment_fetch_errors']}\n\n")
+
+            f.write("COMMENTS:\n")
+            if info["segment_count"] == 0:
+                f.write("- Поток живой, но сегментов нет → пустой плейлист\n")
+            if info["target_duration"]:
+                f.write(f"- TD={info['target_duration']} → {info['primary_source_td']}\n")
+            if yaml_name != info["primary_source_td"]:
+                f.write(f"- YAML origin ({yaml_name}) отличается от TD → TD главный\n")
+
+            f.write("============================================================\n\n")
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Safe Cinerama stream probe")
-    parser.add_argument("-c", "--config", default="stream_probe.yml", help="Path to YAML config")
-    parser.add_argument("-u", "--url", help="Override stream URL from config")
+# ============================
+#  MAIN
+# ============================
+
+def main():
+    parser = argparse.ArgumentParser(description="Multi Cinerama stream probe")
+    parser.add_argument("-m", "--m3u", default="channels.m3u")
+    parser.add_argument("-c", "--config", default="stream_probe.yml")
     args = parser.parse_args()
 
-    try:
-        cfg = load_config(args.config)
-    except Exception as e:
-        print(f"Config error: {e}", file=sys.stderr)
-        sys.exit(1)
+    # Load YAML config
+    with open(args.config, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)["stream_probe"]
 
-    url = args.url or cfg.get("url")
-    if not url:
-        print("Error: no stream URL provided", file=sys.stderr)
-        sys.exit(1)
+    # Load channels
+    channels = load_channels_from_m3u(args.m3u)
 
-    info = analyze_stream(url, cfg)
-    print_summary(info, cfg.get("output", {}))
+    # Analyze all
+    results = [analyze_stream(ch["url"], cfg) for ch in channels]
+
+    # Save one big TXT
+    save_full_report(channels, results)
 
 
 if __name__ == "__main__":
