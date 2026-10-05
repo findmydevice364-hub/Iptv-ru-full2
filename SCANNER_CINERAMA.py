@@ -49,7 +49,7 @@ def build_url(base, stream_id):
 
 
 # ============================================================
-# EXTRACT EXTINF
+# EXTINF EXTRACTION
 # ============================================================
 
 def extract_extinf_line(text):
@@ -85,49 +85,203 @@ def extract_tvg_id(extinf_text):
 
 
 # ============================================================
-# LOAD MEGA PLAYLIST AND EXTRACT CINERAMA IDS
+# STEP 2.0: LOAD MEGA & CREATE MINI POOL
 # ============================================================
 
-def load_mega_playlist():
-    """Загружает мега плейлист и извлекает все Cinerama ID"""
-    print("[INFO] Загружаем МЕГА плейлист...")
+def step_2_0_load_mega():
+    """Загружает мега плейлист и создаёт mini_pool"""
+    print()
+    print("=" * 70)
+    print("STEP 2.0: LOAD MEGA PLAYLIST & CREATE MINI POOL")
+    print("=" * 70)
+    print()
     
     session = make_session()
+    mini_pool = OrderedDict()
+    
     try:
+        print(f"[INFO] Загружаем мега плейлист...")
         response = session.get(MEGA_PLAYLIST_URL, timeout=10)
+        
         if response.status_code != 200:
-            print(f"[ERROR] Не удалось загрузить мега плейлист: {response.status_code}")
-            return set()
+            print(f"[ERROR] Статус: {response.status_code}")
+            return mini_pool
         
         text = response.text
-        ids = set()
+        current_extinf = None
         
         for line in text.splitlines():
             line = line.strip()
-            if not line.startswith("http"):
+            
+            if line.startswith("#EXTINF:"):
+                current_extinf = line
                 continue
             
-            # Ищем cinerama.uz/ID/
-            match = re.search(r'cinerama\.uz/(\d+)/', line)
-            if match:
+            if current_extinf and line.startswith("http"):
+                url = line
+                
+                match = re.search(r'cinerama\.uz/(\d+)/', url)
+                if not match:
+                    current_extinf = None
+                    continue
+                
                 cid = int(match.group(1))
-                ids.add(cid)
+                name = extract_extinf_name(current_extinf)
+                
+                if name:
+                    mini_pool[cid] = {
+                        "id": cid,
+                        "name": name,
+                        "url": url,
+                    }
+                
+                current_extinf = None
         
-        print(f"[INFO] Извлечено {len(ids)} уникальных ID из мега плейлиста")
-        return ids
+        print(f"[SUCCESS] Извлечено из МЕГА: {len(mini_pool)} уникальных ID")
+        print(f"Диапазон ID: {min(mini_pool.keys())} - {max(mini_pool.keys())}")
+        print()
+        
+        return mini_pool
     
     except Exception as e:
-        print(f"[ERROR] Ошибка загрузки мега: {e}")
-        return set()
+        print(f"[ERROR] {e}")
+        return mini_pool
     finally:
         session.close()
 
 
 # ============================================================
-# SCAN STREAM8
+# STEP 2.1: GENERATE FULL POOL (0-6000)
+# ============================================================
+
+def step_2_1_generate_full_pool():
+    """Генерирует полный пул всех ID от 0 до 6000"""
+    print()
+    print("=" * 70)
+    print("STEP 2.1: GENERATE FULL POOL (0-6000)")
+    print("=" * 70)
+    print()
+    
+    full_pool = OrderedDict()
+    
+    for cid in range(START_ID, END_ID + 1):
+        full_pool[cid] = {
+            "id": cid,
+            "url": build_url(STREAM8_BASE, cid)
+        }
+    
+    print(f"[SUCCESS] Сгенерирован полный пул: {len(full_pool)} ID (0-{END_ID})")
+    print()
+    
+    return full_pool
+
+
+# ============================================================
+# STEP 2.2: COMPARE MEGA vs FULL POOL
+# ============================================================
+
+def step_2_2_compare(mini_pool, full_pool):
+    """Сравнивает мега (mini_pool) с полным пулом"""
+    print()
+    print("=" * 70)
+    print("STEP 2.2: COMPARE MEGA vs FULL POOL")
+    print("=" * 70)
+    print()
+    
+    mega_ids = set(mini_pool.keys())
+    pool_ids = set(full_pool.keys())
+    
+    in_both = mega_ids & pool_ids
+    only_in_mega = mega_ids - pool_ids
+    only_in_pool = pool_ids - mega_ids
+    
+    print(f"МЕГА: {len(mega_ids)} ID")
+    print(f"ПОЛНЫЙ пул: {len(pool_ids)} ID")
+    print(f"В обоих: {len(in_both)} ID")
+    print(f"Только в МЕГА (вне 0-6000): {len(only_in_mega)} ID")
+    print(f"Только в ПУЛЕ (новые): {len(only_in_pool)} ID")
+    print()
+    
+    return {
+        "mega_ids": mega_ids,
+        "pool_ids": pool_ids,
+        "in_both": in_both,
+        "only_in_mega": only_in_mega,
+        "only_in_pool": only_in_pool,
+    }
+
+
+# ============================================================
+# STEP 2.3: CREATE POOL ANALYSIS REPORT & SAVE
+# ============================================================
+
+def step_2_3_create_pool_report(mini_pool, compare_result):
+    """Создаёт отчёт по шагам 2.0-2.2"""
+    print()
+    print("=" * 70)
+    print("STEP 2.3: CREATE POOL ANALYSIS REPORT & SAVE")
+    print("=" * 70)
+    print()
+    
+    report_file = "POOL_ANALYSIS.txt"
+    
+    with open(report_file, "w", encoding="utf-8") as f:
+        f.write("POOL ANALYSIS REPORT\n")
+        f.write("=" * 70 + "\n")
+        f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("\n")
+        
+        f.write("STEP 2.0: MEGA PLAYLIST\n")
+        f.write("-" * 70 + "\n")
+        f.write(f"Total IDs in MEGA: {len(compare_result['mega_ids'])}\n")
+        f.write(f"ID range: {min(compare_result['mega_ids'])} - {max(compare_result['mega_ids'])}\n")
+        f.write("\n")
+        
+        f.write("First 30 IDs from MEGA:\n")
+        for idx, (cid, item) in enumerate(list(mini_pool.items())[:30]):
+            f.write(f"  {idx+1:2}. ID={cid:<5} | {item['name']}\n")
+        f.write("\n")
+        
+        f.write("STEP 2.1: FULL POOL\n")
+        f.write("-" * 70 + "\n")
+        f.write(f"Total IDs in POOL: {len(compare_result['pool_ids'])} (0-{END_ID})\n")
+        f.write("\n")
+        
+        f.write("STEP 2.2: COMPARISON RESULTS\n")
+        f.write("-" * 70 + "\n")
+        f.write(f"In both MEGA and POOL: {len(compare_result['in_both'])}\n")
+        f.write(f"Only in MEGA (out of 0-6000 range): {len(compare_result['only_in_mega'])}\n")
+        f.write(f"Only in POOL (NEW IDs): {len(compare_result['only_in_pool'])}\n")
+        f.write("\n")
+        
+        if compare_result['only_in_mega']:
+            f.write("IDs only in MEGA (outside 0-6000):\n")
+            for cid in sorted(compare_result['only_in_mega'])[:30]:
+                if cid in mini_pool:
+                    f.write(f"  ID={cid} | {mini_pool[cid]['name']}\n")
+            if len(compare_result['only_in_mega']) > 30:
+                f.write(f"  ... and {len(compare_result['only_in_mega']) - 30} more\n")
+            f.write("\n")
+        
+        if compare_result['only_in_pool']:
+            f.write(f"NEW IDs in POOL (not in MEGA): {len(compare_result['only_in_pool'])} IDs\n")
+            sorted_new = sorted(compare_result['only_in_pool'])
+            f.write("Range: {} - {}\n".format(sorted_new[0], sorted_new[-1]))
+            f.write("\n")
+    
+    print(f"[SUCCESS] Отчёт сохранён: {report_file}")
+    print(f"Результаты запомнены в переменной compare_result")
+    print()
+    
+    return report_file
+
+
+# ============================================================
+# STEP 4: SCAN FULL POOL (all 0-6000)
 # ============================================================
 
 def scan_stream8_url(item):
+    """Сканирует один URL Stream8"""
     session = make_session()
     stream_id = item["id"]
     url = item["url"]
@@ -158,7 +312,6 @@ def scan_stream8_url(item):
             "tvg_id": tvg_id,
             "url": url,
             "group": "Stream8",
-            "status": 200,
         }
     
     except Exception:
@@ -167,29 +320,20 @@ def scan_stream8_url(item):
         session.close()
 
 
-def scan_stream8(mega_ids):
-    """Сканирует все ID из мега плейлиста в Stream8"""
-    
-    if not mega_ids:
-        mega_ids = set(range(START_ID, END_ID + 1))
-    
-    pool = [
-        {"id": cid, "url": build_url(STREAM8_BASE, cid)}
-        for cid in sorted(mega_ids)
-    ]
+def step_4_scan_full_pool(full_pool):
+    """Сканирует весь пул 0-6000"""
+    print()
+    print("=" * 70)
+    print("STEP 4: SCAN FULL POOL STREAM8 (0-6000)")
+    print("=" * 70)
+    print()
     
     found = []
-    total = len(pool)
+    total = len(full_pool)
     completed = 0
     
-    print()
-    print("=" * 70)
-    print(f"STREAM8: СКАНИРОВАНИЕ {total} ID")
-    print("=" * 70)
-    print()
-    
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-        futures = {executor.submit(scan_stream8_url, item): item for item in pool}
+        futures = {executor.submit(scan_stream8_url, item): item for item in full_pool.values()}
         
         for future in as_completed(futures):
             completed += 1
@@ -197,23 +341,33 @@ def scan_stream8(mega_ids):
                 result = future.result()
                 if result:
                     found.append(result)
-                    print(f"[FOUND] STREAM8 ID={result['id']} -> {result['name']}")
+                    print(f"[FOUND] Stream8 ID={result['id']} -> {result['name']}")
             except Exception:
                 pass
             
-            print(f"Прогресс: {completed}/{total}", flush=True)
+            if completed % 500 == 0 or completed == total:
+                pct = (completed * 100) // total
+                print(f"Progress: {completed}/{total} ({pct}%)", flush=True)
     
     found.sort(key=lambda x: int(x["id"]))
     print()
-    print(f"[STREAM8] Найдено живых: {len(found)}")
+    print(f"[SUCCESS] Stream8 найдено: {len(found)}")
+    print()
+    
     return found
 
 
 # ============================================================
-# CHECK MIRRORS (Stream0, Stream1)
+# STEP 5: EXTINF ALREADY EXTRACTED
+# (Already done in step 4, during scan)
+# ============================================================
+
+# ============================================================
+# STEP 6: CONVERT & CHECK STREAM0 + STREAM1
 # ============================================================
 
 def check_mirror(base_url, stream8_item, group_name):
+    """Проверяет один URL зеркала"""
     session = make_session()
     stream_id = stream8_item["id"]
     url = build_url(base_url, stream_id)
@@ -238,7 +392,6 @@ def check_mirror(base_url, stream8_item, group_name):
             "tvg_id": stream8_item.get("tvg_id"),
             "url": url,
             "group": group_name,
-            "status": 200,
         }
     
     except Exception:
@@ -247,23 +400,22 @@ def check_mirror(base_url, stream8_item, group_name):
         session.close()
 
 
-def check_mirrors(stream8_channels):
-    """Проверяет Stream0 и Stream1 для всех найденных Stream8"""
+def step_6_check_mirrors(stream8_items):
+    """Конвертирует в Stream0 и Stream1, проверяет"""
+    print()
+    print("=" * 70)
+    print("STEP 6: CONVERT & CHECK STREAM0 + STREAM1")
+    print("=" * 70)
+    print()
     
     jobs = []
-    for item in stream8_channels:
+    for item in stream8_items:
         jobs.append((STREAM0_BASE, "Stream0", item))
         jobs.append((STREAM1_BASE, "Stream1", item))
     
     result = []
     total = len(jobs)
     completed = 0
-    
-    print()
-    print("=" * 70)
-    print(f"STREAM0/STREAM1: ПРОВЕРКА ЗЕРКАЛ ({total} проверок)")
-    print("=" * 70)
-    print()
     
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
         futures = {
@@ -281,16 +433,20 @@ def check_mirrors(stream8_channels):
             except Exception:
                 pass
             
-            print(f"Прогресс: {completed}/{total}", flush=True)
+            if completed % 500 == 0 or completed == total:
+                pct = (completed * 100) // total
+                print(f"Progress: {completed}/{total} ({pct}%)", flush=True)
     
     result.sort(key=lambda x: (int(x["id"]), 0 if x["group"] == "Stream0" else 1))
     print()
-    print(f"[MIRRORS] Живых потоков: {len(result)}")
+    print(f"[SUCCESS] Mirrors найдено: {len(result)}")
+    print()
+    
     return result
 
 
 # ============================================================
-# MAKE M3U
+# WRITE M3U
 # ============================================================
 
 def make_extinf(item, channel_number):
@@ -315,7 +471,7 @@ def write_m3u(stream8_items, stream0_items, stream1_items):
     
     with open(OUTPUT_M3U, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        f.write(f"# Playlist verified by {COPYRIGHT}\n")
+        f.write(f"# {COPYRIGHT}\n")
         f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         
         channel_number = 1
@@ -326,31 +482,52 @@ def write_m3u(stream8_items, stream0_items, stream1_items):
 
 
 # ============================================================
-# WRITE REPORT
+# STEP 7: FINAL REPORT
 # ============================================================
 
-def write_report(stream8_count, stream0_count, stream1_count, all_items):
-    """Пишет полный отчет со статистикой"""
+def step_7_final_report(mini_pool, compare_result, stream8_items, mirrors):
+    """Создаёт финальный отчёт со сравнением и статистикой"""
+    print()
+    print("=" * 70)
+    print("STEP 7: FINAL REPORT (MEGA vs POOL + STATISTICS)")
+    print("=" * 70)
+    print()
+    
+    stream0_items = [item for item in mirrors if item["group"] == "Stream0"]
+    stream1_items = [item for item in mirrors if item["group"] == "Stream1"]
+    all_items = stream8_items + stream0_items + stream1_items
     
     with open(REPORT_TXT, "w", encoding="utf-8") as f:
-        f.write("CINERAMA VERIFIED 1 — FULL REPORT\n")
+        f.write("CINERAMA VERIFIED 1 — FINAL REPORT\n")
         f.write("=" * 70 + "\n")
         f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write("\n")
         
-        f.write("STATISTICS\n")
-        f.write("-" * 70 + "\n")
-        f.write(f"Stream8 found: {stream8_count}\n")
-        f.write(f"Stream0 live: {stream0_count}\n")
-        f.write(f"Stream1 live: {stream1_count}\n")
-        f.write(f"Total live: {len(all_items)}\n")
+        f.write("SECTION 1: MEGA vs FULL POOL COMPARISON\n")
+        f.write("=" * 70 + "\n")
+        f.write(f"МЕГА плейлист IDs: {len(compare_result['mega_ids'])}\n")
+        f.write(f"ПОЛНЫЙ пул IDs (0-{END_ID}): {len(compare_result['pool_ids'])}\n")
+        f.write(f"В обоих: {len(compare_result['in_both'])}\n")
+        f.write(f"Только в МЕГА (вне диапазона): {len(compare_result['only_in_mega'])}\n")
+        f.write(f"Только в ПУЛЕ (новые): {len(compare_result['only_in_pool'])}\n")
         f.write("\n")
         
-        f.write("DETAILS\n")
-        f.write("-" * 70 + "\n")
+        f.write("SECTION 2: SCANNING STATISTICS\n")
+        f.write("=" * 70 + "\n")
+        f.write(f"Stream8 FOUND: {len(stream8_items)}\n")
+        f.write(f"Stream0 LIVE: {len(stream0_items)}\n")
+        f.write(f"Stream1 LIVE: {len(stream1_items)}\n")
+        f.write(f"TOTAL STREAMS: {len(all_items)}\n")
+        f.write("\n")
+        
+        f.write("SECTION 3: FULL CHANNEL LIST\n")
+        f.write("=" * 70 + "\n")
         
         for item in sorted(all_items, key=lambda x: (int(x["id"]), x["group"])):
-            f.write(f"{item['group']} | ID={item['id']} | {item['name']} | {item['url']}\n")
+            f.write(f"{item['group']:8} | ID={item['id']:5} | {item['name'][:45]:45} | {item['url']}\n")
+    
+    print(f"[SUCCESS] Финальный отчёт: {REPORT_TXT}")
+    print()
 
 
 # ============================================================
@@ -359,52 +536,58 @@ def write_report(stream8_count, stream0_count, stream1_count, all_items):
 
 def main():
     print("=" * 70)
-    print("CINERAMA SCANNER")
+    print("CINERAMA SCANNER - COMPLETE PIPELINE")
     print("=" * 70)
-    print()
     
-    # 1. Load mega playlist
-    mega_ids = load_mega_playlist()
-    if not mega_ids:
-        print("[ERROR] Не удалось загрузить мега плейлист")
+    # Step 2.0
+    mini_pool = step_2_0_load_mega()
+    if not mini_pool:
+        print("[ERROR] mini_pool пуст")
         return
     
-    # 2. Scan Stream8
-    stream8_items = scan_stream8(mega_ids)
+    # Step 2.1
+    full_pool = step_2_1_generate_full_pool()
+    
+    # Step 2.2
+    compare_result = step_2_2_compare(mini_pool, full_pool)
+    
+    # Step 2.3
+    step_2_3_create_pool_report(mini_pool, compare_result)
+    
+    # Step 4
+    stream8_items = step_4_scan_full_pool(full_pool)
     if not stream8_items:
-        print("[ERROR] Stream8 не найдено")
+        print("[ERROR] Stream8 пуст")
         return
     
-    # 3. Check Stream0 and Stream1
-    mirrors = check_mirrors(stream8_items)
+    # Step 5 (Already done in step 4)
+    
+    # Step 6
+    mirrors = step_6_check_mirrors(stream8_items)
     if not mirrors:
-        print("[ERROR] Зеркала не найдены")
+        print("[ERROR] Mirrors пусты")
         return
     
-    # 4. Separate Stream0 and Stream1
+    # Separate
     stream0_items = [item for item in mirrors if item["group"] == "Stream0"]
     stream1_items = [item for item in mirrors if item["group"] == "Stream1"]
     
-    # 5. Write M3U
+    # Write M3U
     write_m3u(stream8_items, stream0_items, stream1_items)
     
-    # 6. Write report
-    all_items = stream8_items + stream0_items + stream1_items
-    write_report(len(stream8_items), len(stream0_items), len(stream1_items), all_items)
+    # Step 7
+    step_7_final_report(mini_pool, compare_result, stream8_items, mirrors)
     
-    # 7. Statistics
+    # Summary
     print()
     print("=" * 70)
-    print("DONE")
+    print("ALL STEPS COMPLETED")
     print("=" * 70)
     print()
-    print(f"Stream8 found: {len(stream8_items)}")
-    print(f"Stream0 live: {len(stream0_items)}")
-    print(f"Stream1 live: {len(stream1_items)}")
-    print(f"Total: {len(all_items)}")
-    print()
-    print(f"M3U: {OUTPUT_M3U}")
-    print(f"TXT: {REPORT_TXT}")
+    print(f"Files generated:")
+    print(f"  - {OUTPUT_M3U}")
+    print(f"  - {REPORT_TXT}")
+    print(f"  - POOL_ANALYSIS.txt")
     print()
 
 
