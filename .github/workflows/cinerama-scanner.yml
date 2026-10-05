@@ -28,53 +28,101 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run scanner with full output
+      - name: Run Cinerama Scanner (full pipeline)
         run: |
-          echo "=== Starting scanner ==="
+          echo "========================================"
+          echo "CINERAMA SCANNER - FULL PIPELINE"
+          echo "========================================"
           python -u SCANNER_CINERAMA.py 2>&1 | tee scanner.log
-          echo "=== Scanner finished ==="
           echo ""
-          echo "=== Checking directory ==="
-          pwd
-          ls -lah
-          echo ""
-          echo "=== Checking for output files ==="
-          ls -lah *.m3u *.txt 2>&1 || echo "Files not found!"
+          echo "========================================"
+          echo "SCANNER COMPLETED"
+          echo "========================================"
 
-      - name: Show scanner log
+      - name: Verify output files
+        run: |
+          echo "Checking generated files..."
+          echo ""
+          ls -lah *.m3u *.txt 2>&1 || echo "No files found!"
+          echo ""
+          echo "Files in current directory:"
+          find . -maxdepth 1 \( -name "*.m3u" -o -name "*.txt" \) -type f
+
+      - name: Display reports
         if: always()
         run: |
-          echo "=== Scanner output ==="
-          cat scanner.log || echo "No log file"
+          echo "========================================"
+          echo "POOL ANALYSIS REPORT"
+          echo "========================================"
+          cat POOL_ANALYSIS.txt 2>/dev/null || echo "File not found"
+          echo ""
+          echo "========================================"
+          echo "FINAL REPORT (first 100 lines)"
+          echo "========================================"
+          head -100 SKALA_DREG_REPORT.txt 2>/dev/null || echo "File not found"
 
-      - name: Debug: check what happened
+      - name: Upload all artifacts
         if: always()
-        run: |
-          echo "Exit code of scanner: $?"
-          find . -name "*.m3u" -o -name "*.txt" | head -20
-
-      - name: Upload artifact
-        if: hashFiles('cinerama_Verified_1.m3u') != ''
         uses: actions/upload-artifact@v4
         with:
           name: cinerama-scan-results
           path: |
             cinerama_Verified_1.m3u
             SKALA_DREG_REPORT.txt
+            POOL_ANALYSIS.txt
+            scanner.log
           retention-days: 90
+          if-no-files-found: warn
 
-      - name: Commit and push to repo root
-        if: hashFiles('cinerama_Verified_1.m3u') != ''
+      - name: Commit and push results
+        if: hashFiles('cinerama_Verified_1.m3u') != '' && hashFiles('SKALA_DREG_REPORT.txt') != ''
         run: |
           git config user.name "Cinerama Bot"
           git config user.email "bot@github.com"
 
-          git add cinerama_Verified_1.m3u SKALA_DREG_REPORT.txt
+          echo "Adding files to git..."
+          git add cinerama_Verified_1.m3u SKALA_DREG_REPORT.txt POOL_ANALYSIS.txt
 
           if ! git diff --cached --quiet; then
+            echo "Committing changes..."
             git commit -m "🔄 Cinerama scan: $(date '+%Y-%m-%d %H:%M:%S UTC')"
+            
+            echo "Pushing to main branch..."
             git push origin main
-            echo "✅ Pushed to main"
+            
+            echo "✅ Successfully pushed to main"
           else
-            echo "ℹ️ No changes"
+            echo "ℹ️ No changes to commit"
           fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo ""
+          echo "========================================"
+          echo "SCAN SUMMARY"
+          echo "========================================"
+          echo ""
+          if [ -f "SKALA_DREG_REPORT.txt" ]; then
+            echo "✅ Generated: SKALA_DREG_REPORT.txt"
+            wc -l SKALA_DREG_REPORT.txt
+          else
+            echo "❌ SKALA_DREG_REPORT.txt not found"
+          fi
+          
+          if [ -f "cinerama_Verified_1.m3u" ]; then
+            echo "✅ Generated: cinerama_Verified_1.m3u"
+            wc -l cinerama_Verified_1.m3u
+          else
+            echo "❌ cinerama_Verified_1.m3u not found"
+          fi
+          
+          if [ -f "POOL_ANALYSIS.txt" ]; then
+            echo "✅ Generated: POOL_ANALYSIS.txt"
+            wc -l POOL_ANALYSIS.txt
+          else
+            echo "❌ POOL_ANALYSIS.txt not found"
+          fi
+          
+          echo ""
+          echo "========================================"
