@@ -5,13 +5,12 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import OrderedDict
 
-
 # ============================================================
-# CINERAMA VERIFIED 1
+# CONFIG
 # ============================================================
 
 MAX_THREADS = 50
-TIMEOUT = 3
+TIMEOUT = 5
 
 START_ID = 0
 END_ID = 6000
@@ -23,344 +22,295 @@ STREAM1_BASE = "https://stream1.cinerama.uz"
 OUTPUT_FILE = "cinerama_Verified_1.m3u"
 REPORT_FILE = "SKALA_DREG_REPORT.txt"
 
-# ОБА старых плейлиста используются ТОЛЬКО ДЛЯ СВЕРКИ
-PREVIOUS_FILES = [
-    "CINERAMA_VERIFIED.m3u",
-    "cinerama_Verified_1.m3u",
-]
+# Сравниваем только с одним "мега" файлом,
+# если он существует. Прошлые проходы не искать.
+COMPARE_FILE = "cinerama_Verified_1.m3u"
 
 COPYRIGHT = "© Phoenix 89S - Verify 1"
 
-
 # ============================================================
-# HTTP SESSION
+# HTTP
 # ============================================================
 
 def make_session():
     session = requests.Session()
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 Cinerama-Scanner/1.0",
+        "User-Agent": "Mozilla/5.0 CineramaScanner/1.0",
         "Accept": "*/*",
         "Connection": "keep-alive",
     })
     return session
 
 
-# ============================================================
-# URL
-# ============================================================
-
 def build_url(base, stream_id):
     return f"{base}/{stream_id}/tracks-v1a1/mono.m3u8"
 
 
+def build_pool(base, start_id=START_ID, end_id=END_ID):
+    pool = []
+    for stream_id in range(start_id, end_id + 1):
+        pool.append({
+            "id": stream_id,
+            "url": build_url(base, stream_id),
+        })
+    return pool
+
+
 # ============================================================
-# НОРМАЛИЗАЦИЯ НАЗВАНИЯ
+# EXTINF PARSING
 # ============================================================
 
 def clean_name(name):
-    name = name.strip()
-
-    # Убираем лишние пробелы
+    if not name:
+        return ""
+    name = str(name).strip()
     name = re.sub(r"\s+", " ", name)
-
-    # Иногда название может содержать запятые/служебные хвосты
     return name.strip(" ,")
 
 
-# ============================================================
-# ПОЛУЧЕНИЕ EXTINF
-# ============================================================
+def extract_extinf_line(text):
+    if not text:
+        return None
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith("#EXTINF:"):
+            return line
+    return None
+
 
 def extract_extinf_name(text):
     if not text:
         return None
 
-    for line in text.splitlines():
-        line = line.strip()
-
-        if line.startswith("#EXTINF:"):
-            # Последняя запятая отделяет параметры EXTINF от названия
-            if "," in line:
-                name = line.split(",", 1)[1].strip()
-
-                if name:
-                    return clean_name(name)
-
-    return None
-
-
-# ============================================================
-# ИЗВЛЕЧЕНИЕ TVG-ID
-# ============================================================
-
-def extract_tvg_id(extinf):
-    if not extinf:
+    extinf_line = extract_extinf_line(text)
+    if not extinf_line or "," not in extinf_line:
         return None
 
-    match = re.search(
-        r'tvg-id=["\']([^"\']+)["\']',
-        extinf,
-        re.IGNORECASE
-    )
+    name = extinf_line.split(",", 1)[1].strip()
+    if not name:
+        return None
 
+    return clean_name(name)
+
+
+def extract_tvg_id(extinf_text):
+    if not extinf_text:
+        return None
+
+    match = re.search(r'tvg-id=["\']?([^"\'\s,]+)', extinf_text, re.IGNORECASE)
     if match:
         return match.group(1).strip()
-
     return None
 
 
 # ============================================================
-# STREAM8
-#
-# ВАЖНО:
-# Stream8 НЕ ПОПАДАЕТ В ИТОГ.
-#
-# Он используется только для:
-# 1. генерации URL
-# 2. проверки живучести
-# 3. получения #EXTINF / названия
+# STREAM8: generate full pool -> scan it
 # ============================================================
 
-def scan_stream8(stream_id):
+def scan_stream8_url(item):
     session = make_session()
-
-    url = build_url(STREAM8_BASE, stream_id)
+    url = item["url"]
+    stream_id = item["id"]
 
     try:
-        response = session.get(
-            url,
-            timeout=TIMEOUT,
-            allow_redirects=True
-        )
-
+        response = session.get(url, timeout=TIMEOUT, allow_redirects=True)
         if response.status_code != 200:
             return None
 
         text = response.text
-
         if not text or "#EXTINF:" not in text:
             return None
 
-        name = extract_extinf_name(text)
+        extinf_line = extract_extinf_line(text)
+        if not extinf_line:
+            return None
 
+        name = extract_extinf_name(text)
         if not name:
             return None
+
+        tvg_id = extract_tvg_id(extinf_line)
 
         return {
             "id": stream_id,
             "name": name,
-            "source_url": url,
+            "tvg_id": tvg_id,
+            "url": url,
+            "group": "STREAM8",
         }
 
     except Exception:
         return None
-
     finally:
         session.close()
 
 
-# ============================================================
-# СКАНИРОВАНИЕ STREAM8 0-6000
-# ============================================================
-
-def scan_stream8():
+def scan_stream8_pool():
+    pool = build_pool(STREAM8_BASE)
     found = []
-
-    total = END_ID - START_ID + 1
+    total = len(pool)
     completed = 0
 
     print()
-    print("=" * 60)
-    print("СКАНИРОВАНИЕ STREAM8")
-    print(f"Диапазон: {START_ID}-{END_ID}")
-    print(f"Потоков: {MAX_THREADS}")
-    print("=" * 60)
+    print("=" * 70)
+    print("ГЕНЕРАЦИЯ ПУЛА И СКАНИРОВАНИЕ STREAM8")
+    print(f"Всего URL: {total}")
+    print("=" * 70)
     print()
 
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-
-        futures = {
-            executor.submit(scan_stream8, stream_id): stream_id
-            for stream_id in range(START_ID, END_ID + 1)
-        }
+        futures = {executor.submit(scan_stream8_url, item): item for item in pool}
 
         for future in as_completed(futures):
             completed += 1
-
             try:
                 result = future.result()
-
                 if result:
                     found.append(result)
-
-                    print(
-                        f"[FOUND] Stream8 ID={result['id']} "
-                        f"-> {result['name']}"
-                    )
-
+                    tvg_info = f" [TVG-ID: {result['tvg_id']}]" if result.get("tvg_id") else ""
+                    print(f"[FOUND] STREAM8 ID={result['id']} -> {result['name']}{tvg_info}")
             except Exception:
                 pass
 
-            print(
-                f"Прогресс: {completed}/{total}",
-                flush=True
-            )
+            print(f"Прогресс: {completed}/{total}", flush=True)
 
-    found.sort(key=lambda x: x["id"])
-
+    found.sort(key=lambda x: int(x["id"]))
     print()
-    print(f"[SCAN] Найдено Stream8: {len(found)}")
-
+    print(f"[STREAM8] Найдено: {len(found)}")
     return found
 
 
 # ============================================================
-# ПРОВЕРКА STREAM0 / STREAM1
-#
-# Название уже получено из Stream8.
-# Здесь мы НЕ ИЩЕМ НАЗВАНИЕ.
-# Проверяем только соответствующий поток.
+# STREAM0 / STREAM1 CHECK
 # ============================================================
 
 def check_mirror(base_url, stream8_item, group_name):
-    stream_id = stream8_item["id"]
-
-    url = build_url(base_url, stream_id)
-
     session = make_session()
+    url = build_url(base_url, stream8_item["id"])
 
     try:
-        response = session.get(
-            url,
-            timeout=TIMEOUT,
-            allow_redirects=True
-        )
-
+        response = session.get(url, timeout=TIMEOUT, allow_redirects=True)
         if response.status_code != 200:
             return None
 
         text = response.text
-
-        if not text:
+        if not text or "#EXTINF:" not in text:
             return None
 
-        # Поток должен реально отдавать M3U8
-        if "#EXTINF:" not in text:
+        extinf_line = extract_extinf_line(text)
+        if not extinf_line:
             return None
 
         return {
-            "id": stream_id,
+            "id": stream8_item["id"],
             "name": stream8_item["name"],
+            "tvg_id": stream8_item.get("tvg_id"),
             "group": group_name,
             "url": url,
-            "response": response.status_code,
-            "tvg_id": stream8_item.get("tvg_id"),
         }
 
     except Exception:
         return None
-
     finally:
         session.close()
 
 
-# ============================================================
-# ФОРМИРОВАНИЕ STREAM0 + STREAM1
-# ============================================================
+def build_mirror_pool(stream8_channels):
+    jobs = []
+    for item in stream8_channels:
+        jobs.append((STREAM0_BASE, "STREAM0", item))
+        jobs.append((STREAM1_BASE, "STREAM1", item))
 
-def build_mirrors(stream8_channels):
     result = []
-
-    total = len(stream8_channels) * 2
+    total = len(jobs)
     completed = 0
 
     print()
-    print("=" * 60)
-    print("ПРОВЕРКА ЗЕРКАЛ STREAM0 / STREAM1")
-    print("=" * 60)
+    print("=" * 70)
+    print("ПРОВЕРКА STREAM0 / STREAM1")
+    print(f"Всего проверок: {total}")
+    print("=" * 70)
     print()
 
-    jobs = []
-
-    for item in stream8_channels:
-        jobs.append(
-            (
-                STREAM0_BASE,
-                "Stream0",
-                item
-            )
-        )
-
-        jobs.append(
-            (
-                STREAM1_BASE,
-                "Stream1",
-                item
-            )
-        )
-
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-
         futures = {
-            executor.submit(
-                check_mirror,
-                base_url,
-                item,
-                group
-            ): (group, item["id"])
-            for base_url, group, item in jobs
+            executor.submit(check_mirror, base_url, item, group_name): (group_name, item["id"])
+            for base_url, group_name, item in jobs
         }
 
         for future in as_completed(futures):
             completed += 1
-
-            group, stream_id = futures[future]
-
             try:
                 item = future.result()
-
                 if item:
                     result.append(item)
-
-                    print(
-                        f"[LIVE] {group} "
-                        f"ID={item['id']} "
-                        f"-> {item['name']}"
-                    )
-
+                    tvg_info = f" [TVG-ID: {item['tvg_id']}]" if item.get("tvg_id") else ""
+                    print(f"[LIVE] {item['group']} ID={item['id']} -> {item['name']}{tvg_info}")
             except Exception:
                 pass
 
-            print(
-                f"Зеркала: {completed}/{total}",
-                flush=True
-            )
+            print(f"Прогресс: {completed}/{total}", flush=True)
 
-    # Stream0 сначала, Stream1 потом
-    group_order = {
-        "Stream0": 0,
-        "Stream1": 1,
-    }
-
-    result.sort(
-        key=lambda x: (
-            x["id"],
-            group_order.get(x["group"], 99)
-        )
-    )
-
+    result.sort(key=lambda x: (int(x["id"]), 0 if x["group"] == "STREAM0" else 1))
     print()
-    print(f"[MIRRORS] Живых Stream0/Stream1: {len(result)}")
-
+    print(f"[MIRRORS] Живых потоков: {len(result)}")
     return result
 
 
 # ============================================================
-# ПАРСИНГ СТАРОГО M3U
-#
-# НИКАКОЙ ГЕНЕРАЦИИ ИЗ СТАРОГО M3U.
-# ТОЛЬКО ЧТЕНИЕ ДЛЯ СВЕРКИ.
+# WRITE M3U
+# ============================================================
+
+def make_extinf(item, channel_number):
+    tvg_id = item.get("tvg_id") or f"cinerama_{item['id']}"
+    group = item["group"]
+    name = item["name"]
+
+    return (
+        f'#EXTINF:-1 '
+        f'tvg-chno="{channel_number}" '
+        f'tvg-id="{tvg_id}" '
+        f'group-title="{group}",'
+        f'{name}'
+    )
+
+
+def write_playlist(items):
+    ranked = sorted(items, key=lambda x: (int(x["id"]), 0 if x["group"] == "STREAM0" else 1))
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+        f.write(f"# Playlist verified by {COPYRIGHT}\n")
+        f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+        channel_number = 1
+        for item in ranked:
+            f.write(make_extinf(item, channel_number) + "\n")
+            f.write(item["url"] + "\n")
+            channel_number += 1
+
+
+# ============================================================
+# REPORT
+# ============================================================
+
+def write_report(stream8_count, total_live, stream0_count, stream1_count, items):
+    with open(REPORT_FILE, "w", encoding="utf-8") as f:
+        f.write("CINERAMA VERIFIED 1 — REPORT\n")
+        f.write("=" * 70 + "\n")
+        f.write(f"Дата: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Stream8 найдено: {stream8_count}\n")
+        f.write(f"Stream0 живых: {stream0_count}\n")
+        f.write(f"Stream1 живых: {stream1_count}\n")
+        f.write(f"ИТОГО: {total_live}\n")
+        f.write("\n")
+
+        for item in sorted(items, key=lambda x: (int(x["id"]), 0 if x["group"] == "STREAM0" else 1)):
+            f.write(f"{item['group']} | ID={item['id']} | {item['name']} | URL={item['url']}\n")
+
+
+# ============================================================
+# COMPARE ONLY WITH MEGA FILE
 # ============================================================
 
 def parse_m3u(filename):
@@ -370,24 +320,15 @@ def parse_m3u(filename):
         return result
 
     try:
-        with open(
-            filename,
-            "r",
-            encoding="utf-8",
-            errors="ignore"
-        ) as f:
+        with open(filename, "r", encoding="utf-8", errors="ignore") as f:
             lines = [line.rstrip("\n") for line in f]
-
-    except Exception as e:
-        print(f"[WARN] Не удалось прочитать {filename}: {e}")
+    except Exception:
         return result
 
     current_extinf = None
 
     for line in lines:
-
         line = line.strip()
-
         if not line:
             continue
 
@@ -396,39 +337,27 @@ def parse_m3u(filename):
             continue
 
         if line.startswith("http") and current_extinf:
-
             url = line
 
-            # Определяем группу именно по URL
             if "stream0.cinerama.uz" in url:
-                group = "Stream0"
-
+                group = "STREAM0"
             elif "stream1.cinerama.uz" in url:
-                group = "Stream1"
-
+                group = "STREAM1"
             elif "stream8.cinerama.uz" in url:
-                group = "Stream8"
-
+                group = "STREAM8"
             else:
                 current_extinf = None
                 continue
 
-            # ID из URL
-            match = re.search(
-                r"cinerama\.uz/(\d+)/",
-                url
-            )
-
+            match = re.search(r"cinerama\.uz/(\d+)/", url)
             if not match:
                 current_extinf = None
                 continue
 
             stream_id = int(match.group(1))
-
             name = extract_extinf_name(current_extinf)
 
             key = (group, stream_id)
-
             result[key] = {
                 "id": stream_id,
                 "name": name or "",
@@ -441,31 +370,33 @@ def parse_m3u(filename):
     return result
 
 
-# ============================================================
-# СВЕРКА
-# ============================================================
-
 def make_key(item):
-    return (
-        item["group"],
-        int(item["id"])
-    )
+    return (item["group"], int(item["id"]))
 
 
 def build_current_map(current):
     result = OrderedDict()
-
     for item in current:
         result[make_key(item)] = item
-
     return result
 
 
-def compare_one_old_playlist(filename, current_map):
-    old_map = parse_m3u(filename)
+def compare_with_mega(current):
+    if not os.path.exists(COMPARE_FILE):
+        return {
+            "file": COMPARE_FILE,
+            "old_count": 0,
+            "added": [],
+            "removed": [],
+            "changed_name": [],
+            "unchanged": [],
+        }
+
+    old_map = parse_m3u(COMPARE_FILE)
+    current_map = build_current_map(current)
 
     report = {
-        "file": filename,
+        "file": COMPARE_FILE,
         "old_count": len(old_map),
         "added": [],
         "removed": [],
@@ -476,17 +407,13 @@ def compare_one_old_playlist(filename, current_map):
     old_keys = set(old_map.keys())
     new_keys = set(current_map.keys())
 
-    # Новые
     for key in sorted(new_keys - old_keys):
         report["added"].append(current_map[key])
 
-    # Исчезнувшие
     for key in sorted(old_keys - new_keys):
         report["removed"].append(old_map[key])
 
-    # Есть в обоих
     for key in sorted(old_keys & new_keys):
-
         old = old_map[key]
         new = current_map[key]
 
@@ -494,205 +421,47 @@ def compare_one_old_playlist(filename, current_map):
         new_name = clean_name(new.get("name", ""))
 
         if old_name != new_name:
-            report["changed_name"].append({
-                "old": old,
-                "new": new,
-            })
+            report["changed_name"].append({"old": old, "new": new})
         else:
             report["unchanged"].append(new)
 
     return report
 
 
-# ============================================================
-# ОТЧЁТ
-# ============================================================
-
-def write_report(
-    reports,
-    stream8_count,
-    current_count
-):
-    with open(
-        REPORT_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write("CINERAMA VERIFIED 1 — ОТЧЁТ СВЕРКИ\n")
+def append_compare_report(report):
+    with open(REPORT_FILE, "a", encoding="utf-8") as f:
+        f.write("\n\n")
         f.write("=" * 70 + "\n")
-        f.write(
-            f"Дата: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-        )
+        f.write(f"СВЕРКА С: {report['file']}\n")
+        f.write("=" * 70 + "\n")
+        f.write(f"Было: {report['old_count']}\n")
+        f.write(f"Новых: {len(report['added'])}\n")
+        f.write(f"Исчезло: {len(report['removed'])}\n")
+        f.write(f"Изменено название: {len(report['changed_name'])}\n")
+        f.write(f"Без изменений: {len(report['unchanged'])}\n")
         f.write("\n")
 
-        f.write("НОВЫЙ ПРОХОД\n")
-        f.write("-" * 70 + "\n")
-        f.write(
-            f"Stream8 найдено: {stream8_count}\n"
-        )
-        f.write(
-            f"Итоговых Stream0/Stream1: {current_count}\n"
-        )
-        f.write("\n")
-
-        for report in reports:
-
-            f.write("=" * 70 + "\n")
-            f.write(
-                f"СВЕРКА С: {report['file']}\n"
-            )
-            f.write("=" * 70 + "\n")
-
-            f.write(
-                f"Было записей: {report['old_count']}\n"
-            )
-
-            f.write(
-                f"Новых: {len(report['added'])}\n"
-            )
-
-            f.write(
-                f"Исчезло: {len(report['removed'])}\n"
-            )
-
-            f.write(
-                f"Изменено название: "
-                f"{len(report['changed_name'])}\n"
-            )
-
-            f.write(
-                f"Без изменений: "
-                f"{len(report['unchanged'])}\n"
-            )
-
+        if report["added"]:
+            f.write("ДОБАВЛЕНЫ:\n")
+            for item in report["added"]:
+                f.write(f"+ {item['group']} ID={item['id']} {item['name']}\n")
             f.write("\n")
 
-            if report["added"]:
-                f.write("ДОБАВЛЕНЫ:\n")
+        if report["removed"]:
+            f.write("ИСЧЕЗЛИ:\n")
+            for item in report["removed"]:
+                f.write(f"- {item['group']} ID={item['id']} {item['name']}\n")
+            f.write("\n")
 
-                for item in report["added"]:
-                    f.write(
-                        f"+ {item['group']} "
-                        f"ID={item['id']} "
-                        f"{item['name']}\n"
-                    )
-
-                f.write("\n")
-
-            if report["removed"]:
-                f.write("ИСЧЕЗЛИ:\n")
-
-                for item in report["removed"]:
-                    f.write(
-                        f"- {item['group']} "
-                        f"ID={item['id']} "
-                        f"{item['name']}\n"
-                    )
-
-                f.write("\n")
-
-            if report["changed_name"]:
-                f.write("ИЗМЕНИЛОСЬ НАЗВАНИЕ:\n")
-
-                for item in report["changed_name"]:
-                    old = item["old"]
-                    new = item["new"]
-
-                    f.write(
-                        f"* {new['group']} "
-                        f"ID={new['id']}\n"
-                    )
-
-                    f.write(
-                        f"  БЫЛО: {old['name']}\n"
-                    )
-
-                    f.write(
-                        f"  СТАЛО: {new['name']}\n"
-                    )
-
-                f.write("\n")
-
-
-# ============================================================
-# EXTINF ДЛЯ НОВОГО M3U
-# ============================================================
-
-def make_extinf(item, channel_number):
-    name = item["name"]
-
-    tvg_id = item.get("tvg_id")
-
-    if not tvg_id:
-        tvg_id = f"cinerama_{item['id']}"
-
-    return (
-        f'#EXTINF:-1 '
-        f'tvg-chno="{channel_number}" '
-        f'tvg-id="{tvg_id}" '
-        f'group-title="{item["group"]}",'
-        f'{name}'
-    )
-
-
-# ============================================================
-# ЗАПИСЬ НОВОГО ПЛЕЙЛИСТА
-#
-# ВАЖНО:
-# STREAM8 ЗДЕСЬ НЕТ.
-#
-# Только Stream0 + Stream1.
-# ============================================================
-
-def write_playlist(items):
-
-    group_order = {
-        "Stream0": 0,
-        "Stream1": 1,
-    }
-
-    items = sorted(
-        items,
-        key=lambda x: (
-            int(x["id"]),
-            group_order.get(x["group"], 99)
-        )
-    )
-
-    with open(
-        OUTPUT_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write("#EXTM3U\n")
-        f.write(
-            f"# Playlist verified by {COPYRIGHT}\n"
-        )
-        f.write(
-            f"# Generated: "
-            f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-        )
-
-        channel_number = 1
-
-        for item in items:
-
-            f.write(
-                make_extinf(
-                    item,
-                    channel_number
-                )
-                + "\n"
-            )
-
-            f.write(
-                item["url"]
-                + "\n"
-            )
-
-            channel_number += 1
+        if report["changed_name"]:
+            f.write("ИЗМЕНИЛОСЬ НАЗВАНИЕ:\n")
+            for item in report["changed_name"]:
+                old = item["old"]
+                new = item["new"]
+                f.write(f"* {new['group']} ID={new['id']}\n")
+                f.write(f"  БЫЛО: {old['name']}\n")
+                f.write(f"  СТАЛО: {new['name']}\n")
+            f.write("\n")
 
 
 # ============================================================
@@ -700,153 +469,47 @@ def write_playlist(items):
 # ============================================================
 
 def main():
-
     print("=" * 70)
-    print("CINERAMA VERIFIED 1")
+    print("CINERAMA SCANNER")
     print("=" * 70)
     print()
-    print(
-        "Stream8 = ИСТОЧНИК ДЛЯ ПОИСКА ID + НАЗВАНИЯ"
-    )
-    print(
-        "Stream0/Stream1 = ИТОГОВЫЕ ПРОВЕРЯЕМЫЕ ПОТОКИ"
-    )
-    print(
-        "Старые M3U = ТОЛЬКО СВЕРКА"
-    )
+    print("Логика: весь пул формируется -> потом сканируется")
+    print("Прошлые проходы НЕ ищем")
     print()
 
-    # --------------------------------------------------------
-    # 1. STREAM8
-    # --------------------------------------------------------
-
-    stream8_channels = scan_stream8()
-
+    stream8_channels = scan_stream8_pool()
     if not stream8_channels:
-        print()
-        print(
-            "[ERROR] Stream8 ничего не найдено."
-        )
-        print(
-            "[ERROR] Итоговый M3U не будет сформирован."
-        )
+        print("[ERROR] Stream8 ничего не найдено.")
         return
 
-    # --------------------------------------------------------
-    # 2. STREAM0 + STREAM1
-    # --------------------------------------------------------
+    live = build_mirror_pool(stream8_channels)
+    if not live:
+        print("[ERROR] Stream0 / Stream1 ничего не найдено.")
+        return
 
-    current = build_mirrors(
-        stream8_channels
-    )
+    stream0_count = sum(1 for item in live if item["group"] == "STREAM0")
+    stream1_count = sum(1 for item in live if item["group"] == "STREAM1")
 
-    # --------------------------------------------------------
-    # 3. НЕ ДАЁМ STREAM8 ПОПАСТЬ В ИТОГ
-    # --------------------------------------------------------
+    write_playlist(live)
+    write_report(len(stream8_channels), len(live), stream0_count, stream1_count, live)
 
-    current = [
-        item
-        for item in current
-        if item["group"] in (
-            "Stream0",
-            "Stream1"
-        )
-    ]
-
-    # --------------------------------------------------------
-    # 4. КАРТА НОВОГО РЕЗУЛЬТАТА
-    # --------------------------------------------------------
-
-    current_map = build_current_map(
-        current
-    )
-
-    # --------------------------------------------------------
-    # 5. СВЕРЯЕМСЯ С ОБОИМИ СТАРЫМИ M3U
-    # --------------------------------------------------------
-
-    reports = []
-
-    for filename in PREVIOUS_FILES:
-
-        # Не сверяем файл сам с собой после его создания
-        if os.path.abspath(filename) == os.path.abspath(
-            OUTPUT_FILE
-        ):
-            # Если OUTPUT_FILE уже существовал ДО запуска,
-            # он всё равно должен участвовать в сверке.
-            pass
-
-        report = compare_one_old_playlist(
-            filename,
-            current_map
-        )
-
-        reports.append(report)
-
-    # --------------------------------------------------------
-    # 6. ПИШЕМ НОВЫЙ M3U
-    # --------------------------------------------------------
-
-    write_playlist(current)
-
-    # --------------------------------------------------------
-    # 7. ПИШЕМ ОТЧЁТ
-    # --------------------------------------------------------
-
-    write_report(
-        reports,
-        len(stream8_channels),
-        len(current)
-    )
-
-    # --------------------------------------------------------
-    # 8. СТАТИСТИКА
-    # --------------------------------------------------------
-
-    stream0_count = sum(
-        1
-        for item in current
-        if item["group"] == "Stream0"
-    )
-
-    stream1_count = sum(
-        1
-        for item in current
-        if item["group"] == "Stream1"
-    )
+    compare_report = compare_with_mega(live)
+    append_compare_report(compare_report)
 
     print()
     print("=" * 70)
     print("ГОТОВО")
     print("=" * 70)
     print()
-    print(
-        f"Stream8 найдено: {len(stream8_channels)}"
-    )
-    print(
-        f"Stream0 живых:  {stream0_count}"
-    )
-    print(
-        f"Stream1 живых:  {stream1_count}"
-    )
-    print(
-        f"ИТОГО записей:  {len(current)}"
-    )
+    print(f"Stream8 найдено: {len(stream8_channels)}")
+    print(f"Stream0 живых:  {stream0_count}")
+    print(f"Stream1 живых:  {stream1_count}")
+    print(f"ИТОГО:          {len(live)}")
+    print(f"M3U: {OUTPUT_FILE}")
+    print(f"TXT: {REPORT_FILE}")
     print()
-    print(
-        f"Плейлист: {OUTPUT_FILE}"
-    )
-    print(
-        f"Отчёт:    {REPORT_FILE}"
-    )
-    print()
-    print(
-        "Stream8 в итоговый M3U НЕ записывается."
-    )
-    print(
-        "Старые M3U используются только для сверки."
-    )
+    print("Сравнение идет только с одним mega-файлом.")
+    print("Прошлые проходы не сканируются.")
     print()
 
 
