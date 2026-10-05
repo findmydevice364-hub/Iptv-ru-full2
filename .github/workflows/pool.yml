@@ -1,0 +1,48 @@
+name: Pool TV Scanner & Deploy
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  scan-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run pool_TV.py scanner
+        run: |
+          python pool_TV.py
+        timeout-minutes: 30
+
+      - name: Show generated files
+        run: |
+          ls -lah *.m3u *.txt 2>/dev/null || echo "No output files generated"
+
+      - name: Commit generated playlist and report
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto: Pool TV verification results"
+          file_pattern: |
+            cinerama_Verified_1.m3u
+            SKALA_DREG_REPORT.txt
+            test_cinerama_300.m3u
+          commit_options: '--no-verify'
