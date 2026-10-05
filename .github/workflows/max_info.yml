@@ -16,11 +16,11 @@ stream_probe:
   # Анализ плейлиста
   playlist_analysis:
     enabled: true
-    detect_variant: true          # International / Standard
-    detect_quality: true          # HD / SD
+    detect_variant: true
+    detect_quality: true
     detect_target_duration: true
     detect_segments: true
-    segment_sample_size: 5        # Количество сегментов для анализа размера
+    segment_sample_size: 5
     detect_segment_size: true
 
   # Определение первоисточника
@@ -31,14 +31,19 @@ stream_probe:
         variant: "International"
         target_duration: 3
         max_segment_size: 200000
+
       - name: "ТВ3 (Standard)"
         target_duration: 4
+
       - name: "ТВЦ"
         target_duration: 6
+
       - name: "НТВ"
         target_duration: 2
+
       - name: "Россия 1"
         target_duration: 10
+
       - name: "Россия 24"
         target_duration: 8
 
