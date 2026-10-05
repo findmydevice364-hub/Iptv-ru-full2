@@ -4,7 +4,7 @@ Cinerama MULTI-HLS stream probe
 TD = главный источник реального названия канала.
 YAML origin_detection = вторичный источник.
 Один TXT, полная картина маслом.
-M3U загружается по URL.
+MULTI-режим: все потоки берутся из stream_probe.yml → stream_probe.channels[].url
 """
 
 import argparse
@@ -16,27 +16,6 @@ from urllib.parse import urlparse
 
 import requests
 import yaml
-
-
-# ============================
-#  LOAD M3U FROM URL
-# ============================
-
-def load_channels_from_m3u_url(url: str) -> List[Dict[str, str]]:
-    resp = requests.get(url, timeout=10)
-    resp.raise_for_status()
-    lines = resp.text.splitlines()
-
-    channels = []
-    name = None
-
-    for line in lines:
-        if line.startswith("#EXTINF"):
-            name = line.split(",", 1)[1].strip()
-        elif line.startswith("http"):
-            channels.append({"name": name, "url": line.strip()})
-
-    return channels
 
 
 # ============================
@@ -211,9 +190,10 @@ def save_full_report(channels: List[Dict[str, str]], results: List[Dict[str, Any
         for ch, info in zip(channels, results):
             real_name = info["primary_source_td"]  # TD = главный
             yaml_name = info["primary_source_yaml"]
+            ch_name = ch.get("name", ch["url"])
 
             f.write("============================================================\n")
-            f.write(f"CHANNEL: {real_name} ({ch['name']})\n")
+            f.write(f"CHANNEL: {real_name} ({ch_name})\n")
             f.write(f"URL: {info['url']}\n\n")
 
             f.write(f"CDN_HOST: {info['cdn_host']}\n")
@@ -246,21 +226,37 @@ def save_full_report(channels: List[Dict[str, str]], results: List[Dict[str, Any
 
 
 # ============================
-#  MAIN
+#  MAIN (MULTI FROM YAML)
 # ============================
 
 def main():
     parser = argparse.ArgumentParser(description="Multi Cinerama stream probe")
-    parser.add_argument("-u", "--m3u-url", required=True)
-    parser.add_argument("-c", "--config", default="stream_probe.yml")
+    parser.add_argument(
+        "-c",
+        "--config",
+        default="stream_probe.yml",
+        help="YAML config with stream_probe.channels[].url",
+    )
     args = parser.parse_args()
 
     # Load YAML config
     with open(args.config, "r", encoding="utf-8") as f:
-        cfg = yaml.safe_load(f)["stream_probe"]
+        root = yaml.safe_load(f)
 
-    # Load channels from remote M3U
-    channels = load_channels_from_m3u_url(args.m3u_url)
+    cfg = root.get("stream_probe", {})
+    raw_channels = cfg.get("channels", [])
+
+    if not raw_channels:
+        print("Error: no channels defined in stream_probe.channels", file=sys.stderr)
+        sys.exit(1)
+
+    # Normalize channels: name = url (так как в YAML только url)
+    channels: List[Dict[str, str]] = []
+    for ch in raw_channels:
+        url = ch.get("url")
+        if not url:
+            continue
+        channels.append({"name": url, "url": url})
 
     # Analyze ALL channels
     results = [analyze_stream(ch["url"], cfg) for ch in channels]
