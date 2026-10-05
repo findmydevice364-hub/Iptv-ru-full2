@@ -28,20 +28,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run scanner
+      - name: Run scanner with full output
         run: |
-          python SCANNER_CINERAMA.py
-          ls -la
-          echo "---- generated files ----"
-          ls -la *.m3u *.txt 2>/dev/null || true
+          echo "=== Starting scanner ==="
+          python -u SCANNER_CINERAMA.py 2>&1 | tee scanner.log
+          echo "=== Scanner finished ==="
+          echo ""
+          echo "=== Checking directory ==="
+          pwd
+          ls -lah
+          echo ""
+          echo "=== Checking for output files ==="
+          ls -lah *.m3u *.txt 2>&1 || echo "Files not found!"
 
-      - name: Verify files exist
+      - name: Show scanner log
+        if: always()
         run: |
-          test -f cinerama_Verified_1.m3u
-          test -f SKALA_DREG_REPORT.txt
-          echo "Files verified"
+          echo "=== Scanner output ==="
+          cat scanner.log || echo "No log file"
+
+      - name: Debug: check what happened
+        if: always()
+        run: |
+          echo "Exit code of scanner: $?"
+          find . -name "*.m3u" -o -name "*.txt" | head -20
 
       - name: Upload artifact
+        if: hashFiles('cinerama_Verified_1.m3u') != ''
         uses: actions/upload-artifact@v4
         with:
           name: cinerama-scan-results
@@ -51,6 +64,7 @@ jobs:
           retention-days: 90
 
       - name: Commit and push to repo root
+        if: hashFiles('cinerama_Verified_1.m3u') != ''
         run: |
           git config user.name "Cinerama Bot"
           git config user.email "bot@github.com"
@@ -60,7 +74,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "🔄 Cinerama scan: $(date '+%Y-%m-%d %H:%M:%S UTC')"
             git push origin main
-            echo "Pushed to main"
+            echo "✅ Pushed to main"
           else
-            echo "No changes to push"
+            echo "ℹ️ No changes"
           fi
