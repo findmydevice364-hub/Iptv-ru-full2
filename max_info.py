@@ -154,9 +154,7 @@ def analyze_stream(url: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
 
     if "tracks-v3a1" in url:
         result["quality"] = "HD"
-    elif "tracks-v1a1" in url:
-        result["quality"] = "SD"
-    elif "mono.m3u8" in url:
+    elif "tracks-v1a1" in url or "mono.m3u8" in url:
         result["quality"] = "SD"
     else:
         result["quality"] = None
@@ -165,13 +163,13 @@ def analyze_stream(url: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     log_message(f"QUALITY={result['quality']}", logfile, log_enabled)
 
     # 4. Target duration
-    m = re.search(r"#EXT-X-TARGETDURATION:(\\d+)", text)
+    m = re.search(r"#EXT-X-TARGETDURATION:(\d+)", text)
     if m:
         result["target_duration"] = int(m.group(1))
         log_message(f"TARGET_DURATION={result['target_duration']}", logfile, log_enabled)
 
     # 5. Segments
-    segments = re.findall(r"(https?://[^\\s]+\\.ts)", text)
+    segments = re.findall(r"(https?://[^\s]+\.ts)", text)
     result["segment_count"] = len(segments)
     log_message(f"SEGMENT_COUNT={result['segment_count']}", logfile, log_enabled)
 
@@ -238,7 +236,7 @@ def print_summary(info: Dict[str, Any], out_cfg: Dict[str, Any]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Safe Cinerama stream probe")
-    parser.add_argument("-c", "--config", default="stream_probe.yaml", help="Path to YAML config")
+    parser.add_argument("-c", "--config", default="stream_probe.yml", help="Path to YAML config")
     parser.add_argument("-u", "--url", help="Override stream URL from config")
     args = parser.parse_args()
 
