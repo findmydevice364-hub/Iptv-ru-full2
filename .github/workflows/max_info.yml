@@ -1,55 +1,25 @@
-stream_probe:
-  url: "https://stream1.cinerama.uz/1446/tracks-v1a1/mono.m3u8"
+name: Run Stream Probe
 
-  log:
-    enabled: true
-    file: "cinerama_probe_log.txt"
+on:
+  workflow_dispatch:
 
-  cdn_analysis:
-    enabled: true
-    detect_host: true
-    detect_path: true
+jobs:
+  probe:
+    runs-on: ubuntu-latest
 
-  playlist_analysis:
-    enabled: true
-    detect_variant: true
-    detect_quality: true
-    detect_target_duration: true
-    detect_segments: true
-    segment_sample_size: 5
-    detect_segment_size: true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  origin_detection:
-    enabled: true
-    sources:
-      - name: "ТВ3 International"
-        variant: "International"
-        target_duration: 3
-        max_segment_size: 200000
-      - name: "ТВ3 (Standard)"
-        target_duration: 4
-      - name: "ТВЦ"
-        target_duration: 6
-      - name: "НТВ"
-        target_duration: 2
-      - name: "Россия 1"
-        target_duration: 10
-      - name: "Россия 24"
-        target_duration: 8
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-  output:
-    print_summary: true
-    include_url: true
-    include_cdn_host: true
-    include_cdn_path: true
-    include_variant: true
-    include_quality: true
-    include_target_duration: true
-    include_segment_count: true
-    include_avg_segment_size: true
-    include_first_segment: true
-    include_primary_source: true
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml
 
-  requests:
-    timeout: 5
-    retry_count: 1
+      - name: Run stream probe
+        run: |
+          python3 max_info.py -c stream_probe.yml
