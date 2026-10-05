@@ -1,0 +1,38 @@
+stream_probe:
+  # URL потока CINERAMA
+  url: "https://stream1.cinerama.uz/1446/tracks-v1a1/mono.m3u8"
+
+  # Логирование
+  log:
+    enabled: true
+    file: "cinerama_probe_log.txt"
+
+  # Анализ CDN
+  cdn_analysis:
+    enabled: true
+    detect_host: true
+    detect_path: true
+
+  # Анализ плейлиста
+  playlist_analysis:
+    enabled: true
+    detect_variant: true        # Standard / International
+    detect_quality: true        # HD / SD
+    detect_target_duration: true
+    detect_segments: true
+    detect_segment_size: true
+
+  # Определение первоисточника
+  origin_detection:
+    enabled: true
+    use_target_duration: true
+    use_variant: true
+    use_segment_size: true
+
+  # Вывод результата
+  output:
+    print_summary: true
+    include_url: true
+    include_primary_source: true
+    include_first_segment: true
+    include_all_metrics: true
