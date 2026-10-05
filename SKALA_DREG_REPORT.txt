@@ -1,0 +1,13 @@
+CINERAMA VERIFIED 1 — FINAL REPORT
+======================================================================
+Date: 2026-10-05 15:44:10
+
+SUMMARY
+----------------------------------------------------------------------
+MEGA known: 168
+Stream8 live: 0
+Stream0 live: 0
+Stream1 live: 0
+TOTAL M3U ENTRIES: 0
+TEST M3U: 300 dummy channels
+

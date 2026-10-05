@@ -1,0 +1,8 @@
+CINERAMA POOL ANALYSIS
+======================================================================
+Date: 2026-10-05 15:44:10
+
+MEGA: 168 IDs
+Full pool: 6001 URLs generated (0-6000)
+Test M3U: 300 dummy channels (150 Stream0 + 150 Stream1)
+
