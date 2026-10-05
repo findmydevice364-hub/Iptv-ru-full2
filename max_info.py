@@ -116,24 +116,28 @@ def analyze_stream(url: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
             result["cdn_path"] = parsed.path
             log(f"CDN_PATH={result['cdn_path']}", logfile, log_enabled)
 
-    # 3. Variant / quality
+    # 3. Variant / quality  (ИСПРАВЛЕНО)
     pl_cfg = cfg.get("playlist_analysis", {})
     if pl_cfg.get("enabled", True):
+
+        # --- Variant ---
+        # Важно: mono.m3u8 проверяем ПЕРВЫМ, потому что URL может содержать
+        # одновременно tracks-v1a1 и mono.m3u8
         if pl_cfg.get("detect_variant", True):
             if "mono.m3u8" in url:
                 result["variant"] = "International"
-            elif "tracks-v3a1" in url:
-                result["variant"] = "Standard"
-            elif "tracks-v1a1" in url:
+            elif "tracks-v3a1" in url or "tracks-v1a1" in url:
                 result["variant"] = "Standard"
             else:
                 result["variant"] = "Unknown"
             log(f"VARIANT={result['variant']}", logfile, log_enabled)
 
+        # --- Quality ---
+        # HD только для v3a1, всё остальное (v1a1 и mono) — SD
         if pl_cfg.get("detect_quality", True):
             if "tracks-v3a1" in url:
                 result["quality"] = "HD"
-            elif "tracks-v1a1" in url:
+            elif "tracks-v1a1" in url or "mono.m3u8" in url:
                 result["quality"] = "SD"
             else:
                 result["quality"] = None
