@@ -4,13 +4,13 @@ Cinerama MULTI-HLS stream probe
 TD = главный источник реального названия канала.
 YAML origin_detection = вторичный источник.
 Один TXT, полная картина маслом.
+M3U загружается по URL.
 """
 
 import argparse
 import re
 import sys
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
@@ -19,20 +19,23 @@ import yaml
 
 
 # ============================
-#  LOAD M3U CHANNEL LIST
+#  LOAD M3U FROM URL
 # ============================
 
-def load_channels_from_m3u(path: str) -> List[Dict[str, str]]:
-    channels = []
-    with open(path, "r", encoding="utf-8") as f:
-        lines = f.read().splitlines()
+def load_channels_from_m3u_url(url: str) -> List[Dict[str, str]]:
+    resp = requests.get(url, timeout=10)
+    resp.raise_for_status()
+    lines = resp.text.splitlines()
 
+    channels = []
     name = None
+
     for line in lines:
         if line.startswith("#EXTINF"):
             name = line.split(",", 1)[1].strip()
         elif line.startswith("http"):
             channels.append({"name": name, "url": line.strip()})
+
     return channels
 
 
@@ -248,7 +251,7 @@ def save_full_report(channels: List[Dict[str, str]], results: List[Dict[str, Any
 
 def main():
     parser = argparse.ArgumentParser(description="Multi Cinerama stream probe")
-    parser.add_argument("-m", "--m3u", default="channels.m3u")
+    parser.add_argument("-u", "--m3u-url", required=True)
     parser.add_argument("-c", "--config", default="stream_probe.yml")
     args = parser.parse_args()
 
@@ -256,13 +259,13 @@ def main():
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)["stream_probe"]
 
-    # Load channels
-    channels = load_channels_from_m3u(args.m3u)
+    # Load channels from remote M3U
+    channels = load_channels_from_m3u_url(args.m3u_url)
 
-    # Analyze all
+    # Analyze ALL channels
     results = [analyze_stream(ch["url"], cfg) for ch in channels]
 
-    # Save one big TXT
+    # Save ONE big TXT
     save_full_report(channels, results)
 
 
