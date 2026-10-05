@@ -1,5 +1,5 @@
 stream_probe:
-  # URL потока CINERAMA
+  # URL потока для анализа
   url: "https://stream1.cinerama.uz/1446/tracks-v1a1/mono.m3u8"
 
   # Логирование
@@ -16,23 +16,47 @@ stream_probe:
   # Анализ плейлиста
   playlist_analysis:
     enabled: true
-    detect_variant: true        # Standard / International
+    detect_variant: true        # International / Standard
     detect_quality: true        # HD / SD
     detect_target_duration: true
     detect_segments: true
+    segment_sample_size: 5      # Количество сегментов для анализа размера
     detect_segment_size: true
 
-  # Определение первоисточника
+  # Определение первоисточника по target_duration
   origin_detection:
     enabled: true
-    use_target_duration: true
-    use_variant: true
-    use_segment_size: true
+    sources:
+      - name: "ТВ3 International"
+        variant: "International"
+        target_duration: 3
+        max_segment_size: 200000
+      - name: "ТВ3 (Standard)"
+        target_duration: 4
+      - name: "ТВЦ"
+        target_duration: 6
+      - name: "НТВ"
+        target_duration: 2
+      - name: "Россия 1"
+        target_duration: 10
+      - name: "Россия 24"
+        target_duration: 8
 
   # Вывод результата
   output:
     print_summary: true
     include_url: true
-    include_primary_source: true
+    include_cdn_host: true
+    include_cdn_path: true
+    include_variant: true
+    include_quality: true
+    include_target_duration: true
+    include_segment_count: true
+    include_avg_segment_size: true
     include_first_segment: true
-    include_all_metrics: true
+    include_primary_source: true
+
+  # Параметры запросов
+  requests:
+    timeout: 5
+    retry_count: 1
