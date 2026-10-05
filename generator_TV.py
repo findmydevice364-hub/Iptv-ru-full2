@@ -18,7 +18,7 @@ def build_playlist(start: int, end: int, base_url: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate a Cinerama M3U playlist.")
     parser.add_argument("--start", type=int, default=1, help="First channel number")
-    parser.add_argument("--end", type=int, default=1500, help="Last channel number")
+    parser.add_argument("--end", type=int, default=7000, help="Last channel number")
     parser.add_argument(
         "--base-url",
         default="https://stream1.cinerama.uz",
