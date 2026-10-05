@@ -1,19 +1,15 @@
 stream_probe:
-  # URL потока для анализа
   url: "https://stream1.cinerama.uz/1446/tracks-v1a1/mono.m3u8"
 
-  # Логирование
   log:
     enabled: true
     file: "cinerama_probe_log.txt"
 
-  # Анализ CDN
   cdn_analysis:
     enabled: true
     detect_host: true
     detect_path: true
 
-  # Анализ плейлиста
   playlist_analysis:
     enabled: true
     detect_variant: true
@@ -23,7 +19,6 @@ stream_probe:
     segment_sample_size: 5
     detect_segment_size: true
 
-  # Определение первоисточника
   origin_detection:
     enabled: true
     sources:
@@ -47,7 +42,6 @@ stream_probe:
       - name: "Россия 24"
         target_duration: 8
 
-  # Вывод результата
   output:
     print_summary: true
     include_url: true
@@ -61,7 +55,6 @@ stream_probe:
     include_first_segment: true
     include_primary_source: true
 
-  # Параметры запросов
   requests:
     timeout: 5
     retry_count: 1
