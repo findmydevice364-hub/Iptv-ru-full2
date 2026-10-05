@@ -16,14 +16,14 @@ stream_probe:
   # Анализ плейлиста
   playlist_analysis:
     enabled: true
-    detect_variant: true        # International / Standard
-    detect_quality: true        # HD / SD
+    detect_variant: true          # International / Standard
+    detect_quality: true          # HD / SD
     detect_target_duration: true
     detect_segments: true
-    segment_sample_size: 5      # Количество сегментов для анализа размера
+    segment_sample_size: 5        # Количество сегментов для анализа размера
     detect_segment_size: true
 
-  # Определение первоисточника по target_duration
+  # Определение первоисточника
   origin_detection:
     enabled: true
     sources:
