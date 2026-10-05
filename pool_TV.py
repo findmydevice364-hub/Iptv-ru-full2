@@ -1,35 +1,26 @@
-import os
 import re
 import requests
+from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from collections import OrderedDict
 
 # ============================================================
 # CONFIG
 # ============================================================
 
-POOL_M3U_URL = "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/pool_tv.m3u"
-
-STREAM0_BASE = "https://stream0.cinerama.uz"
-STREAM1_BASE = "https://stream1.cinerama.uz"
-
-OUTPUT_M3U = "cinerama_Verified_1.m3u"
-REPORT_TXT = "SKALA_DREG_REPORT.txt"
-TEST_M3U = "test_cinerama_300.m3u"
+POOL_M3U_URL = "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/playlist.m3u"
+OUTPUT_M3U = "pull_correct.m3u"
+REPORT_TXT = "pull_correct_report.txt"
 
 MAX_THREADS = 50
-TIMEOUT = 8
-
-COPYRIGHT = "© Phoenix 89S - Verify 1"
+TIMEOUT = 10
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "*/*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
 }
 
 # ============================================================
-# HTTP
+# SESSION
 # ============================================================
 
 def make_session():
@@ -38,26 +29,13 @@ def make_session():
     return s
 
 
-def build_url(base, stream_id):
-    return f"{base}/{stream_id}/tracks-v1a1/mono.m3u8"
-
-
 # ============================================================
-# M3U PARSING
+# PARSE M3U
 # ============================================================
 
-def extract_stream_id(url):
-    """Извлекает ID канала из URL"""
-    m = re.search(r'cinerama\.uz/(\d+)/', url)
-    if m:
-        return int(m.group(1))
-    return None
-
-
-def parse_pool_m3u(text):
-    """Парсит pool_tv.m3u и извлекает EXTINF + URL"""
+def parse_m3u(text):
+    """Парсит M3U и возвращает список каналов"""
     channels = OrderedDict()
-    
     current_extinf = None
     
     for line in text.splitlines():
@@ -69,72 +47,68 @@ def parse_pool_m3u(text):
         
         if current_extinf and line.startswith("http"):
             url = line
-            stream_id = extract_stream_id(url)
-            
-            if stream_id is not None:
-                channels[stream_id] = {
-                    "id": stream_id,
-                    "extinf": current_extinf,
-                    "url": url,
-                }
-            
+            channels[url] = {
+                "url": url,
+                "extinf_original": current_extinf,
+                "extinf_live": None,
+                "is_live": False
+            }
             current_extinf = None
     
     return channels
 
 
 # ============================================================
-# LOAD POOL M3U
+# LOAD PLAYLIST
 # ============================================================
 
 def load_pool_m3u():
     session = make_session()
     try:
-        print()
-        print("=" * 70)
-        print("LOAD POOL_TV.M3U")
-        print("=" * 70)
-        print()
+        print("\n" + "=" * 70)
+        print("LOADING PLAYLIST.M3U FROM REPO")
+        print("=" * 70 + "\n")
         
         response = session.get(POOL_M3U_URL, timeout=15)
         if response.status_code != 200:
             print(f"[ERROR] Status: {response.status_code}")
             return OrderedDict()
         
-        channels = parse_pool_m3u(response.text)
-        print(f"[SUCCESS] Loaded {len(channels)} channels from pool_tv.m3u")
-        print(f"ID range: {min(channels.keys())} - {max(channels.keys())}")
-        print()
+        channels = parse_m3u(response.text)
+        print(f"[OK] Loaded {len(channels)} channels\n")
         
         return channels
     
     except Exception as e:
-        print(f"[ERROR] {e}")
+        print(f"[ERROR] {e}\n")
         return OrderedDict()
     finally:
         session.close()
 
 
 # ============================================================
-# VERIFY CHANNEL URL + GET EXTINF FROM RESPONSE
+# GET EXTINF FROM LIVE STREAM
 # ============================================================
 
-def verify_and_extract_extinf(url):
+def get_extinf_from_stream(url):
     """
-    Проверяет URL на live и извлекает #EXTINF из ответа сервера
+    Проверяет доступность потока и извлекает #EXTINF
+    Возвращает extinf или None
     """
     session = make_session()
     try:
-        response = session.get(url, timeout=TIMEOUT, allow_redirects=True)
+        response = session.get(url, timeout=TIMEOUT, allow_redirects=True, stream=True)
         
         if response.status_code != 200:
             return None
         
-        text = response.text
+        # Читаем первые 10KB для поиска #EXTINF
+        text = response.text[:10000]
+        
         if not text or "#EXTINF:" not in text:
             return None
         
-        # Извлекаем первую EXTINF строку из ответа
+        # Ищем первую EXTINF строку
         for line in text.splitlines():
             line = line.strip()
             if line.startswith("#EXTINF:"):
@@ -149,220 +123,113 @@ def verify_and_extract_extinf(url):
 
 
 # ============================================================
-# VERIFY STREAM1 FROM POOL
+# VERIFY ALL STREAMS
 # ============================================================
 
-def verify_stream1_from_pool(channels):
-    """Проверяет все каналы из пула на Stream1"""
-    result = []
+def verify_all_streams(channels):
+    """Проверяет все потоки и получает актуальные EXTINF"""
     total = len(channels)
     completed = 0
     
-    print()
     print("=" * 70)
-    print(f"VERIFY STREAM1 FROM POOL ({total} channels)")
-    print("=" * 70)
-    print()
-    
-    jobs = []
-    for stream_id, channel_data in channels.items():
-        url = build_url(STREAM1_BASE, stream_id)
-        jobs.append((stream_id, url, channel_data))
+    print(f"VERIFYING STREAMS ({total} total)")
+    print("=" * 70 + "\n")
     
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
         futures = {
-            executor.submit(verify_and_extract_extinf, url): (stream_id, channel_data)
-            for stream_id, url, channel_data in jobs
+            executor.submit(get_extinf_from_stream, url): url
+            for url in channels
         }
         
         for future in as_completed(futures):
             completed += 1
+            url = futures[future]
+            
             try:
-                extinf_from_server = future.result()
-                stream_id, channel_data = futures[future]
-                
-                if extinf_from_server:
-                    url = build_url(STREAM1_BASE, stream_id)
+                live_extinf = future.result()
+                if live_extinf:
+                    channels[url]["extinf_live"] = live_extinf
+                    channels[url]["is_live"] = True
                     
-                    result.append({
-                        "id": stream_id,
-                        "extinf": extinf_from_server,  # Из сервера, не из пула!
-                        "url": url,
-                        "group": "Stream1",
-                    })
-                    
-                    # Извлекаем имя из EXTINF для вывода
-                    m = re.search(r',(.+)$', extinf_from_server)
-                    name = m.group(1) if m else f"Channel {stream_id}"
-                    print(f"[LIVE] Stream1 ID={stream_id} -> {name}")
+                    # Вытаскиваем имя канала
+                    m = re.search(r',(.+)$', live_extinf)
+                    name = m.group(1) if m else "Unknown"
+                    print(f"[LIVE ✓] {name}")
+                else:
+                    print(f"[DEAD ✗] {url[:60]}...")
             
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[ERROR] {url[:60]}...")
             
-            if completed % 100 == 0 or completed == total:
+            # Прогресс
+            if completed % 50 == 0 or completed == total:
                 pct = (completed * 100) // total
-                print(f"Progress: {completed}/{total} ({pct}%)", flush=True)
+                live = sum(1 for ch in channels.values() if ch["is_live"])
+                print(f"Progress: {completed}/{total} ({pct}%) | Live: {live}", flush=True)
     
-    result.sort(key=lambda x: int(x["id"]))
-    print()
-    print(f"[SUCCESS] Live Stream1: {len(result)}")
-    print()
+    live_count = sum(1 for ch in channels.values() if ch["is_live"])
+    print(f"\n[RESULT] Live channels: {live_count}/{total}\n")
     
-    return result
-
-
-# ============================================================
-# CHECK STREAM0 MIRROR
-# ============================================================
-
-def check_stream0_mirror(live_stream1):
-    """Проверяет Stream0 для всех живых Stream1"""
-    result = []
-    total = len(live_stream1)
-    completed = 0
-    
-    print()
-    print("=" * 70)
-    print(f"CHECK STREAM0 MIRRORS ({total} channels)")
-    print("=" * 70)
-    print()
-    
-    with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-        futures = {
-            executor.submit(verify_and_extract_extinf, build_url(STREAM0_BASE, item["id"])): item
-            for item in live_stream1
-        }
-        
-        for future in as_completed(futures):
-            completed += 1
-            try:
-                extinf_from_server = future.result()
-                item = futures[future]
-                
-                if extinf_from_server:
-                    result.append({
-                        "id": item["id"],
-                        "extinf": extinf_from_server,
-                        "url": build_url(STREAM0_BASE, item["id"]),
-                        "group": "Stream0",
-                    })
-                    
-                    m = re.search(r',(.+)$', extinf_from_server)
-                    name = m.group(1) if m else f"Channel {item['id']}"
-                    print(f"[LIVE] Stream0 ID={item['id']} -> {name}")
-            
-            except Exception:
-                pass
-            
-            if completed % 100 == 0 or completed == total:
-                pct = (completed * 100) // total
-                print(f"Progress: {completed}/{total} ({pct}%)", flush=True)
-    
-    result.sort(key=lambda x: int(x["id"]))
-    print()
-    print(f"[SUCCESS] Live Stream0: {len(result)}")
-    print()
-    
-    return result
-
-
-# ============================================================
-# CREATE TEST M3U 300
-# ============================================================
-
-def create_test_m3u_300():
-    with open(TEST_M3U, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-        f.write(f"# Test playlist by {COPYRIGHT}\n")
-        f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write("\n")
-        
-        for i in range(1, 301):
-            if i <= 150:
-                group = "Stream0"
-                url = build_url(STREAM0_BASE, i)
-            else:
-                group = "Stream1"
-                url = build_url(STREAM1_BASE, i)
-            
-            name = f"Test Channel {i}"
-            extinf = f'#EXTINF:-1 group-title="{group}",{name}'
-            
-            f.write(extinf + "\n")
-            f.write(url + "\n")
-    
-    print(f"[SUCCESS] Test M3U created: {TEST_M3U}")
-    print()
+    return channels
 
 
 # ============================================================
 # WRITE FINAL M3U
 # ============================================================
 
-def write_final_m3u(stream0_live, stream1_live):
-    """Пишет M3U с реальными EXTINF из потоков"""
-    all_items = stream0_live + stream1_live
-    all_items = sorted(all_items, key=lambda x: (int(x["id"]), 0 if x["group"] == "Stream0" else 1))
+def write_final_m3u(channels):
+    """Пишет финальный плейлист pull_correct.m3u"""
+    
+    # Оставляем только живые каналы
+    live_channels = {url: ch for url, ch in channels.items() if ch["is_live"]}
+    
+    # Сортируем по исходному порядку
+    live_channels = OrderedDict(sorted(live_channels.items(), 
+                                      key=lambda x: list(channels.keys()).index(x[0])))
     
     with open(OUTPUT_M3U, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        f.write(f"# Verified by {COPYRIGHT}\n")
+        f.write(f"# Verified Playlist\n")
         f.write(f"# Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"# Live channels: {len(live_channels)}\n")
         f.write("\n")
         
-        for idx, item in enumerate(all_items, 1):
-            extinf = item["extinf"]
+        for idx, (url, ch) in enumerate(live_channels.items(), 1):
+            # Берём EXTINF из live потока
+            extinf = ch["extinf_live"]
             
-            # Добавляем tvg-chno и group-title если их нет
+            # Добавляем tvg-chno если его нет
             if 'tvg-chno=' not in extinf:
                 extinf = extinf.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-chno="{idx}"', 1)
             
-            if f'group-title="{item["group"]}"' not in extinf:
-                extinf = extinf.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{item["group"]}"', 1)
-            
             f.write(extinf + "\n")
-            f.write(item["url"] + "\n")
+            f.write(url + "\n")
     
-    print(f"[SUCCESS] Final M3U written: {OUTPUT_M3U}")
-    print()
+    print(f"[OK] Playlist saved: {OUTPUT_M3U}")
+    print(f"[OK] Total channels: {len(live_channels)}\n")
+    
+    return len(live_channels)
 
 
 # ============================================================
 # WRITE REPORT
 # ============================================================
 
-def write_report(pool_count, stream0_live, stream1_live):
-    total = len(stream0_live) + len(stream1_live)
+def write_report(total, live):
+    """Пишет отчет проверки"""
+    success_rate = (live / total * 100) if total > 0 else 0
     
     with open(REPORT_TXT, "w", encoding="utf-8") as f:
-        f.write("CINERAMA VERIFIED 1 — REPORT\n")
+        f.write("PLAYLIST VERIFICATION REPORT\n")
         f.write("=" * 70 + "\n")
         f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write("\n")
-        
-        f.write("SUMMARY\n")
-        f.write("-" * 70 + "\n")
-        f.write(f"Pool channels: {pool_count}\n")
-        f.write(f"Stream0 live: {len(stream0_live)}\n")
-        f.write(f"Stream1 live: {len(stream1_live)}\n")
-        f.write(f"Total verified: {total}\n")
-        f.write("\n")
-        
-        f.write("STREAM0 LIVE\n")
-        f.write("-" * 70 + "\n")
-        for item in stream0_live[:50]:
-            f.write(f"ID={item['id']} | {item['extinf'][:80]} | {item['url']}\n")
-        if len(stream0_live) > 50:
-            f.write(f"... and {len(stream0_live) - 50} more\n")
-        f.write("\n")
-        
-        f.write("STREAM1 LIVE\n")
-        f.write("-" * 70 + "\n")
-        for item in stream1_live[:50]:
-            f.write(f"ID={item['id']} | {item['extinf'][:80]} | {item['url']}\n")
-        if len(stream1_live) > 50:
-            f.write(f"... and {len(stream1_live) - 50} more\n")
-        f.write("\n")
+        f.write(f"Total channels in pool: {total}\n")
+        f.write(f"Live channels: {live}\n")
+        f.write(f"Dead channels: {total - live}\n")
+        f.write(f"Success rate: {success_rate:.1f}%\n")
+        f.write("=" * 70 + "\n")
+    
+    print(f"[OK] Report saved: {REPORT_TXT}\n")
 
 
 # ============================================================
@@ -370,47 +237,39 @@ def write_report(pool_count, stream0_live, stream1_live):
 # ============================================================
 
 def main():
-    print("=" * 70)
-    print("CINERAMA SCANNER - FROM pool_tv.m3u")
+    print("\n" + "=" * 70)
+    print("PLAYLIST VERIFICATION & CORRECTION")
     print("=" * 70)
     
-    # Create test
-    create_test_m3u_300()
-    
-    # Load pool
-    pool_channels = load_pool_m3u()
-    if not pool_channels:
-        print("[ERROR] pool_tv.m3u not loaded")
+    # Load playlist
+    channels = load_pool_m3u()
+    if not channels:
+        print("[ERROR] Playlist not loaded")
         return
     
-    # Verify Stream1
-    stream1_live = verify_stream1_from_pool(pool_channels)
-    if not stream1_live:
-        print("[ERROR] No live channels in Stream1")
-        return
+    total_channels = len(channels)
     
-    # Check Stream0 mirror
-    stream0_live = check_stream0_mirror(stream1_live)
+    # Verify streams
+    channels = verify_all_streams(channels)
+    
+    # Get live count
+    live_channels = sum(1 for ch in channels.values() if ch["is_live"])
+    
+    if live_channels == 0:
+        print("[ERROR] No live channels found")
+        return
     
     # Write outputs
-    write_final_m3u(stream0_live, stream1_live)
-    write_report(len(pool_channels), stream0_live, stream1_live)
+    write_final_m3u(channels)
+    write_report(total_channels, live_channels)
     
-    print()
     print("=" * 70)
-    print("DONE")
+    print("VERIFICATION COMPLETE")
     print("=" * 70)
-    print()
-    print(f"Pool channels: {len(pool_channels)}")
-    print(f"Live Stream0: {len(stream0_live)}")
-    print(f"Live Stream1: {len(stream1_live)}")
-    print(f"Total: {len(stream0_live) + len(stream1_live)}")
-    print()
-    print("FILES:")
-    print(f"  {OUTPUT_M3U}")
-    print(f"  {REPORT_TXT}")
-    print(f"  {TEST_M3U}")
-    print()
+    print(f"Total: {total_channels}")
+    print(f"Live: {live_channels}")
+    print(f"Dead: {total_channels - live_channels}")
+    print("=" * 70 + "\n")
 
 
 if __name__ == "__main__":
