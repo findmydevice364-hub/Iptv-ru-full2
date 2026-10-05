@@ -21,7 +21,7 @@ jobs:
           python-version: '3.12'
 
       - name: Generate playlist
-        run: python generator_TV.py --start 1 --end 1500 --output playlist.m3u
+        run: python generator_TV.py --start 1 --end 7000 --output playlist.m3u
 
       - name: Commit and push updated playlist
         run: |
