@@ -1,35 +1,90 @@
-name: IPTV Parse Pipeline
+name: Build IPTV Channel Database
 
 on:
   schedule:
-    - cron: "0 6 * * *"
+    # Запускается каждый день в 02:00 UTC (05:00 МСК)
+    - cron: '0 2 * * *'
   workflow_dispatch:
-
-permissions:
-  contents: write
+    # Ручной запуск из GitHub Actions
+  push:
+    branches:
+      - main
 
 jobs:
-  parse:
+  build-database:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      actions: read
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install deps
-        run: pip install requests
-
-      - name: Run parser
-        run: python parse_channels.py
-
-      - name: Commit results
+      - name: Install dependencies
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add channels.txt channels_data.py channels.csv
-          git diff --cached --quiet || git commit -m "auto: update parsed channels $(date -u +%Y-%m-%d)"
-          git push
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run IPTV Database Builder
+        run: |
+          python rt_log.py
+
+      - name: Check if files were created
+        run: |
+          ls -lah channel_database/ || echo "Directory not created"
+          find channel_database/ -type f -exec echo {} \; -exec wc -l {} \;
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add channel_database/ || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 Auto-update IPTV channel database" && git push)
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: channel-database
+          path: channel_database/
+          retention-days: 30
+
+      - name: Create Release (if new data)
+        if: success()
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${{ github.run_number }}-${{ github.run_id }}
+          release_name: IPTV Database ${{ github.run_number }}
+          body: |
+            📺 Автоматически обновленная база данных IPTV-каналов
+            
+            Дата: ${{ github.event.head_commit.timestamp }}
+            Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          draft: false
+          prerelease: false
+        continue-on-error: true
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## 📊 IPTV Database Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📁 Output Files" >> $GITHUB_STEP_SUMMARY
+          ls -1 channel_database/ | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "- No files generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ⚙️ Workflow Info" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: \`${{ github.event_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
