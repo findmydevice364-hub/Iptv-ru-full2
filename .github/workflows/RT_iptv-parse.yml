@@ -50,7 +50,7 @@ jobs:
           git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 Auto-update IPTV channel database" && git push)
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: channel-database
