@@ -4,8 +4,9 @@ on:
   schedule:
     # Запускается каждый день в 02:00 UTC (05:00 МСК)
     - cron: '0 2 * * *'
+
   workflow_dispatch:
-    # Ручной запуск из GitHub Actions
+
   push:
     branches:
       - main
@@ -13,7 +14,7 @@ on:
 jobs:
   build-database:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
       actions: read
@@ -23,10 +24,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -67,7 +67,7 @@ jobs:
           release_name: IPTV Database ${{ github.run_number }}
           body: |
             📺 Автоматически обновленная база данных IPTV-каналов
-            
+
             Дата: ${{ github.event.head_commit.timestamp }}
             Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           draft: false
