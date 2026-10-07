@@ -44,9 +44,9 @@ jobs:
           python scanner_ultra.py \
             --output ./iptv_output \
             --passes 1 \
-            --workers 8 \
-            --alt-workers 6 \
-            --source-workers 4 \
+            --workers 34 \
+            --alt-workers 28 \
+            --source-workers 26 \
             --timeout 12 \
             --source-timeout 30 \
             --min-alternatives 6 \
