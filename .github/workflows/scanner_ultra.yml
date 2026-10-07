@@ -1,55 +1,67 @@
-name: Scanner Ultra
+name: IPTV Ultra Scanner
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
-
-permissions:
-  contents: write
+    - cron: "0 3 * * *"   # раз в день в 03:00 UTC
 
 jobs:
-  scanner-ultra:
+  scan-iptv:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
+          pip install aiohttp
 
-      - name: Run scanner_ultra.py
+      - name: Create source list (optional)
         run: |
-          python scanner_ultra.py
+          mkdir -p .github/workflows
+          cat > sources.txt <<'EOF'
+          # один URL на строку, можно оставить пустым
+          # https://example.com/playlist.m3u
+          EOF
 
-      - name: Show generated files
+      - name: Run IPTV scanner
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
-          echo "=== Repository changes ==="
-          git status --short
+          python scanner_ultra.py \
+            --output ./iptv_output \
+            --passes 1 \
+            --workers 8 \
+            --alt-workers 6 \
+            --source-workers 4 \
+            --timeout 12 \
+            --source-timeout 30 \
+            --min-alternatives 6 \
+            --alternative-candidates 50 \
+            --ops-per-second 8 \
+            --similarity 0.60 \
+            --ffprobe \
+            --source-list ./sources.txt
 
-      - name: Commit and push results
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add -A
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-
-          git commit -m "Auto update scanner_ultra results"
-          git push
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: iptv-results
+          path: |
+            ./iptv_output/**
+            ./scanner_ultra_mega.log
+          if-no-files-found: warn
+          retention-days: 7
