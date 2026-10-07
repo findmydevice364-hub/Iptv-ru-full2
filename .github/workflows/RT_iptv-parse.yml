@@ -2,8 +2,7 @@ name: Build IPTV Channel Database
 
 on:
   schedule:
-    # Запускается каждый день в 02:00 UTC (05:00 МСК)
-    - cron: '0 2 * * *'
+    
 
   workflow_dispatch:
 
