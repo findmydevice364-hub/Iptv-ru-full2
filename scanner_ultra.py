@@ -1,99 +1,92 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-ULTRA IPTV CHECKER 5.0
-Append-only IPTV channel/stream collector + deep checker.
+ULTRA-MEGA IPTV COLLECTOR 6.0
+=============================
+Единый мощный коллектор/чекер IPTV, объединяющий:
 
-Главные свойства:
-- НЕ удаляет старые каналы/потоки.
-- НЕ схлопывает одинаковые названия каналов.
-- НЕ удаляет одинаковые URL из архива.
-- Каждый новый проход может добавлять новые записи и альтернативы.
-- Генерируемые файлы никогда не используются как входные источники.
-- Для каждого потока сохраняются latency, HTTP status, final URL,
-  protocol, HLS/DASH признаки, codecs, resolution/bitrate при ffprobe.
-- Для альтернатив используется similarity имени + регион/CDN/оператор.
-- Целится минимум в 20 реально работающих вариантов на канал, если
-  столько найдено. Это не лимит архива.
-- Учитываются SD/HD/FHD/UHD и временные орбиты +1/+2/+3/+4/+7 и т.п.
-- Особые/редкие каналы получают расширенный поиск.
-- История проверок append-only: diagnostics.jsonl.
-- История найденных альтернатив append-only: alternatives.jsonl.
-- Основной архив записей append-only: records.jsonl.
-- Snapshot каждого прохода сохраняется отдельно.
+  • ULTRA IPTV CHECKER 5.x  — append-only архив, self-healing, орбиты,
+    diversity, rate-limit, SQLite + ML-наблюдения, telemetry
+  • RU IPTV MEGA PARSER     — каноническая база каналов (CSV/JSON/PY),
+    агрегация по db_id/алиасам, EPG, russian-priority, Stable-состояние
+
+Ключевые свойства (ничего не теряется):
+  - НЕ удаляет старые записи и мёртвые потоки
+  - НЕ схлопывает одинаковые названия / URL в архиве
+  - Каждый проход только ДОБАВЛЯЕТ
+  - Альтернативы ищутся по каноническому identity + fuzzy + орбиты/качество
+  - Цель: ≥ MIN_ALTERNATIVES реально рабочих разнообразных потоков на канал
+  - Внешняя база каналов загружается безопасно (AST/literal_eval, без exec)
+  - Append-only: records.jsonl, diagnostics.jsonl, alternatives.jsonl
+  - Постоянный каталог output_iptv/ со Stable / Mega / Ultra + SQLite + ML
 
 Зависимости:
     pip install aiohttp
-
 Опционально:
     ffprobe / ffmpeg
 
 Пример:
-    python ultra_iptv_checker.py -s source.m3u -s https://example/list.m3u \
-        --output ultra_data --passes 3 --workers 64 --alt-workers 32
-
-Можно передать много источников:
-    python ultra_iptv_checker.py -s a.m3u -s b.m3u -s c.m3u ...
-
-Также поддерживается файл со списком источников:
-    python ultra_iptv_checker.py --source-list sources.txt
-
-ВАЖНО:
-Источник может быть только явно указанным локальным файлом или URL.
-Файлы из --output, best.m3u, online.m3u, all.m3u, snapshots и архивы
-автоматически исключаются из входа, чтобы программа не "писала сама в себя".
+    python ultra_mega_iptv.py --passes 2 --workers 64 --alt-workers 48
+    python ultra_mega_iptv.py -s my.m3u --source-list sources.txt --ffprobe
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
 import asyncio
+import csv
+import gzip
+import hashlib
+import io
 import json
 import logging
 import math
 import os
+import platform
+import random
 import re
 import socket
+import sqlite3
+import statistics
 import subprocess
 import sys
-import sqlite3
-import hashlib
-import platform
-import statistics
 import time
-from collections import defaultdict
+import unicodedata
+import xml.etree.ElementTree as ET
+from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Iterable, Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import quote, urljoin, urlparse, urlsplit, urlunsplit
 
 import aiohttp
 
+# ---------------------------------------------------------------------------
+# VERSION / POLICY
+# ---------------------------------------------------------------------------
+VERSION = "6.0-ULTRA-MEGA"
 
-VERSION = "5.1-ULTRA-SELF-HEALING"
-
-# ============================================================
-# ULTRA PERFORMANCE / SELF-HEALING POLICY
-# ============================================================
-# Up to 50 concurrent stream checks, while starts are throttled to
-# approximately 40 network operations/second to avoid hammering sources.
 DEFAULT_SOURCE_WORKERS = 40
-DEFAULT_CHECK_WORKERS = 50
-DEFAULT_ALT_WORKERS = 50
-DEFAULT_OPS_PER_SECOND = 40.0
+DEFAULT_CHECK_WORKERS = 64
+DEFAULT_ALT_WORKERS = 48
+DEFAULT_OPS_PER_SECOND = 45.0
 DEFAULT_MIN_ALTERNATIVES = 12
-DEFAULT_ALTERNATIVE_CANDIDATES = 160
+DEFAULT_TARGET_ALTERNATIVES = 20
+DEFAULT_ALTERNATIVE_CANDIDATES = 200
+DEFAULT_SIMILARITY = 0.60
+STREAM_CHECK_RETRIES = 2
+SOURCE_FETCH_RETRIES = 2
+CONNECT_TIMEOUT = 6
+READ_TIMEOUT = 14
+MAX_SOURCE_BYTES = 80 * 1024 * 1024
+CACHE_TTL = 6 * 3600
+STABLE_LATENCY_THRESHOLD_MS = 1500
+ALT_INDEX_MIN_TOKEN_LEN = 3
+ALT_DIVERSITY_BONUS = 0.08
 
-# ============================================================
-# ORBIT SEARCH POLICY
-# Moscow stream = +0. For SD/HD/FHD we actively look for the
-# same channel on neighbouring time-zone/orbit variants.
-# +10/+11 are rare reserve variants and are searched after the
-# primary -1..+9 set.
-# ============================================================
 ORBIT_SEARCH_ORDER = (
     "-1", "+0", "+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9",
     "+10", "+11",
@@ -101,144 +94,55 @@ ORBIT_SEARCH_ORDER = (
 ORBIT_QUALITY_TARGETS = ("SD", "HD", "FHD")
 ORBIT_SEARCH_QUALITY_BONUS = 0.12
 ORBIT_MISSING_BONUS = 0.20
-STREAM_CHECK_RETRIES = 2
-SOURCE_FETCH_RETRIES = 2
 
 CINERAMA_HOST_REPLACEMENTS = {
     "https://stream8.cinerama.uz": "https://stream1.cinerama.uz",
     "http://stream8.cinerama.uz": "http://stream1.cinerama.uz",
 }
 
-# Reserved source slots. They are deliberately strings rather than URLs.
-# They are skipped before any network operation, so they can never hang the scanner.
-RESERVED_SOURCE_SLOTS = [
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-    "# здесь будет ссылка",
-]
-
-
-class AsyncRateLimiter:
-    def __init__(self, rate: float):
-        self.rate = max(1.0, float(rate))
-        self.interval = 1.0 / self.rate
-        self._lock = asyncio.Lock()
-        self._next = 0.0
-
-    async def wait(self) -> None:
-        async with self._lock:
-            now = time.monotonic()
-            if now < self._next:
-                await asyncio.sleep(self._next - now)
-                now = time.monotonic()
-            self._next = max(now, self._next) + self.interval
-
-
-def apply_host_rewrites(url: str) -> str:
-    url = (url or "").strip()
-    for old, new in CINERAMA_HOST_REPLACEMENTS.items():
-        if url.startswith(old):
-            return new + url[len(old):]
-    return url
-
-
-def is_placeholder_source(source: str) -> bool:
-    s = (source or "").strip().lower()
-    if not s:
-        return True
-    return (
-        s.startswith("#")
-        or s in {"здесь будет ссылка", "сюда будет ссылка", "placeholder", "todo"}
-        or "здесь будет ссылка" in s
-    )
-
 DEFAULT_UA = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/140 Safari/537.36 "
-    "Ultra-IPTV-Checker/5.0"
+    "Ultra-Mega-IPTV/6.0"
 )
+USER_AGENT_POOL = [
+    DEFAULT_UA,
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/17.6 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "VLC/3.0.20 LibVLC/3.0.20",
+    "Lavf/60.16.100",
+]
 
 GENERATED_NAMES = {
-    "best.m3u",
-    "online.m3u",
-    "all.m3u",
-    "all_with_alts.m3u",
-    "results.json",
-    "records.jsonl",
-    "diagnostics.jsonl",
-    "alternatives.jsonl",
-    "run_state.json",
-    "channels_report.json",
+    "best.m3u", "online.m3u", "all.m3u", "all_with_alts.m3u",
+    "results.json", "records.jsonl", "diagnostics.jsonl",
+    "alternatives.jsonl", "run_state.json", "channels_report.json",
+    "Stable.m3u", "Mega.m3u", "Ultra.m3u", "Stable_Ru_IPTV.m3u",
 }
 
-ORBIT_RE = re.compile(r"(?i)(?:\s*[\[(]?([+-]\d{1,2})\s*(?:h|ч)?[\])]?)\s*$")
-QUALITY_RE = re.compile(
-    r"(?i)\b(?:uhd|4k|fhd|full\s*hd|hd|sd|8k|2160p|1440p|1080p|720p|576p|480p)\b"
-)
-LANG_RE = re.compile(r"(?i)\b(?:ru|rus|рус|eng|en|каз|kz|by|uz|tj)\b")
-PUNCT_RE = re.compile(r"[^\w\s+#]+", re.UNICODE)
+BAD_NAME_TOKENS = {
+    "xxx", "porn", "porno", "pornhub", "adult", "sex", "erotic", "18+",
+    "казино", "casino", "bet", "ставки", "букмекер",
+}
 
-# These are intentionally only priorities. The program does not invent streams.
-SPECIAL_CHANNEL_TERMS = (
-    "ключ",
-    "хит",
-    "hit",
-    "hit hd",
-    "fан",
-    "fan",
-    "fan hd",
-    "sumiko",
-    "сапфир",
-    "сапфир hd",
-    "amedia hit",
-    "amedia hit hd",
-    "amedia",
-    "кинеко",
-    "нтв хит",
-    "нтв-хит",
-    "старт",
-    "старт hd",
-    "романтичное",
-    "романтичное hd",
-    "кинопоказ",
-    "кинопоказ hd",
-    "наше",
-    "наше hd",
-    "премиальное",
-    "премиальное hd",
-    "остросюжетное",
-    "остросюжетное hd",
-    "советская киноклассика",
-    "моя стихия",
-    "моя стихия hd",
-    "мосфильм",
-    "мосфильм hd",
-)
+RU_WORDS = {
+    "россия", "российский", "русский", "русская", "москва", "мск",
+    "санкт-петербург", "петербург", "питер", "регион", "область", "край",
+    "республика", "чувашия", "татарстан", "башкортостан", "сибирь", "урал",
+    "кубань", "дон", "сахалин", "калининград", "новосибирск", "екатеринбург",
+    "казань", "самара", "омск", "томск", "владивосток", "хабаровск",
+    "архангельск", "мурманск", "рус", "ru", "cis", "снг", "беларусь",
+    "казахстан", "кыргызстан", "узбекистан", "армения", "азербайджан", "молдова",
+}
 
 REGION_MARKERS = {
-    "RU": (
-        ".ru", "russia", "россия", "moscow", "москва", "spb", "питер",
-        "wink", "rostelecom", "rt", "nginx", "rutube",
-    ),
-    "KZ": (
-        ".kz", "kaz", "kazakh", "kazakhstan", "qazaq", "almaty", "astana",
-    ),
-    "BY": (
-        ".by", "belarus", "belarusian", "минск", "minsk",
-    ),
-    "UZ": (
-        ".uz", "uzbek", "uzbekistan", "tashkent", "samarkand",
-    ),
-    "TJ": (
-        ".tj", "tajik", "tajikistan", "dushanbe", "khujand",
-    ),
+    "RU": (".ru", "russia", "россия", "moscow", "москва", "spb", "питер",
+           "wink", "rostelecom", "rt", "nginx", "rutube"),
+    "KZ": (".kz", "kaz", "kazakh", "kazakhstan", "qazaq", "almaty", "astana"),
+    "BY": (".by", "belarus", "belarusian", "минск", "minsk"),
+    "UZ": (".uz", "uzbek", "uzbekistan", "tashkent", "samarkand"),
+    "TJ": (".tj", "tajik", "tajikistan", "dushanbe", "khujand"),
     "TM": (".tm", "turkmen", "ashgabat"),
     "KG": (".kg", "kyrgyz", "bishkek"),
 }
@@ -248,153 +152,130 @@ NON_STREAM_HOSTS = (
     "telegram.me", "t.me", "instagram.com", "facebook.com",
 )
 
-USER_PROVIDED_SOURCES = [
-    'https://IPTVRU2026/IPTVMIR/main/IPTV_MEGA_PLAYLIST.m3u',
-    'https://Monoloshka/iptv/main/BeeTV.m3u',
-    'https://Monoloshka/iptv/main/full-iptv.m3u',
-    'https://Monoloshka/iptv/main/tv.m3u',
-    'https://aidoseg/qazaqiptv/playlist.m3u8',
-    'https://blackbirdstudiorus/IPTVPlay/main/IPTVPlay.m3u',
-    'https://blackbirdstudiorus/IPTVPlay/main/KionPlus.m3u',
-    'https://dearbulut/iptv/playlists/best.m3u',
-    'https://dearbulut/iptv/playlists/category/documentary.m3u',
-    'https://dearbulut/iptv/playlists/category/entertainment.m3u',
-    'https://dearbulut/iptv/playlists/category/general.m3u',
-    'https://dearbulut/iptv/playlists/category/kids.m3u',
-    'https://dearbulut/iptv/playlists/category/movies.m3u',
-    'https://dearbulut/iptv/playlists/category/music.m3u',
-    'https://dearbulut/iptv/playlists/category/news.m3u',
-    'https://dearbulut/iptv/playlists/category/sports.m3u',
-    'https://dearbulut/iptv/playlists/country/by.m3u',
-    'https://dearbulut/iptv/playlists/country/kg.m3u',
-    'https://dearbulut/iptv/playlists/country/kz.m3u',
-    'https://dearbulut/iptv/playlists/country/mn.m3u',
-    'https://dearbulut/iptv/playlists/country/ru.m3u',
-    'https://dearbulut/iptv/playlists/country/tj.m3u',
-    'https://dearbulut/iptv/playlists/country/ua.m3u',
-    'https://dearbulut/iptv/playlists/country/uz.m3u',
-    'https://dearbulut/iptv/playlists/index.m3u',
-    'https://dearbulut/iptv/playlists/language/rus.m3u',
-    'https://dearbulut/iptv/playlists/online.m3u',
-    'https://gitverse/api/repos/RUVIPIEN/IPTVMIR/raw/branch/main/IPTV_MEGA_PLAYLIST.m3u',
-    'https://iptv-org/iptv/categories/documentary.m3u',
-    'https://iptv-org/iptv/categories/entertainment.m3u',
-    'https://iptv-org/iptv/categories/general.m3u',
-    'https://iptv-org/iptv/categories/kids.m3u',
-    'https://iptv-org/iptv/categories/movies.m3u',
-    'https://iptv-org/iptv/categories/music.m3u',
-    'https://iptv-org/iptv/categories/news.m3u',
-    'https://iptv-org/iptv/categories/sports.m3u',
-    'https://iptv-org/iptv/countries/am.m3u',
-    'https://iptv-org/iptv/countries/az.m3u',
-    'https://iptv-org/iptv/countries/by.m3u',
-    'https://iptv-org/iptv/countries/ge.m3u',
-    'https://iptv-org/iptv/countries/kg.m3u',
-    'https://iptv-org/iptv/countries/kz.m3u',
-    'https://iptv-org/iptv/countries/md.m3u',
-    'https://iptv-org/iptv/countries/mn.m3u',
-    'https://iptv-org/iptv/countries/ru.m3u',
-    'https://iptv-org/iptv/countries/tj.m3u',
-    'https://iptv-org/iptv/countries/tm.m3u',
-    'https://iptv-org/iptv/countries/ua.m3u',
-    'https://iptv-org/iptv/countries/uz.m3u',
-    'https://iptv-org/iptv/index.category.m3u',
-    'https://iptv-org/iptv/index.country.m3u',
-    'https://iptv-org/iptv/index.language.m3u',
-    'https://iptv-org/iptv/index.m3u',
-    'https://iptv-org/iptv/languages/rus.m3u',
-    'https://iptv-org/iptv/regions/cas.m3u',
-    'https://iptv-org/iptv/regions/cis.m3u',
-    'https://iptv.org.ua/iptv/avto-full.m3u',
-    'https://iptv.org.ua/iptv/avto-full.m3u8',
-    'https://iptv.org.ua/iptv/avto.m3u',
-    'https://iptv.org.ua/iptv/avto.m3u8',
-    'https://iptv.org.ua/iptv/avtomini.m3u',
-    'https://iptv.org.ua/iptv/provayder.m3u',
-    'https://iptv.org.ua/iptv/provayder.m3u8',
-    'https://iptv.org.ua/iptv/tva1.m3u',
-    'https://iptv.org.ua/iptv/tva2.m3u',
-    'https://iptv.org.ua/iptv/tva3.m3u',
-    'https://iptv.org.ua/iptv/tva4.m3u',
-    'https://iptv.org.ua/iptv/tva5.m3u',
-    'https://myplaylists/iptv/ru.m3u',
-    'https://myplaylists/iptv/ua.m3u',
-    'https://naggdd/iptv/cartoons.m3u',
-    'https://naggdd/iptv/main/cartoons.m3u',
-    'https://naggdd/iptv/main/music.m3u',
-    'https://naggdd/iptv/main/ru.m3u',
-    'https://naggdd/iptv/music.m3u',
-    'https://naggdd/iptv/ru.m3u',
-    'https://ngrch/iptv/cartoons.m3u',
-    'https://ngrch/iptv/music.m3u',
-    'https://ngrch/iptv/ru.m3u',
-    'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8',
-    'https://romaxa55/world_ip_tv/main/output/index.m3u',
-    'https://romaxa55/world_ip_tv/output/index.m3u',
-    'https://smart-iptv/kaz.m3u',
-    'https://smart-iptv/russia.m3u',
-    'https://smart-tv-iptv/russia.m3u',
-    'https://smolnp/IPTVru/gh-pages/IPRadio.m3u',
-    'https://smolnp/IPTVru/gh-pages/IPTVdonor.m3u',
-    'https://smolnp/IPTVru/gh-pages/IPTVmir.m3u8',
-    'https://smolnp/IPTVru/gh-pages/IPTVru.m3u',
-    'https://smolnp/IPTVru/gh-pages/IPTVstable.m3u8',
-    'https://smolnp/IPTVru/gh-pages/IPTVххх.m3u',
-    'https://smolnp/IPTVru/gh-pages/KseniaTV.m3u',
-    'https://tiny.one/qazaqiptv',
-    'https://tiny.one/qazaqtv',
+SPECIAL_CHANNEL_TERMS = (
+    "ключ", "хит", "hit", "hit hd", "fан", "fan", "fan hd", "sumiko",
+    "сапфир", "сапфир hd", "amedia hit", "amedia hit hd", "amedia",
+    "кинеко", "нтв хит", "нтв-хит", "старт", "старт hd",
+    "романтичное", "романтичное hd", "кинопоказ", "кинопоказ hd",
+    "наше", "наше hd", "премиальное", "премиальное hd",
+    "остросюжетное", "остросюжетное hd", "советская киноклассика",
+    "моя стихия", "моя стихия hd", "мосфильм", "мосфильм hd",
+)
+
+# External channel database (safe load)
+CHANNEL_DB_CSV_URL = "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/channel_database/channels.csv"
+CHANNEL_DB_JSON_URL = "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/channel_database/channels.json"
+CHANNEL_DB_PY_URL = "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/channel_database/channels_data.py"
+CHANNEL_DB_MAX_BYTES = 64 * 1024 * 1024
+CHANNEL_DB_MATCH_THRESHOLD = 0.72
+CHANNEL_DB_ALIAS_MATCH = 0.98
+
+# Local DB filenames (priority order: cwd, script dir, output dir)
+LOCAL_CHANNEL_DB_FILES = (
+    "channels.csv",
+    "channels.json",
+    "channels_data.py",
+    "channel_database/channels.csv",
+    "channel_database/channels.json",
+    "channel_database/channels_data.py",
+    "channel_db.csv",
+    "channel_db.json",
+)
+
+EPG_SOURCES = [
+    ("epg.one", "https://epg.one/epg2.xml.gz"),
+    ("teleguide", "https://www.teleguide.info/download/new3/xmltv.xml.gz"),
 ]
 
+
+
+# Вспомогательная встроенная БД: канонические имена + алиасы для сопоставления
+# орбит (+0/+1/+2…) и версий качества (SD/HD/FHD). Основная БД — local/remote.
+BUILTIN_CHANNEL_DB: list[dict] = [
+    {"id": "1tv.ru", "name": "Первый канал", "aliases": ["1TV", "Первый", "Channel One", "1 канал", "ОРТ", "Первый канал HD", "Первый канал +0", "Первый канал +1", "Первый канал +2", "Первый канал +3", "Первый канал +4", "Первый канал +7"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "russia1.ru", "name": "Россия 1", "aliases": ["Россия-1", "RTR", "Russia 1", "Россия", "Россия 1 HD", "Россия 1 +0", "Россия 1 +1", "Россия 1 +2", "Россия 1 +3", "Россия 1 +4", "Россия 1 +7"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "matchtv.ru", "name": "Матч ТВ", "aliases": ["Match TV", "Матч", "МатчТВ", "Матч ТВ HD", "Матч ТВ +0", "Матч ТВ +1", "Матч ТВ +2", "Матч ТВ +3", "Матч ТВ +4"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "ntv.ru", "name": "НТВ", "aliases": ["NTV", "НТВ HD", "НТВ +0", "НТВ +1", "НТВ +2", "НТВ +3", "НТВ +4", "НТВ +7"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "5tv.ru", "name": "Пятый канал", "aliases": ["5 канал", "Channel 5", "Пятый", "Пятый канал HD", "Пятый канал +0", "Пятый канал +1", "Пятый канал +2"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "russia-k.ru", "name": "Россия К", "aliases": ["Культура", "Россия Культура", "Russia K", "Россия К HD", "Культура +0", "Культура +1", "Культура +2"], "country": "RU", "language": "ru", "categories": ["Культура"]},
+    {"id": "russia24.ru", "name": "Россия 24", "aliases": ["Россия-24", "Russia 24", "Вести 24", "Россия 24 HD", "Россия 24 +0", "Россия 24 +1"], "country": "RU", "language": "ru", "categories": ["Новости"]},
+    {"id": "karusel.ru", "name": "Карусель", "aliases": ["Karusel", "Карусель HD", "Карусель +0", "Карусель +1", "Карусель +2", "Карусель +3", "Карусель +4"], "country": "RU", "language": "ru", "categories": ["Детские"]},
+    {"id": "otr.ru", "name": "ОТР", "aliases": ["Общественное телевидение России", "OTR", "ОТР HD", "ОТР +0", "ОТР +1"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "tvc.ru", "name": "ТВ Центр", "aliases": ["ТВЦ", "TV Center", "ТВЦ HD", "ТВ Центр HD", "ТВЦ +0", "ТВЦ +1", "ТВЦ +2"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "ren.tv", "name": "РЕН ТВ", "aliases": ["REN TV", "РЕН", "РЕНТВ", "РЕН ТВ HD", "РЕН ТВ +0", "РЕН ТВ +1", "РЕН ТВ +2", "РЕН ТВ +3", "РЕН ТВ +4"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "sts.ru", "name": "СТС", "aliases": ["STS", "CTC", "СТС HD", "СТС +0", "СТС +1", "СТС +2", "СТС +3", "СТС +4", "СТС +7"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "domashniy.ru", "name": "Домашний", "aliases": ["Domashniy", "Домашний HD", "Домашний +0", "Домашний +1", "Домашний +2", "Домашний +3", "Домашний +4"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "tv3.ru", "name": "ТВ-3", "aliases": ["TV-3", "ТВ3", "TV3", "ТВ-3 HD", "ТВ-3 +0", "ТВ-3 +1", "ТВ-3 +2", "ТВ-3 +3", "ТВ-3 +4"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "friday.ru", "name": "Пятница!", "aliases": ["Пятница", "Friday", "Friday!", "Пятница HD", "Пятница +0", "Пятница +1", "Пятница +2", "Пятница +3", "Пятница +4"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "zvezda.ru", "name": "Звезда", "aliases": ["Zvezda", "ТВ Звезда", "Звезда HD", "Звезда +0", "Звезда +1", "Звезда +2"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "mir.ru", "name": "Мир", "aliases": ["Mir", "ТВ Мир", "Мир HD", "Мир +0", "Мир +1", "Мир +2", "Мир +3"], "country": "RU", "language": "ru", "categories": ["Общие"]},
+    {"id": "tnt.ru", "name": "ТНТ", "aliases": ["TNT", "ТНТ HD", "ТНТ +0", "ТНТ +1", "ТНТ +2", "ТНТ +3", "ТНТ +4", "ТНТ +7"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "muztv.ru", "name": "МУЗ-ТВ", "aliases": ["МУЗ ТВ", "Muz-TV", "MuzTV", "МУЗ-ТВ HD", "МУЗ-ТВ +0", "МУЗ-ТВ +1"], "country": "RU", "language": "ru", "categories": ["Музыка"]},
+    {"id": "che.ru", "name": "Че!", "aliases": ["Че", "Che", "Че! HD", "Че +0", "Че +1", "Че +2"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "u.ru", "name": "Ю", "aliases": ["Ю ТВ", "U TV", "Ю HD", "Ю +0", "Ю +1", "Ю +2"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "2x2.ru", "name": "2x2", "aliases": ["2х2", "2X2", "2x2 HD", "2x2 +0", "2x2 +1", "2x2 +2"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "tnt4.ru", "name": "ТНТ4", "aliases": ["TNT4", "ТНТ 4", "ТНТ4 HD", "ТНТ4 +0", "ТНТ4 +1", "ТНТ4 +2"], "country": "RU", "language": "ru", "categories": ["Развлекательные"]},
+    {"id": "matchpremier.ru", "name": "Матч! Премьер", "aliases": ["Матч Премьер", "Match Premier", "Матч! Премьер HD", "Матч! Премьер +0", "Матч! Премьер +1", "Матч! Премьер +2"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matchfootball1.ru", "name": "Матч! Футбол 1", "aliases": ["Матч Футбол 1", "Match Football 1", "Матч! Футбол 1 HD", "Матч! Футбол 1 +0", "Матч! Футбол 1 +1"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matchfootball2.ru", "name": "Матч! Футбол 2", "aliases": ["Матч Футбол 2", "Match Football 2", "Матч! Футбол 2 HD", "Матч! Футбол 2 +0", "Матч! Футбол 2 +1"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matchfootball3.ru", "name": "Матч! Футбол 3", "aliases": ["Матч Футбол 3", "Match Football 3", "Матч! Футбол 3 HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matcharena.ru", "name": "Матч! Арена", "aliases": ["Матч Арена", "Match Arena", "Матч! Арена HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matchgame.ru", "name": "Матч! Игра", "aliases": ["Матч Игра", "Match Igra", "Матч! Игра HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "matchboets.ru", "name": "Матч! Боец", "aliases": ["Матч Боец", "Match Boets", "Матч! Боец HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "khl.ru", "name": "КХЛ ТВ", "aliases": ["KHL", "КХЛ", "KHL TV", "КХЛ HD", "КХЛ ТВ HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "eurosport1.ru", "name": "Eurosport 1", "aliases": ["EuroSport 1", "Евроспорт 1", "Eurosport 1 HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "eurosport2.ru", "name": "Eurosport 2", "aliases": ["EuroSport 2", "Евроспорт 2", "Eurosport 2 HD"], "country": "RU", "language": "ru", "categories": ["Спорт"]},
+    {"id": "kinopokaz.ru", "name": "Кинопоказ", "aliases": ["Кинопоказ HD", "Кинопоказ +0", "Кинопоказ +1", "Кинопоказ SD", "Кинопоказ FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "nashe.ru", "name": "Наше", "aliases": ["Наше HD", "Nashe", "Наше +0", "Наше +1", "Наше SD", "Наше FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "premiere.ru", "name": "Премиальное", "aliases": ["Премиальное HD", "Премиальное +0", "Премиальное +1", "Премиальное SD", "Премиальное FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "ostrosyuzhetnoe.ru", "name": "Остросюжетное", "aliases": ["Остросюжетное HD", "Остросюжетное +0", "Остросюжетное +1", "Остросюжетное SD", "Остросюжетное FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "romantic.ru", "name": "Романтичное", "aliases": ["Романтичное HD", "Романтичное +0", "Романтичное +1", "Романтичное SD", "Романтичное FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "start.ru", "name": "Старт", "aliases": ["Старт HD", "Start", "Старт +0", "Старт +1", "Старт SD", "Старт FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "hit.ru", "name": "Хит", "aliases": ["Хит HD", "Hit", "Hit HD", "Хит +0", "Хит +1", "Хит SD", "Хит FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "fan.ru", "name": "Fan", "aliases": ["Fan HD", "Фан", "Фан HD", "Fan +0", "Fan +1", "Fan SD", "Fan FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "kluch.ru", "name": "Ключ", "aliases": ["Ключ HD", "Ключ +0", "Ключ +1", "Ключ SD", "Ключ FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "sapfir.ru", "name": "Сапфир", "aliases": ["Сапфир HD", "Sapphire", "Сапфир +0", "Сапфир +1", "Сапфир SD", "Сапфир FHD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "amediahit.ru", "name": "Amedia Hit", "aliases": ["Амедиа Хит", "Amedia Hit HD", "Amedia Hit +0", "Amedia Hit +1", "Amedia Hit SD", "Amedia Hit FHD"], "country": "RU", "language": "ru", "categories": ["Сериалы"]},
+    {"id": "amedia.ru", "name": "Amedia", "aliases": ["Амедиа", "Amedia Premium", "Amedia HD", "Amedia +0", "Amedia +1"], "country": "RU", "language": "ru", "categories": ["Сериалы"]},
+    {"id": "ntvhit.ru", "name": "НТВ Хит", "aliases": ["НТВ-Хит", "NTV Hit", "НТВ Хит HD", "НТВ Хит +0", "НТВ Хит +1"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "mosfilm.ru", "name": "Мосфильм", "aliases": ["Мосфильм HD", "Mosfilm", "Мосфильм +0", "Мосфильм +1"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "sovkino.ru", "name": "Советская киноклассика", "aliases": ["Совкино", "Советская киноклассика HD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "moystihiya.ru", "name": "Моя стихия", "aliases": ["Моя стихия HD", "Моя стихия +0", "Моя стихия +1"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "kineko.ru", "name": "Кинеко", "aliases": ["Kineko", "Кинеко HD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "sumiko.ru", "name": "Sumiko", "aliases": ["Сумико", "Sumiko HD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "domkino.ru", "name": "Дом Кино", "aliases": ["ДомКино", "Dom Kino", "Дом Кино HD", "Дом Кино +0", "Дом Кино +1"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "kinohit.ru", "name": "Кинохит", "aliases": ["КиноХит", "Кинохит HD", "Кинохит +0", "Кинохит +1"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "kinopremiera.ru", "name": "Кинопремьера", "aliases": ["КиноПремьера", "Кинопремьера HD"], "country": "RU", "language": "ru", "categories": ["Фильмы"]},
+    {"id": "discovery.ru", "name": "Discovery Channel", "aliases": ["Discovery", "Дисковери", "Discovery HD", "Discovery +0", "Discovery +1"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "natgeo.ru", "name": "National Geographic", "aliases": ["Nat Geo", "Национал Географик", "Nat Geo HD", "National Geographic HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "animalplanet.ru", "name": "Animal Planet", "aliases": ["Animal Planet HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "history.ru", "name": "History", "aliases": ["History Channel", "Хистори", "History HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "viasathistory.ru", "name": "Viasat History", "aliases": ["Виасат Хистори", "Viasat History HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "viasatexplore.ru", "name": "Viasat Explore", "aliases": ["Виасат Эксплор", "Viasat Explore HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "viasatnature.ru", "name": "Viasat Nature", "aliases": ["Виасат Нэйчер", "Viasat Nature HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "myplanet.ru", "name": "Моя Планета", "aliases": ["My Planet", "Моя Планета HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "science.ru", "name": "Наука", "aliases": ["Наука 2.0", "Science", "Наука HD"], "country": "RU", "language": "ru", "categories": ["Познавательные"]},
+    {"id": "bridge.ru", "name": "Bridge TV", "aliases": ["Bridge", "Бридж ТВ", "Bridge TV HD"], "country": "RU", "language": "ru", "categories": ["Музыка"]},
+    {"id": "ru.tv", "name": "RU.TV", "aliases": ["РУ ТВ", "RU TV", "RU.TV HD"], "country": "RU", "language": "ru", "categories": ["Музыка"]},
+    {"id": "mtvmusic.ru", "name": "MTV", "aliases": ["MTV Russia", "MTV HD"], "country": "RU", "language": "ru", "categories": ["Музыка"]},
+    {"id": "shanson.ru", "name": "Шансон ТВ", "aliases": ["ШансонТВ", "Shanson TV", "Шансон ТВ HD"], "country": "RU", "language": "ru", "categories": ["Музыка"]},
+    {"id": "nickelodeon.ru", "name": "Nickelodeon", "aliases": ["Nick", "Никелодеон", "Nickelodeon HD"], "country": "RU", "language": "ru", "categories": ["Детские"]},
+    {"id": "cartoon.ru", "name": "Cartoon Network", "aliases": ["CN", "Картун Нетворк", "Cartoon Network HD"], "country": "RU", "language": "ru", "categories": ["Детские"]},
+    {"id": "mult.ru", "name": "Мульт", "aliases": ["Мульт HD", "Mult", "Мульт +0", "Мульт +1"], "country": "RU", "language": "ru", "categories": ["Детские"]},
+    {"id": "disney.ru", "name": "Канал Disney", "aliases": ["Disney", "Disney Channel", "Disney HD"], "country": "RU", "language": "ru", "categories": ["Детские"]},
+    {"id": "moscow24.ru", "name": "Москва 24", "aliases": ["Москва24", "Moscow 24", "Москва 24 HD"], "country": "RU", "language": "ru", "categories": ["Новости"]},
+    {"id": "rbk.ru", "name": "РБК", "aliases": ["RBC", "РБК ТВ", "РБК HD"], "country": "RU", "language": "ru", "categories": ["Новости"]},
+    {"id": "iz.ru", "name": "Известия", "aliases": ["Izvestia", "ИЗ", "Известия HD"], "country": "RU", "language": "ru", "categories": ["Новости"]},
+    {"id": "rt.ru", "name": "RT", "aliases": ["Russia Today", "РТ", "RT HD"], "country": "RU", "language": "ru", "categories": ["Новости"]},
+    {"id": "bel.ru", "name": "Беларусь 1", "aliases": ["Беларусь-1", "BT", "Belarus 1", "Беларусь 1 HD"], "country": "BY", "language": "ru", "categories": ["Общие"]},
+    {"id": "ont.by", "name": "ОНТ", "aliases": ["ONT", "Общенациональное телевидение", "ОНТ HD"], "country": "BY", "language": "ru", "categories": ["Общие"]},
+    {"id": "qazaqstan.kz", "name": "Qazaqstan", "aliases": ["Казахстан", "Kazakhstan", "Qazaqstan HD"], "country": "KZ", "language": "kk", "categories": ["Общие"]},
+    {"id": "khabar.kz", "name": "Хабар", "aliases": ["Khabar", "Хабар ТВ", "Хабар HD"], "country": "KZ", "language": "kk", "categories": ["Общие"]},
+    {"id": "firstchannel.eurasia.kz", "name": "Первый канал Евразия", "aliases": ["Евразия", "1 канал Евразия", "Первый канал Евразия HD"], "country": "KZ", "language": "ru", "categories": ["Общие"]},
+]
+
+# Built-in verified sources (cleaned + expanded)
 VERIFIED_REAL_SOURCES = [
-    'https://iptv-org.github.io/iptv/index.m3u',
-    'https://iptv-org.github.io/iptv/index.country.m3u',
-    'https://iptv-org.github.io/iptv/index.language.m3u',
-    'https://iptv-org.github.io/iptv/languages/rus.m3u',
-    'https://iptv-org.github.io/iptv/regions/cis.m3u',
-    'https://iptv-org.github.io/iptv/regions/cas.m3u',
-    'https://iptv-org.github.io/iptv/countries/ru.m3u',
-    'https://iptv-org.github.io/iptv/countries/by.m3u',
-    'https://iptv-org.github.io/iptv/countries/kz.m3u',
-    'https://iptv-org.github.io/iptv/countries/kg.m3u',
-    'https://iptv-org.github.io/iptv/countries/tj.m3u',
-    'https://iptv-org.github.io/iptv/countries/tm.m3u',
-    'https://iptv-org.github.io/iptv/countries/uz.m3u',
-    'https://iptv-org.github.io/iptv/countries/mn.m3u',
-    'https://dearbulut.github.io/iptv/playlists/best.m3u',
-    'https://dearbulut.github.io/iptv/playlists/online.m3u',
-    'https://dearbulut.github.io/iptv/playlists/index.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/ru.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/by.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/kz.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/tj.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/uz.m3u',
-    'https://dearbulut.github.io/iptv/playlists/country/mn.m3u',
-    'https://dearbulut.github.io/iptv/playlists/language/rus.m3u',
-    'https://dearbulut.github.io/iptv/playlists/category/news.m3u',
-    'https://dearbulut.github.io/iptv/playlists/category/sports.m3u',
-    'https://dearbulut.github.io/iptv/playlists/category/movies.m3u',
-    'https://dearbulut.github.io/iptv/playlists/category/music.m3u',
-    'https://dearbulut.github.io/iptv/playlists/category/kids.m3u',
-    'https://raw.githubusercontent.com/substanc1/iptv-russia/main/streams/ru.m3u',
-    'https://substanc1.github.io/iptv-russia/streams/ru.m3u',
-    'https://ngrch.github.io/iptv/ru.m3u',
-    'https://ngrch.github.io/iptv/music.m3u',
-    'https://smolnp.github.io/IPTVru/IPTVru.m3u',
-    'https://smolnp.github.io/IPTVru/IPTVstable.m3u8',
-    'https://smolnp.github.io/IPTVru/IPTVmir.m3u8',
-    'https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVru.m3u',
-    'https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVstable.m3u8',
-    'https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVmir.m3u8',
-    'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8',
-    'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_russia.m3u8',
-    'https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv.m3u',
-    'https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv-top.m3u',
-    'https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_country.m3u',
-    'https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_country_and_content.m3u',
-    'https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_content.m3u',
-]
-
-BUILTIN_PUBLIC_SOURCES = [
     "https://iptv-org.github.io/iptv/index.m3u",
     "https://iptv-org.github.io/iptv/index.country.m3u",
     "https://iptv-org.github.io/iptv/index.language.m3u",
@@ -414,6 +295,9 @@ BUILTIN_PUBLIC_SOURCES = [
     "https://iptv-org.github.io/iptv/countries/ge.m3u",
     "https://iptv-org.github.io/iptv/countries/md.m3u",
     "https://iptv-org.github.io/iptv/countries/ua.m3u",
+    "https://dearbulut.github.io/iptv/playlists/best.m3u",
+    "https://dearbulut.github.io/iptv/playlists/online.m3u",
+    "https://dearbulut.github.io/iptv/playlists/index.m3u",
     "https://dearbulut.github.io/iptv/playlists/country/ru.m3u",
     "https://dearbulut.github.io/iptv/playlists/country/by.m3u",
     "https://dearbulut.github.io/iptv/playlists/country/kz.m3u",
@@ -421,31 +305,66 @@ BUILTIN_PUBLIC_SOURCES = [
     "https://dearbulut.github.io/iptv/playlists/country/uz.m3u",
     "https://dearbulut.github.io/iptv/playlists/country/mn.m3u",
     "https://dearbulut.github.io/iptv/playlists/language/rus.m3u",
-    "https://dearbulut.github.io/iptv/playlists/index.m3u",
-    "https://dearbulut.github.io/iptv/playlists/online.m3u",
-    "https://dearbulut.github.io/iptv/playlists/best.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/documentary.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/entertainment.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/general.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/kids.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/movies.m3u",
-    "https://dearbulut.github.io/iptv/playlists/category/music.m3u",
     "https://dearbulut.github.io/iptv/playlists/category/news.m3u",
     "https://dearbulut.github.io/iptv/playlists/category/sports.m3u",
+    "https://dearbulut.github.io/iptv/playlists/category/movies.m3u",
+    "https://dearbulut.github.io/iptv/playlists/category/music.m3u",
+    "https://dearbulut.github.io/iptv/playlists/category/kids.m3u",
     "https://raw.githubusercontent.com/substanc1/iptv-russia/main/streams/ru.m3u",
+    "https://substanc1.github.io/iptv-russia/streams/ru.m3u",
+    "https://ngrch.github.io/iptv/ru.m3u",
+    "https://ngrch.github.io/iptv/music.m3u",
+    "https://smolnp.github.io/IPTVru/IPTVru.m3u",
+    "https://smolnp.github.io/IPTVru/IPTVstable.m3u8",
+    "https://smolnp.github.io/IPTVru/IPTVmir.m3u8",
+    "https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVru.m3u",
+    "https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVstable.m3u8",
+    "https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVmir.m3u8",
+    "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
+    "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_russia.m3u8",
+    "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv.m3u",
+    "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv-top.m3u",
+    "https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_country.m3u",
+    "https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_country_and_content.m3u",
+    "https://raw.githubusercontent.com/devsground/IPTV/master/all/grouped_by_content.m3u",
     "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
     "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/ipv4/result.m3u",
     "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/ipv6/result.m3u",
     "https://github.com/MaximKiselev/iptv/raw/refs/heads/main/playlist.m3u",
 ]
 
-SPECIAL_SEARCH_TERMS = (
-    "iptv", "m3u", "m3u8", "playlist", "live", "stream",
+# Regexes
+ORBIT_RE = re.compile(r"(?i)(?:\s*[\[(]?([+-]?\d{1,2})\s*(?:h|ч)?[\])]?)\s*$")
+QUALITY_RE = re.compile(
+    r"(?i)\b(?:uhd|4k|fhd|full\s*hd|hd|sd|8k|2160p|1440p|1080p|720p|576p|480p)\b"
 )
+PUNCT_RE = re.compile(r"[^\w\s+#а-яА-ЯёЁ]+", re.UNICODE)
+_ATTR_RE = re.compile(r'([\w-]+)\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s,]+))')
+
+OUTPUT_DIR_NAME = "output_iptv"
+DB_NAME = "M3U_Base.db"
+ML_JSON_NAME = "M3U.JSON"
+ML_DATA_NAME = "Vladik_llm.ml"
+TELEMETRY_NAME = "telemetry.jsonl"
+TELEMETRY_SUMMARY = "telemetry_summary.json"
+STABLE_STATE_NAME = "stable_state.json"
 
 
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8", errors="ignore")).hexdigest()
+
+
+def clean_text(s: str) -> str:
+    s = unicodedata.normalize("NFKC", s or "")
+    s = s.replace("ё", "е").replace("Ё", "Е")
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def clean_url(url: str) -> str:
@@ -460,11 +379,57 @@ def is_http_url(url: str) -> bool:
         return False
 
 
+def normalize_url(url: str) -> str:
+    url = (url or "").strip()
+    if not url:
+        return ""
+    try:
+        p = urlsplit(url)
+        path = re.sub(r"/{2,}", "/", p.path)
+        return urlunsplit((p.scheme.lower(), p.netloc.lower(), path, p.query, ""))
+    except Exception:
+        return url.lower()
+
+
+def host_from_url(url: str) -> str:
+    try:
+        return urlparse(url).hostname or ""
+    except Exception:
+        return ""
+
+
+def apply_host_rewrites(url: str) -> str:
+    url = (url or "").strip()
+    for old, new in CINERAMA_HOST_REPLACEMENTS.items():
+        if url.startswith(old):
+            return new + url[len(old):]
+    return url
+
+
+def host_rewrite_candidates(url: str) -> list[str]:
+    out = []
+    for u in (apply_host_rewrites(url), url):
+        if u and u not in out:
+            out.append(u)
+    return out
+
+
+def is_placeholder_source(source: str) -> bool:
+    s = (source or "").strip().lower()
+    if not s:
+        return True
+    return (
+        s.startswith("#")
+        or s in {"здесь будет ссылка", "сюда будет ссылка", "placeholder", "todo"}
+        or "здесь будет ссылка" in s
+    )
+
+
 def normalize_name(name: str) -> str:
-    s = str(name or "").replace("\ufeff", "").strip().lower()
+    s = clean_text(name).lower()
     s = ORBIT_RE.sub("", s)
     s = QUALITY_RE.sub("", s)
-    s = re.sub(r"\b(?:рус|ru|rus|eng|en)\b", " ", s)
+    s = re.sub(r"\b(?:рус|ru|rus|eng|en|russia)\b", " ", s)
     s = PUNCT_RE.sub(" ", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
@@ -472,12 +437,36 @@ def normalize_name(name: str) -> str:
 
 def orbit_variant(name: str) -> str:
     m = ORBIT_RE.search(str(name or "").strip())
-    return ("+0" if m and m.group(1) == "0" else m.group(1)) if m else "+0"
+    if not m:
+        return "+0"
+    n = int(m.group(1))
+    return "+0" if n == 0 else f"+{n}" if n > 0 else str(n)
 
 
 def quality_variant(name: str) -> str:
     m = QUALITY_RE.search(str(name or ""))
-    return m.group(0).upper().replace(" ", "") if m else "UNKNOWN"
+    if not m:
+        return "UNKNOWN"
+    q = m.group(0).upper().replace(" ", "")
+    return {
+        "FULLHD": "FHD", "1080P": "FHD", "720P": "HD",
+        "576P": "SD", "480P": "SD", "2160P": "UHD",
+        "4K": "UHD", "1440P": "QHD", "8K": "8K",
+    }.get(q, q)
+
+
+def quality_rank(q: str) -> int:
+    return {
+        "8K": 60, "UHD": 50, "4K": 50, "QHD": 40,
+        "FHD": 35, "HD": 25, "SD": 10, "UNKNOWN": 0,
+    }.get((q or "UNKNOWN").upper(), 0)
+
+
+def base_channel_name(name: str) -> str:
+    return re.sub(
+        r"\s+", " ",
+        QUALITY_RE.sub("", ORBIT_RE.sub("", clean_text(name))),
+    ).strip()
 
 
 def channel_similarity(a: str, b: str) -> float:
@@ -486,12 +475,28 @@ def channel_similarity(a: str, b: str) -> float:
         return 0.0
     if na == nb:
         return 1.0
-    return SequenceMatcher(None, na, nb).ratio()
+    aa, bb = set(na.split()), set(nb.split())
+    j = len(aa & bb) / len(aa | bb) if aa and bb else 0.0
+    if na in nb or nb in na:
+        j = max(j, 0.86)
+    seq = SequenceMatcher(None, na, nb).ratio()
+    sa = {x for x in aa if len(x) >= ALT_INDEX_MIN_TOKEN_LEN}
+    sb = {x for x in bb if len(x) >= ALT_INDEX_MIN_TOKEN_LEN}
+    sig = len(sa & sb) / len(sa | sb) if sa and sb else 0.0
+    short, longer = (sa, sb) if len(sa) <= len(sb) else (sb, sa)
+    if short and short <= longer:
+        sig = max(sig, 0.90)
+    return max(j, seq, sig)
 
 
 def is_special_channel(name: str) -> bool:
     n = normalize_name(name)
     return any(term in n for term in SPECIAL_CHANNEL_TERMS)
+
+
+def is_bad_name(name: str) -> bool:
+    low = clean_text(name).lower()
+    return any(x in low for x in BAD_NAME_TOKENS)
 
 
 def infer_region(url: str, name: str = "", source: str = "") -> str:
@@ -502,12 +507,8 @@ def infer_region(url: str, name: str = "", source: str = "") -> str:
     return "UNK"
 
 
-def classify_endpoint(url: str) -> dict[str, str]:
-    try:
-        p = urlparse(url)
-        host = p.hostname or ""
-    except Exception:
-        host = ""
+def classify_endpoint(url: str, name: str = "", source: str = "") -> dict[str, str]:
+    host = host_from_url(url)
     h = host.lower()
     if "wink" in h:
         operator = "Wink"
@@ -520,35 +521,54 @@ def classify_endpoint(url: str) -> dict[str, str]:
     return {
         "host": host,
         "operator": operator,
-        "region": infer_region(url),
+        "region": infer_region(url, name, source),
     }
 
 
-def endpoint_key(url: str) -> str:
-    try:
-        p = urlparse(url)
-        return f"{p.scheme}://{p.netloc.lower()}"
-    except Exception:
-        return url.lower()
-
-
-def host_from_url(url: str) -> str:
-    try:
-        return urlparse(url).hostname or ""
-    except Exception:
-        return ""
+def russian_score(name: str, group: str, country: str, language: str, source: str) -> int:
+    text = " ".join((name, group, country, language, source)).lower()
+    score = 5 if re.search(r"[а-яё]", text) else 0
+    if country.lower() in {"ru", "russia", "rus"}:
+        score += 10
+    if language.lower().startswith("ru") or language.lower() in {"rus", "russian"}:
+        score += 10
+    score += sum(1 for w in RU_WORDS if w in text)
+    return score
 
 
 def parse_attrs(line: str) -> dict[str, str]:
     out: dict[str, str] = {}
-    for m in re.finditer(
-        r'([A-Za-z0-9_-]+)\s*=\s*("([^"]*)"|\'([^\']*)\'|([^\s,]+))',
-        line,
-    ):
-        out[m.group(1).lower()] = m.group(3) or m.group(4) or m.group(5) or ""
+    for m in _ATTR_RE.finditer(line):
+        out[m.group(1).lower()] = m.group(2) or m.group(3) or m.group(4) or ""
     return out
 
 
+def significant_tokens(name: str) -> set[str]:
+    return {x for x in normalize_name(name).split() if len(x) >= ALT_INDEX_MIN_TOKEN_LEN}
+
+
+# ---------------------------------------------------------------------------
+# Rate limiter
+# ---------------------------------------------------------------------------
+class AsyncRateLimiter:
+    def __init__(self, rate: float):
+        self.rate = max(1.0, float(rate))
+        self.interval = 1.0 / self.rate
+        self._lock = asyncio.Lock()
+        self._next = 0.0
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = time.monotonic()
+            if now < self._next:
+                await asyncio.sleep(self._next - now)
+                now = time.monotonic()
+            self._next = max(now, self._next) + self.interval
+
+
+# ---------------------------------------------------------------------------
+# Data classes
+# ---------------------------------------------------------------------------
 @dataclass
 class StreamRecord:
     record_id: int
@@ -591,10 +611,25 @@ class StreamRecord:
     orbit: str = "+0"
     quality: str = "UNKNOWN"
     special: bool = False
+    russian_priority: bool = False
+
+    # External DB enrichment
+    db_id: str = ""
+    db_name: str = ""
+    db_aliases: list[str] = field(default_factory=list)
+    db_country: str = ""
+    db_language: str = ""
+    db_network: str = ""
+    db_match_score: float = 0.0
+    db_match_type: str = ""
 
     alternative_of: str = ""
     alternative_rank: int = 0
     similarity: float = 0.0
+    is_alternative: bool = False
+
+    successes: int = 0
+    failures: int = 0
 
 
 @dataclass
@@ -640,6 +675,389 @@ class AlternativeEvent:
     quality: str
 
 
+# ---------------------------------------------------------------------------
+# External Channel Database (safe AST load)
+# ---------------------------------------------------------------------------
+CHANNEL_DB: list[dict] = []
+CHANNEL_DB_BY_ID: dict[str, dict] = {}
+CHANNEL_DB_BY_NAME: dict[str, list[dict]] = defaultdict(list)
+CHANNEL_DB_BY_ALIAS: dict[str, list[dict]] = defaultdict(list)
+CHANNEL_DB_TOKEN_INDEX: dict[str, list[dict]] = defaultdict(list)
+
+
+def _db_list(v) -> list[str]:
+    if v is None:
+        return []
+    if isinstance(v, (list, tuple, set)):
+        return [clean_text(str(x)) for x in v if clean_text(str(x))]
+    if isinstance(v, str):
+        t = v.strip()
+        if not t:
+            return []
+        if t[:1] in "[{(":
+            try:
+                x = ast.literal_eval(t)
+                if isinstance(x, (list, tuple, set)):
+                    return [clean_text(str(y)) for y in x if clean_text(str(y))]
+            except Exception:
+                pass
+        return [clean_text(x) for x in re.split(r"[|,;]", t) if clean_text(x)]
+    return [clean_text(str(v))]
+
+
+def _db_field(r: dict, *names, default=""):
+    for n in names:
+        if n in r and r[n] not in (None, ""):
+            return r[n]
+    return default
+
+
+def normalize_db_record(r) -> Optional[dict]:
+    if not isinstance(r, dict):
+        return None
+    rid = clean_text(str(_db_field(r, "id", "channel_id", "tvg_id", "slug", "key", default="")))
+    name = clean_text(str(_db_field(r, "name", "channel_name", "title", "display_name", "tvg_name", default="")))
+    aliases = _db_list(_db_field(r, "alt_names", "aliases", "alias", "alternative_names", "names", default=[]))
+    if name:
+        aliases = [x for x in aliases if normalize_name(x) != normalize_name(name)]
+    if not rid and not name:
+        return None
+    return {
+        "id": rid,
+        "name": name or rid,
+        "aliases": aliases,
+        "network": clean_text(str(_db_field(r, "network", "operator", default=""))),
+        "owners": _db_list(_db_field(r, "owners", "owner", default=[])),
+        "country": clean_text(str(_db_field(r, "country", "countries", default=""))),
+        "language": clean_text(str(_db_field(r, "language", "languages", default=""))),
+        "categories": _db_list(_db_field(r, "categories", "category", "genres", default=[])),
+        "website": clean_text(str(_db_field(r, "website", "site", "url", default=""))),
+    }
+
+
+def load_channel_db_csv(data: bytes) -> list[dict]:
+    return [r for row in csv.DictReader(io.StringIO(data.decode("utf-8-sig", "replace"))) if (r := normalize_db_record(row))]
+
+
+def load_channel_db_json(data: bytes) -> list[dict]:
+    try:
+        obj = json.loads(data.decode("utf-8-sig", "replace"))
+    except Exception as e:
+        logging.getLogger("ultra").warning("CHANNEL DB JSON parse failed: %s", e)
+        return []
+    if isinstance(obj, list):
+        raw = obj
+    elif isinstance(obj, dict) and any(k in obj for k in ("id", "name", "title", "channel_name", "tvg_name")):
+        raw = [obj]
+    elif isinstance(obj, dict):
+        raw = list(obj.values())
+    else:
+        raw = []
+    return [r for x in raw if (r := normalize_db_record(x))]
+
+
+def load_channel_db_py(data: bytes) -> list[dict]:
+    try:
+        tree = ast.parse(data.decode("utf-8", "replace"))
+    except Exception as e:
+        logging.getLogger("ultra").warning("CHANNEL DB PY parse failed: %s", e)
+        return []
+    out = []
+    for node in tree.body:
+        value = None
+        if isinstance(node, (ast.Assign, ast.AnnAssign)):
+            value = node.value
+        if value is None:
+            continue
+        try:
+            obj = ast.literal_eval(value)
+        except Exception:
+            continue
+        if isinstance(obj, dict):
+            if any(k in obj for k in ("id", "name", "title", "channel_name", "tvg_name")):
+                out.append(obj)
+            else:
+                out.extend(v for v in obj.values() if isinstance(v, dict))
+        elif isinstance(obj, (list, tuple, set)):
+            out.extend(v for v in obj if isinstance(v, dict))
+    return [r for x in out if (r := normalize_db_record(x))]
+
+
+def merge_db(records: list[dict]) -> list[dict]:
+    merged: dict[str, dict] = {}
+    for r in records:
+        k = r["id"] or "name:" + normalize_name(r["name"])
+        if k not in merged:
+            merged[k] = dict(r)
+            continue
+        d = merged[k]
+        d["aliases"] = list(dict.fromkeys(d.get("aliases", []) + r.get("aliases", [])))
+        for x in ("network", "country", "language", "website"):
+            if not d.get(x):
+                d[x] = r.get(x, "")
+        for x in ("owners", "categories"):
+            d[x] = list(dict.fromkeys(d.get(x, []) + r.get(x, [])))
+    return list(merged.values())
+
+
+def build_db_indexes(records: list[dict]) -> None:
+    global CHANNEL_DB, CHANNEL_DB_BY_ID, CHANNEL_DB_BY_NAME, CHANNEL_DB_BY_ALIAS, CHANNEL_DB_TOKEN_INDEX
+    CHANNEL_DB = records
+    CHANNEL_DB_BY_ID = {}
+    CHANNEL_DB_BY_NAME = defaultdict(list)
+    CHANNEL_DB_BY_ALIAS = defaultdict(list)
+    CHANNEL_DB_TOKEN_INDEX = defaultdict(list)
+    for r in records:
+        if r["id"]:
+            CHANNEL_DB_BY_ID[r["id"].lower()] = r
+        for value, target in [(r["name"], CHANNEL_DB_BY_NAME)] + [(a, CHANNEL_DB_BY_ALIAS) for a in r["aliases"]]:
+            k = normalize_name(value)
+            if not k:
+                continue
+            target[k].append(r)
+            for t in significant_tokens(k):
+                CHANNEL_DB_TOKEN_INDEX[t].append(r)
+
+
+async def fetch_bytes(session: aiohttp.ClientSession, url: str, max_bytes: int = CHANNEL_DB_MAX_BYTES) -> bytes:
+    async with session.get(url, timeout=aiohttp.ClientTimeout(total=45), allow_redirects=True) as resp:
+        if resp.status >= 400:
+            raise RuntimeError(f"HTTP {resp.status}: {url}")
+        data = await resp.content.read(max_bytes + 1)
+        if len(data) > max_bytes:
+            raise ValueError(f"response exceeds {max_bytes} bytes")
+        if url.lower().split("?", 1)[0].endswith(".gz") or data[:2] == b"\x1f\x8b":
+            data = gzip.decompress(data)
+        return data
+
+
+def _candidate_local_db_paths(extra_dirs: Optional[list[Path]] = None) -> list[Path]:
+    """Collect possible local channel-db paths (cwd, script dir, extra dirs)."""
+    bases: list[Path] = [
+        Path.cwd(),
+        Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd(),
+    ]
+    if extra_dirs:
+        bases.extend(extra_dirs)
+    seen: set[str] = set()
+    out: list[Path] = []
+    for base in bases:
+        for name in LOCAL_CHANNEL_DB_FILES:
+            p = (base / name).resolve()
+            key = str(p)
+            if key not in seen and p.is_file():
+                seen.add(key)
+                out.append(p)
+    return out
+
+
+def _parse_db_by_suffix(path: Path, data: bytes) -> list[dict]:
+    name = path.name.lower()
+    if name.endswith(".csv"):
+        return load_channel_db_csv(data)
+    if name.endswith(".json"):
+        return load_channel_db_json(data)
+    if name.endswith(".py"):
+        return load_channel_db_py(data)
+    return []
+
+
+def load_local_channel_files(paths: list[Path]) -> list[dict]:
+    """
+    Последовательная загрузка локальных вариантов: CSV → JSON → PY.
+    Если один файл не прочитался / пуст — пробуем следующий.
+    Успешные источники объединяются (merge позже).
+    """
+    log = logging.getLogger("ultra")
+    # Сортируем: сначала .csv, потом .json, потом .py
+    order = {".csv": 0, ".json": 1, ".py": 2}
+    ordered = sorted(
+        paths,
+        key=lambda p: (order.get(Path(p.name).suffix.lower(), 9), str(p)),
+    )
+    allr: list[dict] = []
+    loaded_labels: list[str] = []
+    for p in ordered:
+        label = p.suffix.lower().lstrip(".") or p.name
+        try:
+            data = p.read_bytes()
+            rows = _parse_db_by_suffix(p, data)
+            if not rows:
+                log.warning(
+                    "CHANNEL DB LOCAL %s: 0 records — пробуем следующий вариант",
+                    p,
+                )
+                continue
+            allr.extend(rows)
+            loaded_labels.append(f"{p.name}:{len(rows)}")
+            log.info(
+                "CHANNEL DB LOCAL %s OK: records=%d bytes=%d",
+                p, len(rows), len(data),
+            )
+        except Exception as e:
+            log.warning(
+                "CHANNEL DB LOCAL %s failed (%s) — пробуем следующий вариант",
+                p, e,
+            )
+    if loaded_labels:
+        log.info("CHANNEL DB LOCAL loaded: %s", ", ".join(loaded_labels))
+    else:
+        log.info("CHANNEL DB LOCAL: ни один csv/json/py не загрузился")
+    return allr
+
+
+async def _load_remote_db_cascade(
+    session: aiohttp.ClientSession,
+) -> list[dict]:
+    """
+    Remote cascade: CSV → JSON → PY.
+    Если вариант упал или дал 0 записей — грузим следующий.
+    Все успешные источники объединяются.
+    """
+    log = logging.getLogger("ultra")
+    sources = (
+        ("CSV", CHANNEL_DB_CSV_URL, load_channel_db_csv),
+        ("JSON", CHANNEL_DB_JSON_URL, load_channel_db_json),
+        ("PY", CHANNEL_DB_PY_URL, load_channel_db_py),
+    )
+    allr: list[dict] = []
+    loaded: list[str] = []
+    for label, url, parser in sources:
+        try:
+            data = await fetch_bytes(session, url)
+            rows = parser(data)
+            if not rows:
+                log.warning(
+                    "CHANNEL DB REMOTE %s: 0 records — пробуем следующий вариант",
+                    label,
+                )
+                continue
+            allr.extend(rows)
+            loaded.append(f"{label}:{len(rows)}")
+            log.info(
+                "CHANNEL DB REMOTE %s OK: records=%d bytes=%d",
+                label, len(rows), len(data),
+            )
+        except Exception as e:
+            log.warning(
+                "CHANNEL DB REMOTE %s failed (%s) — пробуем следующий вариант",
+                label, e,
+            )
+    if loaded:
+        log.info("CHANNEL DB REMOTE loaded: %s", ", ".join(loaded))
+    else:
+        log.warning("CHANNEL DB REMOTE: ни один csv/json/py не загрузился")
+    return allr
+
+
+async def load_external_channel_database(
+    session: aiohttp.ClientSession,
+    extra_dirs: Optional[list[Path]] = None,
+    skip_remote: bool = False,
+) -> int:
+    """
+    Загрузка основной БД с каскадом форматов CSV → JSON → PY:
+
+      1. Local files (channels.csv → channels.json → channels_data.py)
+      2. Remote GitHub (csv → json → py), unless skip_remote
+      3. Built-in seed — орбиты/качества (SD/HD/FHD, +0..+7), всегда
+
+    Если один вариант не подгрузился (ошибка / 0 записей) — берём следующий.
+    Успешные источники мержатся (алиасы дополняются).
+    """
+    log = logging.getLogger("ultra")
+    allr: list[dict] = []
+
+    # 1) Local cascade CSV → JSON → PY
+    local_paths = _candidate_local_db_paths(extra_dirs)
+    if local_paths:
+        allr.extend(load_local_channel_files(local_paths))
+    else:
+        log.info("CHANNEL DB LOCAL: файлы channels.csv/json/py не найдены")
+
+    # 2) Remote cascade CSV → JSON → PY
+    if not skip_remote:
+        allr.extend(await _load_remote_db_cascade(session))
+    else:
+        log.info("CHANNEL DB REMOTE: пропуск (--no-remote-db)")
+
+    # 3) Built-in supplementary: orbit / quality variant aliases
+    builtin = [r for x in BUILTIN_CHANNEL_DB if (r := normalize_db_record(x))]
+    allr.extend(builtin)
+    log.info("CHANNEL DB BUILTIN (orbits/qualities support): records=%d", len(builtin))
+
+    rows = merge_db(allr)
+    build_db_indexes(rows)
+    log.info("CHANNEL DB READY: %d canonical records (merged)", len(rows))
+    return len(rows)
+
+
+def database_match_channel(
+    name: str,
+    tvg_id: str = "",
+    original_names: Optional[list[str]] = None,
+) -> tuple[Optional[dict], float, str]:
+    if tvg_id:
+        tid = clean_text(tvg_id).lower()
+        if tid in CHANNEL_DB_BY_ID:
+            return CHANNEL_DB_BY_ID[tid], 1.0, "id"
+        base = tid.split("@", 1)[0]
+        if base in CHANNEL_DB_BY_ID:
+            return CHANNEL_DB_BY_ID[base], 0.99, "id-base"
+    best = None
+    best_score = 0.0
+    best_type = ""
+    for raw in [name] + list(original_names or []):
+        k = normalize_name(raw)
+        if not k:
+            continue
+        if CHANNEL_DB_BY_NAME.get(k):
+            return CHANNEL_DB_BY_NAME[k][0], 1.0, "name"
+        if CHANNEL_DB_BY_ALIAS.get(k):
+            return CHANNEL_DB_BY_ALIAS[k][0], CHANNEL_DB_ALIAS_MATCH, "alias"
+        candidates = []
+        seen = set()
+        for token in significant_tokens(k):
+            for r in CHANNEL_DB_TOKEN_INDEX.get(token, []):
+                ident = r.get("id") or r.get("name")
+                if ident not in seen:
+                    seen.add(ident)
+                    candidates.append(r)
+        for r in candidates[:300]:
+            score = max(
+                (channel_similarity(k, normalize_name(x)) for x in [r["name"]] + r["aliases"] if x),
+                default=0.0,
+            )
+            if score > best_score:
+                best, best_score, best_type = r, score, "fuzzy"
+    if best is not None and best_score >= CHANNEL_DB_MATCH_THRESHOLD:
+        return best, best_score, best_type
+    return None, 0.0, ""
+
+
+def enrich_record_from_db(r: StreamRecord) -> None:
+    db, score, typ = database_match_channel(r.name, r.tvg_id)
+    if not db:
+        return
+    r.db_id = db["id"]
+    r.db_name = db["name"]
+    r.db_aliases = list(db["aliases"])
+    r.db_country = db["country"]
+    r.db_language = db["language"]
+    r.db_network = db["network"]
+    r.db_match_score = score
+    r.db_match_type = typ
+    if not r.tvg_id and r.db_id:
+        r.tvg_id = r.db_id
+    if not r.group and db.get("categories"):
+        r.group = db["categories"][0]
+    if str(r.db_country).lower() in {"ru", "rus", "russia"} or str(r.db_language).lower().startswith(("ru", "rus", "russian")):
+        r.russian_priority = True
+
+
+# ---------------------------------------------------------------------------
+# Archive (append-only)
+# ---------------------------------------------------------------------------
 class Archive:
     def __init__(self, root: Path):
         self.root = root
@@ -652,13 +1070,18 @@ class Archive:
         self._load()
 
     def _load(self) -> None:
-        if self.records_path.exists():
-            with self.records_path.open("r", encoding="utf-8") as f:
-                for line in f:
-                    try:
-                        self.records.append(StreamRecord(**json.loads(line)))
-                    except Exception:
-                        continue
+        if not self.records_path.exists():
+            return
+        with self.records_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    d = json.loads(line)
+                    # Compatibility: ensure list fields
+                    if "db_aliases" not in d:
+                        d["db_aliases"] = []
+                    self.records.append(StreamRecord(**{k: v for k, v in d.items() if k in StreamRecord.__dataclass_fields__}))
+                except Exception:
+                    continue
 
     def next_id(self) -> int:
         return max((r.record_id for r in self.records), default=0) + 1
@@ -697,14 +1120,17 @@ class Archive:
         )
 
 
+# ---------------------------------------------------------------------------
+# Source loader
+# ---------------------------------------------------------------------------
 class SourceLoader:
-    def __init__(self, output: Path, timeout: int, workers: int, user_agent: str):
+    def __init__(self, output: Path, timeout: int, workers: int, user_agent: str, ops_per_second: float):
         self.output = output.resolve()
         self.timeout = timeout
         self.workers = workers
         self.user_agent = user_agent
         self.session_headers = {"User-Agent": user_agent}
-        self.rate_limiter: Optional[AsyncRateLimiter] = None
+        self.rate_limiter = AsyncRateLimiter(ops_per_second)
 
     def is_generated(self, path: Path) -> bool:
         try:
@@ -712,7 +1138,7 @@ class SourceLoader:
             if self.output == p or self.output in p.parents:
                 return True
         except Exception:
-            pass
+            return False
         return p.name.lower() in GENERATED_NAMES
 
     def validate_local(self, path: Path) -> bool:
@@ -722,8 +1148,7 @@ class SourceLoader:
         last_error: Optional[Exception] = None
         for attempt in range(1, SOURCE_FETCH_RETRIES + 1):
             try:
-                if self.rate_limiter:
-                    await self.rate_limiter.wait()
+                await self.rate_limiter.wait()
                 async with session.get(
                     apply_host_rewrites(url),
                     timeout=aiohttp.ClientTimeout(total=self.timeout),
@@ -731,7 +1156,7 @@ class SourceLoader:
                 ) as resp:
                     if resp.status >= 400:
                         raise RuntimeError(f"HTTP {resp.status}: {url}")
-                    raw = await resp.content.read(80 * 1024 * 1024)
+                    raw = await resp.content.read(MAX_SOURCE_BYTES)
                     return raw.decode("utf-8-sig", errors="replace")
             except Exception as exc:
                 last_error = exc
@@ -742,41 +1167,47 @@ class SourceLoader:
     def parse_m3u(self, text: str, source: str, pass_no: int, start_id: int) -> list[StreamRecord]:
         records: list[StreamRecord] = []
         lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
-        pending: Optional[tuple[str, dict[str, str], str]] = None
+        pending: Optional[tuple[str, dict[str, str]]] = None
         rid = start_id
 
         for raw in lines:
             line = raw.strip()
             if not line:
                 continue
-
             if line.upper().startswith("#EXTINF"):
                 left, _, display = line.partition(",")
                 attrs = parse_attrs(left)
-                name = display.strip() or attrs.get("tvg-name", "") or attrs.get("tvg-id", "")
-                pending = (name, attrs, left)
+                name = display.strip() or attrs.get("tvg-name", "") or attrs.get("tvg-id", "") or "Unknown"
+                pending = (name, attrs)
                 continue
-
             if line.startswith("#"):
                 continue
-
             if not is_http_url(line):
                 continue
-
             if pending:
-                name, attrs, _ = pending
+                name, attrs = pending
                 pending = None
             else:
                 name, attrs = "Unknown", {}
 
-            meta = classify_endpoint(line)
+            if is_bad_name(name):
+                continue
+
+            url = apply_host_rewrites(clean_url(line))
+            host = host_from_url(url)
+            if any(h in host.lower() for h in NON_STREAM_HOSTS):
+                continue
+
+            meta = classify_endpoint(url, name, source)
+            orbit = orbit_variant(name)
+            quality = quality_variant(name)
             r = StreamRecord(
                 record_id=rid,
                 name=name,
-                url=apply_host_rewrites(clean_url(line)),
+                url=url,
                 group=attrs.get("group-title", ""),
                 tvg_id=attrs.get("tvg-id", ""),
-                tvg_name=attrs.get("tvg-name", ""),
+                tvg_name=attrs.get("tvg-name", "") or name,
                 logo=attrs.get("tvg-logo", ""),
                 source=source,
                 source_type="playlist",
@@ -785,14 +1216,19 @@ class SourceLoader:
                 host=meta["host"],
                 operator=meta["operator"],
                 normalized_channel=normalize_name(name),
-                orbit=orbit_variant(name),
-                quality=quality_variant(name),
+                orbit=orbit,
+                quality=quality,
                 special=is_special_channel(name),
+                russian_priority=russian_score(
+                    name, attrs.get("group-title", ""), attrs.get("tvg-country", ""),
+                    attrs.get("tvg-language", ""), source,
+                ) >= 6,
             )
+            enrich_record_from_db(r)
             records.append(r)
             rid += 1
 
-        # TXT/plain URL fallback
+        # Plain URL fallback
         if not records:
             for line in lines:
                 line = line.strip()
@@ -810,10 +1246,8 @@ class SourceLoader:
                         host=meta["host"],
                         operator=meta["operator"],
                         normalized_channel="unknown",
-                        special=False,
                     ))
                     rid += 1
-
         return records
 
     async def load_one(
@@ -826,13 +1260,15 @@ class SourceLoader:
         if is_placeholder_source(source):
             return []
         source = apply_host_rewrites(clean_url(source))
-        if not source or is_placeholder_source(source):
+        if not source:
             return []
-
         if is_http_url(source):
-            text = await self.fetch_text(session, source)
-            return self.parse_m3u(text, source, pass_no, start_id)
-
+            try:
+                text = await self.fetch_text(session, source)
+                return self.parse_m3u(text, source, pass_no, start_id)
+            except Exception as e:
+                logging.getLogger("ultra").warning("SOURCE FAIL %s :: %s", source, e)
+                return []
         p = Path(source).expanduser()
         if not self.validate_local(p):
             return []
@@ -842,26 +1278,15 @@ class SourceLoader:
     async def load_many(self, sources: list[str], pass_no: int, start_id: int) -> list[StreamRecord]:
         timeout = aiohttp.ClientTimeout(total=self.timeout)
         connector = aiohttp.TCPConnector(limit=max(10, self.workers), ssl=False)
-        if self.rate_limiter is None:
-            self.rate_limiter = AsyncRateLimiter(DEFAULT_OPS_PER_SECOND)
         async with aiohttp.ClientSession(
             timeout=timeout,
             connector=connector,
             headers=self.session_headers,
         ) as session:
-            tasks = []
-            current = start_id
-            # IDs are reserved by source order; no dedup is done.
-            for src in sources:
-                tasks.append((src, current))
-                # reserve by estimated increment later; use sequential result IDs after gathering
-                current += 1
-
             results = await asyncio.gather(
-                *(self.load_one(session, src, pass_no, sid) for src, sid in tasks),
+                *(self.load_one(session, src, pass_no, start_id) for src in sources),
                 return_exceptions=True,
             )
-
         out: list[StreamRecord] = []
         rid = start_id
         for result in results:
@@ -874,37 +1299,54 @@ class SourceLoader:
         return out
 
 
+# ---------------------------------------------------------------------------
+# Stream checking
+# ---------------------------------------------------------------------------
 async def check_stream(
     session: aiohttp.ClientSession,
     record: StreamRecord,
     timeout: int,
-    ffprobe: bool,
     rate_limiter: Optional[AsyncRateLimiter] = None,
 ) -> CheckEvent:
     started = time.perf_counter()
     event = CheckEvent(
-        record_id=record.record_id, pass_no=record.discovered_pass, timestamp=now_iso(),
-        working=False, status_code=0, latency_ms=999999.0, final_url="",
-        content_type="", protocol="", resolution="", width=0, height=0,
-        bitrate_kbps=0.0, codec="", has_audio=False, has_video=False,
-        is_live=False, is_vod=False, archive_supported=False, error="",
+        record_id=record.record_id,
+        pass_no=record.discovered_pass,
+        timestamp=now_iso(),
+        working=False,
+        status_code=0,
+        latency_ms=999999.0,
+        final_url="",
+        content_type="",
+        protocol="",
+        resolution="",
+        width=0,
+        height=0,
+        bitrate_kbps=0.0,
+        codec="",
+        has_audio=False,
+        has_video=False,
+        is_live=False,
+        is_vod=False,
+        archive_supported=False,
+        error="",
     )
     record.url = apply_host_rewrites(record.url)
     if is_placeholder_source(record.url):
         event.error = "PLACEHOLDER_SKIPPED"
         return event
 
-    kwargs = {
-        "timeout": aiohttp.ClientTimeout(total=timeout),
-        "allow_redirects": True,
-        "headers": {"User-Agent": DEFAULT_UA},
-    }
     last_error = ""
     for attempt in range(1, STREAM_CHECK_RETRIES + 1):
         try:
             if rate_limiter:
                 await rate_limiter.wait()
-            async with session.get(record.url, **kwargs) as resp:
+            async with session.get(
+                record.url,
+                timeout=aiohttp.ClientTimeout(total=timeout),
+                allow_redirects=True,
+                headers={"User-Agent": random.choice(USER_AGENT_POOL)},
+            ) as resp:
                 event.latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
                 event.status_code = resp.status
                 event.final_url = str(resp.url)
@@ -927,7 +1369,9 @@ async def check_stream(
                     event.is_vod = not event.is_live
                     event.has_video = "#EXT-X-STREAM-INF" in upper or "CODECS=" in upper or "#EXTINF:" in upper
                     event.has_audio = "#EXT-X-MEDIA" in upper and "TYPE=AUDIO" in upper
-                    event.archive_supported = any(x in text.lower() for x in ("timeshift", "dvr", "catchup", "start=", "utc="))
+                    event.archive_supported = any(
+                        x in text.lower() for x in ("timeshift", "dvr", "catchup", "start=", "utc=")
+                    )
                     codecs = set()
                     for m in re.finditer(r'CODECS\s*=\s*"([^"]+)"', text, re.I):
                         codecs.update(x.strip() for x in m.group(1).split(",") if x.strip())
@@ -963,10 +1407,8 @@ async def check_stream(
 def ffprobe_metadata(url: str, timeout: int = 12) -> dict[str, Any]:
     cmd = [
         "ffprobe", "-v", "error",
-        "-show_entries",
-        "stream=codec_name,width,height,bit_rate",
-        "-of", "json",
-        "-i", url,
+        "-show_entries", "stream=codec_name,width,height,bit_rate",
+        "-of", "json", "-i", url,
     ]
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
@@ -1009,6 +1451,10 @@ def apply_event(record: StreamRecord, event: CheckEvent) -> None:
     record.is_vod = event.is_vod
     record.archive_supported = event.archive_supported
     record.error = event.error
+    if event.working:
+        record.successes += 1
+    else:
+        record.failures += 1
 
     if record.final_url:
         meta = classify_endpoint(record.final_url, record.name, record.source)
@@ -1017,19 +1463,16 @@ def apply_event(record: StreamRecord, event: CheckEvent) -> None:
             record.region = meta["region"]
         if meta["operator"]:
             record.operator = meta["operator"]
-
     record.cdn_node = record.host
 
 
 def score(record: StreamRecord) -> float:
     if not record.working:
         return -1e9
-
     latency_score = max(0.0, 40.0 - min(record.latency_ms, 4000.0) / 100.0)
     resolution_score = {
         "UHD": 35.0, "4K": 35.0, "FHD": 30.0, "HD": 22.0, "SD": 10.0
     }.get(record.quality, 0.0)
-
     if record.height >= 2160:
         resolution_score = 35.0
     elif record.height >= 1080:
@@ -1038,25 +1481,22 @@ def score(record: StreamRecord) -> float:
         resolution_score = max(resolution_score, 22.0)
     elif record.height >= 480:
         resolution_score = max(resolution_score, 10.0)
-
     bitrate_score = min(15.0, math.log2(max(record.bitrate_kbps, 1.0) + 1.0) * 1.5)
     protocol_score = 5.0 if record.protocol in ("HLS", "DASH") else 2.0
-    return latency_score + resolution_score + bitrate_score + protocol_score
+    special_bonus = 3.0 if record.special else 0.0
+    ru_bonus = 2.0 if record.russian_priority else 0.0
+    return latency_score + resolution_score + bitrate_score + protocol_score + special_bonus + ru_bonus
 
 
 def diversity_key(r: StreamRecord) -> tuple[str, str, str]:
-    # "Real diversity" view: country + host + operator.
     return (r.region, r.host.lower(), r.operator.lower())
 
 
 def choose_diverse(records: list[StreamRecord], target: int = 20) -> list[StreamRecord]:
     working = [r for r in records if r.working]
     working.sort(key=score, reverse=True)
-
     selected: list[StreamRecord] = []
     used_nodes: set[tuple[str, str, str]] = set()
-
-    # First pass: maximize node diversity.
     for r in working:
         k = diversity_key(r)
         if k in used_nodes:
@@ -1065,8 +1505,6 @@ def choose_diverse(records: list[StreamRecord], target: int = 20) -> list[Stream
         selected.append(r)
         if len(selected) >= target:
             return selected
-
-    # Second pass: fill to target with best remaining streams.
     selected_ids = {r.record_id for r in selected}
     for r in working:
         if r.record_id not in selected_ids:
@@ -1076,123 +1514,179 @@ def choose_diverse(records: list[StreamRecord], target: int = 20) -> list[Stream
     return selected
 
 
-def source_file_is_safe(path: Path, output: Path) -> bool:
-    try:
-        p = path.resolve()
-        o = output.resolve()
-        if p == o or o in p.parents:
-            return False
-    except Exception:
-        return False
-    return p.name.lower() not in GENERATED_NAMES
-
-
-def load_source_list(path: Path, output: Path) -> list[str]:
-    if not path.exists() or not source_file_is_safe(path, output):
-        return []
-    out = []
-    for line in path.read_text("utf-8-sig", errors="replace").splitlines():
-        s = line.strip()
-        if not s or s.startswith("#"):
-            continue
-        out.append(s)
-    return out
-
-
-def build_sources(args: argparse.Namespace) -> list[str]:
-    sources: list[str] = []
-    sources.extend(VERIFIED_REAL_SOURCES)
-    sources.extend(USER_PROVIDED_SOURCES)
-    sources.extend(RESERVED_SOURCE_SLOTS)
-    if not args.no_builtin_sources:
-        sources.extend(BUILTIN_PUBLIC_SOURCES)
-    sources.extend(args.source or [])
-    for sl in args.source_list or []:
-        sources.extend(load_source_list(Path(sl).expanduser(), Path(args.output)))
-
-    # Only duplicate playlist URLs are collapsed at source-fetch level.
-    # Channels and stream records are never deduplicated.
-    out = []
-    seen_sources = set()
-    for source in sources:
-        if is_placeholder_source(source):
-            continue
-        source = apply_host_rewrites(clean_url(source))
-        if source and source not in seen_sources:
-            seen_sources.add(source)
-            out.append(source)
-    return out
-
-
-def write_m3u(path: Path, records: Iterable[StreamRecord], title: str) -> None:
-    with path.open("w", encoding="utf-8", newline="\n") as f:
-        f.write(f'#EXTM3U x-no-dedup="1" x-title="{title}"\n')
-        for r in records:
-            if not r.url:
-                continue
-            attrs = [
-                f'tvg-id="{r.tvg_id}"',
-                f'tvg-name="{r.tvg_name or r.name}"',
-                f'tvg-logo="{r.logo}"' if r.logo else "",
-                f'group-title="{r.group}"' if r.group else "",
-            ]
-            attrs = [x for x in attrs if x]
-            label = r.name
-            if r.orbit != "+0" and r.orbit not in label:
-                label += f" {r.orbit}"
-            if r.quality != "UNKNOWN" and r.quality.lower() not in label.lower():
-                label += f" [{r.quality}]"
-            f.write(f'#EXTINF:-1 {" ".join(attrs)},{label}\n')
-            f.write(r.url + "\n")
-
-
-def write_snapshot(root: Path, pass_no: int, records: list[StreamRecord]) -> None:
-    payload = {
-        "version": VERSION,
-        "pass": pass_no,
-        "created_at": now_iso(),
-        "records": [asdict(r) | {"score": score(r)} for r in records],
-    }
-    p = root / f"snapshot_pass_{pass_no:05d}.json"
-    p.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    (root / "results.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-
-
-def write_channel_report(root: Path, records: list[StreamRecord]) -> None:
+# ---------------------------------------------------------------------------
+# Alternatives (channel-centric + orbit/quality aware)
+# ---------------------------------------------------------------------------
+async def find_and_test_alternatives(
+    records: list[StreamRecord],
+    pass_no: int,
+    target: int,
+    candidate_limit: int,
+    workers: int,
+    timeout: int,
+    ffprobe: bool,
+    min_similarity: float,
+    archive: Archive,
+) -> tuple[list[StreamRecord], list[AlternativeEvent]]:
     groups: dict[str, list[StreamRecord]] = defaultdict(list)
     for r in records:
-        groups[r.normalized_channel or normalize_name(r.name)].append(r)
+        # Prefer db_id for grouping when available
+        key = r.db_id or r.normalized_channel or normalize_name(r.name) or "unknown"
+        groups[key].append(r)
 
-    report: dict[str, Any] = {}
+    jobs: list[tuple[str, list[StreamRecord], list[StreamRecord]]] = []
     for key, rs in groups.items():
-        working = [r for r in rs if r.working]
-        report[key] = {
-            "display_names": sorted({r.name for r in rs}),
-            "total_records": len(rs),
-            "working_records": len(working),
-            "special": any(r.special for r in rs),
-            "qualities": dict(sorted(__import__("collections").Counter(r.quality for r in rs).items())),
-            "orbits": dict(sorted(__import__("collections").Counter(r.orbit for r in rs).items())),
-            "regions": dict(sorted(__import__("collections").Counter(r.region for r in rs).items())),
-            "unique_hosts": len({r.host for r in working if r.host}),
-            "unique_operators": len({r.operator for r in working if r.operator}),
-            "latency_min_ms": min((r.latency_ms for r in working), default=None),
-            "latency_avg_ms": (
-                round(sum(r.latency_ms for r in working) / len(working), 2)
-                if working else None
-            ),
-            "best_score": max((score(r) for r in working), default=None),
+        working = [r for r in rs if r.working and not is_placeholder_source(r.url)]
+        if len(choose_diverse(working, target)) >= target:
+            continue
+        seed = max(rs, key=lambda x: (x.working, len(x.name or "")))
+        existing_urls = {normalize_url(r.url) for r in working if r.url}
+        present_orbits = {
+            (str(r.quality or "UNKNOWN").upper(), str(r.orbit or "+0"))
+            for r in working
+        }
+        missing_pairs = {
+            (q, o)
+            for q in ORBIT_QUALITY_TARGETS
+            for o in ORBIT_SEARCH_ORDER
+            if (q, o) not in present_orbits
         }
 
-    (root / "channels_report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+        scored: list[tuple[float, StreamRecord]] = []
+        for c in records:
+            if not c.url or is_placeholder_source(c.url):
+                continue
+            if normalize_url(c.url) in existing_urls:
+                continue
+            # Strong match if same db_id
+            if seed.db_id and c.db_id and seed.db_id == c.db_id:
+                sim = 1.0
+            else:
+                sim = channel_similarity(seed.name, c.name)
+                if seed.db_name and c.db_name:
+                    sim = max(sim, channel_similarity(seed.db_name, c.db_name))
+            if sim < min_similarity:
+                continue
+
+            quality = str(c.quality or "UNKNOWN").upper()
+            orbit = str(c.orbit or "+0")
+            score_value = sim
+            if c.host and c.host not in {x.host for x in working}:
+                score_value += ALT_DIVERSITY_BONUS
+            if (quality, orbit) in missing_pairs:
+                score_value += ORBIT_MISSING_BONUS
+            if quality in ORBIT_QUALITY_TARGETS:
+                score_value += ORBIT_SEARCH_QUALITY_BONUS
+            if orbit in ORBIT_SEARCH_ORDER:
+                score_value += 0.03 * (len(ORBIT_SEARCH_ORDER) - ORBIT_SEARCH_ORDER.index(orbit)) / len(ORBIT_SEARCH_ORDER)
+            scored.append((score_value, c))
+
+        scored.sort(key=lambda x: (x[0], score(x[1])), reverse=True)
+        jobs.append((key, rs, [c for _, c in scored[:candidate_limit]]))
+
+    if not jobs:
+        return [], []
+
+    all_events: list[AlternativeEvent] = []
+    new_records: list[StreamRecord] = []
+    next_id = archive.next_id()
+    rate_limiter = AsyncRateLimiter(DEFAULT_OPS_PER_SECOND)
+    connector = aiohttp.TCPConnector(limit=max(8, workers), ssl=False)
+    sem = asyncio.Semaphore(max(1, workers))
+
+    async with aiohttp.ClientSession(
+        connector=connector,
+        timeout=aiohttp.ClientTimeout(total=timeout),
+        headers={"User-Agent": DEFAULT_UA},
+    ) as session:
+        async def test(candidate: StreamRecord):
+            async with sem:
+                e = await check_stream(session, candidate, timeout, rate_limiter)
+                return candidate, e
+
+        for key, rs, candidates in jobs:
+            working = [r for r in rs if r.working]
+            selected = choose_diverse(working, target)
+            existing_urls = {normalize_url(r.url) for r in working if r.url}
+            rank = 0
+            for coro in asyncio.as_completed([test(c) for c in candidates]):
+                candidate, event = await coro
+                rank += 1
+                sim = channel_similarity(rs[0].name, candidate.name)
+                all_events.append(AlternativeEvent(
+                    pass_no=pass_no,
+                    timestamp=now_iso(),
+                    failed_record_id=rs[0].record_id,
+                    failed_name=rs[0].name,
+                    candidate_record_id=candidate.record_id,
+                    candidate_name=candidate.name,
+                    candidate_url=apply_host_rewrites(candidate.url),
+                    similarity=sim,
+                    working=event.working,
+                    rank=rank,
+                    region=candidate.region,
+                    host=candidate.host,
+                    operator=candidate.operator,
+                    orbit=candidate.orbit,
+                    quality=candidate.quality,
+                ))
+                if event.working and normalize_url(candidate.url) not in existing_urls:
+                    nr = StreamRecord(
+                        record_id=next_id,
+                        name=rs[0].name or candidate.name,
+                        url=apply_host_rewrites(candidate.url),
+                        group=candidate.group or rs[0].group,
+                        tvg_id=rs[0].tvg_id or candidate.tvg_id,
+                        tvg_name=rs[0].tvg_name or candidate.tvg_name,
+                        logo=rs[0].logo or candidate.logo,
+                        source=candidate.source,
+                        source_type="working_alternative",
+                        discovered_pass=pass_no,
+                        region=candidate.region,
+                        host=candidate.host,
+                        operator=candidate.operator,
+                        normalized_channel=key if not key.startswith("id:") else normalize_name(rs[0].name),
+                        orbit=candidate.orbit,
+                        quality=candidate.quality,
+                        special=any(x.special for x in rs) or candidate.special,
+                        russian_priority=any(x.russian_priority for x in rs) or candidate.russian_priority,
+                        db_id=rs[0].db_id or candidate.db_id,
+                        db_name=rs[0].db_name or candidate.db_name,
+                        db_aliases=list(dict.fromkeys(rs[0].db_aliases + candidate.db_aliases)),
+                        db_country=rs[0].db_country or candidate.db_country,
+                        db_language=rs[0].db_language or candidate.db_language,
+                        db_network=rs[0].db_network or candidate.db_network,
+                        db_match_score=max(rs[0].db_match_score, candidate.db_match_score),
+                        db_match_type=rs[0].db_match_type or candidate.db_match_type,
+                        alternative_of=rs[0].name,
+                        alternative_rank=rank,
+                        similarity=sim,
+                        is_alternative=True,
+                    )
+                    apply_event(nr, event)
+                    new_records.append(nr)
+                    existing_urls.add(normalize_url(nr.url))
+                    selected.append(nr)
+                    next_id += 1
+
+                    diverse_count = len(choose_diverse(selected, target))
+                    covered_primary = {
+                        (str(x.quality or "UNKNOWN").upper(), str(x.orbit or "+0"))
+                        for x in selected
+                    }
+                    primary_missing = any(
+                        (q, o) not in covered_primary
+                        for q in ORBIT_QUALITY_TARGETS
+                        for o in ORBIT_SEARCH_ORDER[:11]
+                    )
+                    if diverse_count >= target and not primary_missing:
+                        break
+    return new_records, all_events
 
 
+# ---------------------------------------------------------------------------
+# Check batch
+# ---------------------------------------------------------------------------
 async def check_records(
     records: list[StreamRecord],
     pass_no: int,
@@ -1200,15 +1694,15 @@ async def check_records(
     timeout: int,
     ffprobe: bool,
     recheck_failed: bool,
+    ops_per_second: float,
 ) -> list[CheckEvent]:
     targets = [r for r in records if recheck_failed or not r.working]
-    # Self-healing policy: dead historical records are rechecked on every pass.
     if not targets:
         return []
 
     connector = aiohttp.TCPConnector(limit=max(8, workers), ssl=False)
     sem = asyncio.Semaphore(max(1, workers))
-    rate_limiter = AsyncRateLimiter(DEFAULT_OPS_PER_SECOND)
+    rate_limiter = AsyncRateLimiter(ops_per_second)
     events: list[CheckEvent] = []
 
     async with aiohttp.ClientSession(
@@ -1218,7 +1712,7 @@ async def check_records(
     ) as session:
         async def one(r: StreamRecord) -> CheckEvent:
             async with sem:
-                e = await check_stream(session, r, timeout, ffprobe=False, rate_limiter=rate_limiter)
+                e = await check_stream(session, r, timeout, rate_limiter)
                 if ffprobe and e.working:
                     meta = await asyncio.to_thread(ffprobe_metadata, r.url)
                     e.width = int(meta.get("width", 0))
@@ -1242,232 +1736,107 @@ async def check_records(
     return events
 
 
-def alternative_candidates(
-    failed: StreamRecord,
-    records: list[StreamRecord],
-    min_similarity: float,
-) -> list[StreamRecord]:
-    candidates: list[tuple[float, float, StreamRecord]] = []
-    for c in records:
-        if c.record_id == failed.record_id or not c.url:
-            continue
-        sim = channel_similarity(failed.name, c.name)
-        # Quality/orbit variants of the same channel are intentionally allowed.
-        if sim < min_similarity:
-            continue
-        region_bonus = 1.0 if c.region != "UNK" else 0.0
-        special_bonus = 1.0 if failed.special and c.special else 0.0
-        candidates.append((sim + region_bonus * 0.03 + special_bonus * 0.03, sim, c))
-    candidates.sort(key=lambda x: (x[0], score(x[2])), reverse=True)
-    return [c for _, _, c in candidates]
+# ---------------------------------------------------------------------------
+# Outputs
+# ---------------------------------------------------------------------------
+def write_m3u(path: Path, records: Iterable[StreamRecord], title: str) -> None:
+    with path.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(f'#EXTM3U x-no-dedup="1" x-title="{title}"\n')
+        for r in records:
+            if not r.url:
+                continue
+            attrs = [
+                f'tvg-id="{r.tvg_id}"' if r.tvg_id else "",
+                f'tvg-name="{r.tvg_name or r.name}"',
+                f'tvg-logo="{r.logo}"' if r.logo else "",
+                f'group-title="{r.group}"' if r.group else "",
+            ]
+            attrs = [x for x in attrs if x]
+            label = r.name
+            if r.orbit != "+0" and r.orbit not in label:
+                label += f" {r.orbit}"
+            if r.quality != "UNKNOWN" and r.quality.lower() not in label.lower():
+                label += f" [{r.quality}]"
+            if r.is_alternative:
+                label += f" [ALT {r.alternative_rank}]"
+            f.write(f'#EXTINF:-1 {" ".join(attrs)},{label}\n')
+            f.write(r.url + "\n")
 
 
-async def find_and_test_alternatives(
-    records: list[StreamRecord],
-    pass_no: int, target: int, candidate_limit: int, workers: int, timeout: int,
-    ffprobe: bool, min_similarity: float, archive: Archive,
-) -> tuple[list[StreamRecord], list[AlternativeEvent]]:
-    """Global self-healing alternative search.
+def write_snapshot(root: Path, pass_no: int, records: list[StreamRecord]) -> None:
+    payload = {
+        "version": VERSION,
+        "pass": pass_no,
+        "created_at": now_iso(),
+        "records": [asdict(r) | {"score": score(r)} for r in records],
+    }
+    p = root / f"snapshot_pass_{pass_no:05d}.json"
+    p.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    (root / "results.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
-    It is deliberately channel-centric: every channel with fewer than `target`
-    working streams is repaired by searching candidates across ALL loaded sources,
-    not only the source that originally supplied the dead URL.
-    """
+
+def write_channel_report(root: Path, records: list[StreamRecord]) -> None:
     groups: dict[str, list[StreamRecord]] = defaultdict(list)
     for r in records:
-        key = normalize_name(r.name) or r.normalized_channel or "unknown"
+        key = r.db_id or r.normalized_channel or normalize_name(r.name)
         groups[key].append(r)
 
-    jobs: list[tuple[str, list[StreamRecord], list[StreamRecord]]] = []
+    report: dict[str, Any] = {}
     for key, rs in groups.items():
-        working = [r for r in rs if r.working and not is_placeholder_source(r.url)]
-        if len(choose_diverse(working, target)) >= target:
-            continue
-        seed = max(rs, key=lambda x: (x.working, len(x.name or "")))
-        existing_urls = {normalize_url(r.url) for r in working if r.url}
-        scored: list[tuple[float, StreamRecord]] = []
-
-        # Track which SD/HD/FHD orbit combinations are already present.
-        present_orbits = {
-            (str(r.quality or "UNKNOWN").upper(), str(r.orbit or "+0"))
-            for r in working
+        working = [r for r in rs if r.working]
+        report[key] = {
+            "display_names": sorted({r.name for r in rs}),
+            "db_id": next((r.db_id for r in rs if r.db_id), ""),
+            "db_name": next((r.db_name for r in rs if r.db_name), ""),
+            "total_records": len(rs),
+            "working_records": len(working),
+            "special": any(r.special for r in rs),
+            "russian_priority": any(r.russian_priority for r in rs),
+            "qualities": dict(sorted(Counter(r.quality for r in rs).items())),
+            "orbits": dict(sorted(Counter(r.orbit for r in rs).items())),
+            "regions": dict(sorted(Counter(r.region for r in rs).items())),
+            "unique_hosts": len({r.host for r in working if r.host}),
+            "unique_operators": len({r.operator for r in working if r.operator}),
+            "latency_min_ms": min((r.latency_ms for r in working), default=None),
+            "latency_avg_ms": (
+                round(sum(r.latency_ms for r in working) / len(working), 2)
+                if working else None
+            ),
+            "best_score": max((score(r) for r in working), default=None),
         }
-        missing_pairs = {
-            (quality, orbit)
-            for quality in ORBIT_QUALITY_TARGETS
-            for orbit in ORBIT_SEARCH_ORDER
-            if (quality, orbit) not in present_orbits
-        }
-
-        for c in records:
-            if not c.url or is_placeholder_source(c.url):
-                continue
-            if normalize_url(c.url) in existing_urls:
-                continue
-            sim = channel_similarity(seed.name, c.name)
-            if sim < min_similarity:
-                continue
-
-            quality = str(c.quality or "UNKNOWN").upper()
-            orbit = str(c.orbit or "+0")
-            score_value = sim
-
-            # Prefer a different host/CDN for node diversity.
-            if c.host and c.host not in {x.host for x in working}:
-                score_value += 0.02
-
-            # Explicitly prioritize SD/HD/FHD orbit variants that are still missing.
-            if (quality, orbit) in missing_pairs:
-                score_value += ORBIT_MISSING_BONUS
-            if quality in ORBIT_QUALITY_TARGETS:
-                score_value += ORBIT_SEARCH_QUALITY_BONUS
-
-            # Moscow +0 is the reference; neighbouring orbits are alternatives.
-            if orbit in ORBIT_SEARCH_ORDER:
-                score_value += 0.03 * (len(ORBIT_SEARCH_ORDER) - ORBIT_SEARCH_ORDER.index(orbit)) / len(ORBIT_SEARCH_ORDER)
-
-            scored.append((score_value, c))
-
-        scored.sort(key=lambda x: (x[0], score(x[1])), reverse=True)
-        jobs.append((key, rs, [c for _, c in scored[:candidate_limit]]))
-
-    if not jobs:
-        return [], []
-
-    all_events: list[AlternativeEvent] = []
-    new_records: list[StreamRecord] = []
-    next_id = archive.next_id()
-    rate_limiter = AsyncRateLimiter(DEFAULT_OPS_PER_SECOND)
-    connector = aiohttp.TCPConnector(limit=max(8, workers), ssl=False)
-    sem = asyncio.Semaphore(max(1, workers))
-
-    async with aiohttp.ClientSession(connector=connector, timeout=aiohttp.ClientTimeout(total=timeout), headers={"User-Agent": DEFAULT_UA}) as session:
-        async def test(candidate: StreamRecord):
-            async with sem:
-                e = await check_stream(session, candidate, timeout, False, rate_limiter)
-                return candidate, e
-
-        for key, rs, candidates in jobs:
-            working = [r for r in rs if r.working]
-            selected = choose_diverse(working, target)
-            existing_urls = {normalize_url(r.url) for r in working if r.url}
-            rank = 0
-            for coro in asyncio.as_completed([test(c) for c in candidates]):
-                candidate, event = await coro
-                rank += 1
-                sim = channel_similarity(rs[0].name, candidate.name)
-                all_events.append(AlternativeEvent(
-                    pass_no=pass_no, timestamp=now_iso(),
-                    failed_record_id=rs[0].record_id, failed_name=rs[0].name,
-                    candidate_record_id=candidate.record_id, candidate_name=candidate.name,
-                    candidate_url=apply_host_rewrites(candidate.url), similarity=sim,
-                    working=event.working, rank=rank, region=candidate.region,
-                    host=candidate.host, operator=candidate.operator, orbit=candidate.orbit, quality=candidate.quality,
-                ))
-                if event.working and normalize_url(candidate.url) not in existing_urls:
-                    nr = StreamRecord(
-                        record_id=next_id, name=rs[0].name or candidate.name,
-                        url=apply_host_rewrites(candidate.url), group=candidate.group,
-                        tvg_id=candidate.tvg_id, tvg_name=candidate.tvg_name, logo=candidate.logo,
-                        source=candidate.source, source_type="working_alternative",
-                        discovered_pass=pass_no, region=candidate.region, host=candidate.host,
-                        operator=candidate.operator, normalized_channel=key, orbit=candidate.orbit,
-                        quality=candidate.quality, special=any(x.special for x in rs) or candidate.special,
-                        alternative_of=rs[0].name, alternative_rank=rank, similarity=sim,
-                    )
-                    apply_event(nr, event)
-                    new_records.append(nr)
-                    existing_urls.add(normalize_url(nr.url))
-                    selected.append(nr)
-                    next_id += 1
-
-                    # Stop only after the normal alternative target is reached.
-                    # If SD/HD/FHD orbit coverage is still missing, continue while
-                    # candidates remain; +10/+11 are optional rare variants.
-                    diverse_count = len(choose_diverse(selected, target))
-                    covered_primary = {
-                        (str(x.quality or "UNKNOWN").upper(), str(x.orbit or "+0"))
-                        for x in selected
-                    }
-                    primary_missing = any(
-                        (q, o) not in covered_primary
-                        for q in ORBIT_QUALITY_TARGETS
-                        for o in ORBIT_SEARCH_ORDER[:11]
-                    )
-                    if diverse_count >= target and not primary_missing:
-                        break
-
-    return new_records, all_events
-
-
-async def maybe_discover_sources(
-    session: aiohttp.ClientSession,
-    special_names: list[str],
-    max_results: int,
-) -> list[str]:
-    """
-    Optional public-source discovery.
-    This deliberately returns playlist/document URLs only; it does not
-    manufacture stream URLs.
-    """
-    out: list[str] = []
-    # Search engines/sites can change. Fail closed if unavailable.
-    for name in special_names:
-        q = aiohttp.helpers.quote(name + " IPTV m3u playlist")
-        urls = [
-            f"https://github.com/search?q={q}&type=code",
-            f"https://github.com/search?q={q}&type=repositories",
-        ]
-        for u in urls:
-            try:
-                async with session.get(u, timeout=aiohttp.ClientTimeout(total=10)) as resp:
-                    if resp.status >= 400:
-                        continue
-                    text = await resp.text(errors="ignore")
-                    for m in re.findall(r'https?://[^\s"\'<>]+?\.(?:m3u8?|txt)', text, re.I):
-                        if is_http_url(m):
-                            out.append(m.rstrip(").,;"))
-                            if len(out) >= max_results:
-                                return out
-            except Exception:
-                continue
-    return out
+    (root / "channels_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
 
 def print_stats(pass_no: int, records: list[StreamRecord]) -> None:
     channels = defaultdict(list)
     for r in records:
-        channels[r.normalized_channel].append(r)
-
+        key = r.db_id or r.normalized_channel
+        channels[key].append(r)
     working = [r for r in records if r.working]
     special = [r for r in records if r.special]
+    ru = [r for r in records if r.russian_priority]
     print()
     print("=" * 78)
     print(f"PASS {pass_no} | records={len(records)} | channels={len(channels)}")
-    print(f"working={len(working)} | special={len(special)}")
-    print(f"regions={dict(__import__('collections').Counter(r.region for r in working))}")
+    print(f"working={len(working)} | special={len(special)} | russian={len(ru)}")
+    print(f"regions={dict(Counter(r.region for r in working))}")
     if working:
         print(f"latency min={min(r.latency_ms for r in working):.1f} ms")
         print(f"latency avg={sum(r.latency_ms for r in working)/len(working):.1f} ms")
+    matched = sum(1 for r in records if r.db_id)
+    print(f"db_matched={matched}")
     print("=" * 78)
 
 
 # ---------------------------------------------------------------------------
-# Persistent output_iptv telemetry / DB / ML data layer
+# Persistent output_iptv layer (SQLite + ML + telemetry)
 # ---------------------------------------------------------------------------
-
-OUTPUT_DIR_NAME = "output_iptv"
-DB_NAME = "M3U_Base.db"
-ML_JSON_NAME = "M3U.JSON"
-ML_DATA_NAME = "Vladik_llm.ml"
-TELEMETRY_NAME = "telemetry.jsonl"
-TELEMETRY_SUMMARY = "telemetry_summary.json"
-
-
-def sha256_text(value: str) -> str:
-    return hashlib.sha256(value.encode("utf-8", errors="ignore")).hexdigest()
-
-
 def ensure_iptv_output(root: Path) -> Path:
     out = root / OUTPUT_DIR_NAME
     for sub in ("versions", "telemetry", "snapshots", "ml", "reports", "playlists"):
@@ -1519,6 +1888,11 @@ def db_connect(db_path: Path) -> sqlite3.Connection:
             orbit TEXT,
             quality TEXT,
             special INTEGER,
+            russian_priority INTEGER,
+            db_id TEXT,
+            db_name TEXT,
+            db_match_score REAL,
+            db_match_type TEXT,
             alternative_of TEXT,
             alternative_rank INTEGER,
             similarity REAL,
@@ -1609,8 +1983,9 @@ def db_insert_records(conn: sqlite3.Connection, records: list[StreamRecord]) -> 
             r.bitrate_kbps, r.codec, int(r.has_audio), int(r.has_video),
             int(r.is_live), int(r.is_vod), int(r.archive_supported), r.error,
             r.region, r.host, r.operator, r.cdn_node, r.asn, r.orbit,
-            r.quality, int(r.special), r.alternative_of, r.alternative_rank,
-            r.similarity, score(r)
+            r.quality, int(r.special), int(r.russian_priority),
+            r.db_id, r.db_name, r.db_match_score, r.db_match_type,
+            r.alternative_of, r.alternative_rank, r.similarity, score(r),
         ))
     conn.executemany("""
         INSERT OR IGNORE INTO streams (
@@ -1619,9 +1994,10 @@ def db_insert_records(conn: sqlite3.Connection, records: list[StreamRecord]) -> 
             working,status_code,latency_ms,final_url,content_type,protocol,
             resolution,width,height,bitrate_kbps,codec,has_audio,has_video,
             is_live,is_vod,archive_supported,error,region,host,operator,
-            cdn_node,asn,orbit,quality,special,alternative_of,
-            alternative_rank,similarity,score
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            cdn_node,asn,orbit,quality,special,russian_priority,
+            db_id,db_name,db_match_score,db_match_type,
+            alternative_of,alternative_rank,similarity,score
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, rows)
     conn.commit()
 
@@ -1633,10 +2009,8 @@ def db_insert_checks(conn: sqlite3.Connection, events: list[CheckEvent]) -> None
             resolution,codec,bitrate_kbps,error
         ) VALUES (?,?,?,?,?,?,?,?,?,?)
     """, [
-        (
-            e.record_id, e.pass_no, e.timestamp, int(e.working), e.status_code,
-            e.latency_ms, e.resolution, e.codec, e.bitrate_kbps, e.error
-        )
+        (e.record_id, e.pass_no, e.timestamp, int(e.working), e.status_code,
+         e.latency_ms, e.resolution, e.codec, e.bitrate_kbps, e.error)
         for e in events
     ])
     conn.commit()
@@ -1650,12 +2024,10 @@ def db_insert_alternatives(conn: sqlite3.Connection, events: list[AlternativeEve
             host,operator,orbit,quality
         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, [
-        (
-            e.pass_no, e.timestamp, e.failed_record_id, e.failed_name,
-            e.candidate_record_id, e.candidate_name, e.candidate_url,
-            e.similarity, int(e.working), e.rank, e.region, e.host,
-            e.operator, e.orbit, e.quality
-        )
+        (e.pass_no, e.timestamp, e.failed_record_id, e.failed_name,
+         e.candidate_record_id, e.candidate_name, e.candidate_url,
+         e.similarity, int(e.working), e.rank, e.region, e.host,
+         e.operator, e.orbit, e.quality)
         for e in events
     ])
     conn.commit()
@@ -1674,7 +2046,6 @@ def ml_label(r: StreamRecord) -> str:
 
 
 def write_ml_json(out: Path, records: list[StreamRecord], pass_no: int) -> None:
-    # JSON is deliberately a feature dataset, not executable model code.
     rows = []
     for r in records:
         rows.append({
@@ -1682,6 +2053,8 @@ def write_ml_json(out: Path, records: list[StreamRecord], pass_no: int) -> None:
             "pass": pass_no,
             "channel": r.name,
             "normalized_channel": r.normalized_channel,
+            "db_id": r.db_id,
+            "db_name": r.db_name,
             "url": r.url,
             "url_hash": sha256_text(r.url),
             "region": r.region,
@@ -1691,6 +2064,7 @@ def write_ml_json(out: Path, records: list[StreamRecord], pass_no: int) -> None:
             "orbit": r.orbit,
             "quality": r.quality,
             "special": r.special,
+            "russian_priority": r.russian_priority,
             "working": r.working,
             "latency_ms": r.latency_ms,
             "resolution": r.resolution,
@@ -1713,24 +2087,17 @@ def write_ml_json(out: Path, records: list[StreamRecord], pass_no: int) -> None:
         "description": "Append-only feature/observation dataset for ML ranking of IPTV streams.",
         "records": rows,
     }
-    (out / ML_JSON_NAME).write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    (out / ML_JSON_NAME).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "ml" / f"M3U_pass_{pass_no:05d}.json").write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8",
     )
 
 
 def append_ml_model_artifact(out: Path, pass_no: int, records: list[StreamRecord]) -> None:
-    # A portable, human-readable model artifact. It stores learned aggregate
-    # statistics rather than pretending to be a trained executable model.
     working = [r for r in records if r.working]
     by_region: dict[str, list[float]] = defaultdict(list)
     by_quality: dict[str, list[float]] = defaultdict(list)
     by_operator: dict[str, list[float]] = defaultdict(list)
-
     for r in working:
         if r.latency_ms < 999999:
             by_region[r.region].append(r.latency_ms)
@@ -1759,7 +2126,7 @@ def append_ml_model_artifact(out: Path, pass_no: int, records: list[StreamRecord
         "features": [
             "channel_similarity", "latency_ms", "resolution", "bitrate_kbps",
             "codec", "protocol", "region", "operator", "host", "orbit",
-            "quality", "special", "working"
+            "quality", "special", "russian_priority", "working", "db_match",
         ],
         "learned_statistics": {
             "region": stats(by_region),
@@ -1771,11 +2138,9 @@ def append_ml_model_artifact(out: Path, pass_no: int, records: list[StreamRecord
             "feature/statistics model that can be consumed by a future ML trainer."
         ),
     }
-    model_path = out / ML_DATA_NAME
-    model_path.write_text(json.dumps(model, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / ML_DATA_NAME).write_text(json.dumps(model, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "ml" / f"Vladik_llm_pass_{pass_no:05d}.ml").write_text(
-        json.dumps(model, ensure_ascii=False, indent=2),
-        encoding="utf-8",
+        json.dumps(model, ensure_ascii=False, indent=2), encoding="utf-8",
     )
 
 
@@ -1788,7 +2153,7 @@ def append_telemetry(
     started_at: float,
 ) -> None:
     telemetry_dir = out / "telemetry"
-    channels = {r.normalized_channel for r in records}
+    channels = {r.db_id or r.normalized_channel for r in records}
     working = [r for r in records if r.working]
     lat = [r.latency_ms for r in working if r.latency_ms < 999999]
     payload = {
@@ -1799,26 +2164,27 @@ def append_telemetry(
         "channels_total": len(channels),
         "working_total": len(working),
         "failed_total": len(records) - len(working),
-        "special_total": sum(r.special for r in records),
+        "special_total": sum(1 for r in records if r.special),
+        "russian_total": sum(1 for r in records if r.russian_priority),
+        "db_matched": sum(1 for r in records if r.db_id),
         "checks_this_pass": len(events),
         "alternatives_this_pass": len(alt_events),
-        "new_alternatives_working": sum(e.working for e in alt_events),
+        "new_alternatives_working": sum(1 for e in alt_events if e.working),
         "latency_min_ms": round(min(lat), 3) if lat else None,
         "latency_avg_ms": round(statistics.mean(lat), 3) if lat else None,
         "latency_median_ms": round(statistics.median(lat), 3) if lat else None,
         "unique_hosts": len({r.host for r in working if r.host}),
         "unique_operators": len({r.operator for r in working if r.operator}),
-        "regions": dict(__import__("collections").Counter(r.region for r in working)),
-        "qualities": dict(__import__("collections").Counter(r.quality for r in working)),
-        "orbits": dict(__import__("collections").Counter(r.orbit for r in records)),
+        "regions": dict(Counter(r.region for r in working)),
+        "qualities": dict(Counter(r.quality for r in working)),
+        "orbits": dict(Counter(r.orbit for r in records)),
         "python": platform.python_version(),
         "platform": platform.platform(),
     }
     with (telemetry_dir / TELEMETRY_NAME).open("a", encoding="utf-8") as f:
         f.write(json.dumps(payload, ensure_ascii=False) + "\n")
     (telemetry_dir / TELEMETRY_SUMMARY).write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8",
     )
 
 
@@ -1831,15 +2197,17 @@ def write_versioned_playlist_bundle(
     version_dir = out / "versions" / f"pass_{pass_no:05d}"
     version_dir.mkdir(parents=True, exist_ok=True)
     working = [r for r in records if r.working]
+    ru_working = [r for r in working if r.russian_priority]
 
     write_m3u(version_dir / "Stable.m3u", diverse_view, "STABLE")
     write_m3u(version_dir / "Mega.m3u", working, "MEGA")
     write_m3u(version_dir / "Ultra.m3u", records, "ULTRA_ALL")
+    write_m3u(version_dir / "Russia.m3u", ru_working, "RUSSIA")
 
-    # Current copies for players.
     write_m3u(out / "Stable.m3u", diverse_view, "STABLE")
     write_m3u(out / "Mega.m3u", working, "MEGA")
     write_m3u(out / "Ultra.m3u", records, "ULTRA_ALL")
+    write_m3u(out / "Russia.m3u", ru_working, "RUSSIA")
 
 
 def sync_database_and_ml(
@@ -1850,8 +2218,6 @@ def sync_database_and_ml(
     alt_events: list[AlternativeEvent],
 ) -> None:
     conn = db_connect(out / DB_NAME)
-    # INSERT OR IGNORE keeps the persistent DB append-oriented while allowing
-    # repeated passes to record every check in the checks table.
     db_insert_records(conn, records)
     db_insert_checks(conn, events)
     db_insert_alternatives(conn, alt_events)
@@ -1865,12 +2231,11 @@ def sync_database_and_ml(
         ) VALUES (?,?,?,?,?,?,?,?)
     """, (
         pass_no, now_iso(), len(records), len(working),
-        len({r.normalized_channel for r in records}),
-        sum(r.special for r in records),
+        len({r.db_id or r.normalized_channel for r in records}),
+        sum(1 for r in records if r.special),
         min(lat) if lat else None,
         statistics.mean(lat) if lat else None,
     ))
-
     for r in records:
         conn.execute("""
             INSERT INTO ml_observations (
@@ -1881,20 +2246,67 @@ def sync_database_and_ml(
         """, (
             now_iso(), pass_no, r.record_id, r.name, r.region, r.operator,
             r.host, r.orbit, r.quality, r.latency_ms, r.resolution,
-            r.bitrate_kbps, r.codec, int(r.working), score(r), ml_label(r)
+            r.bitrate_kbps, r.codec, int(r.working), score(r), ml_label(r),
         ))
     conn.commit()
     conn.close()
-
     write_ml_json(out, records, pass_no)
     append_ml_model_artifact(out, pass_no, records)
 
 
+# ---------------------------------------------------------------------------
+# Source building
+# ---------------------------------------------------------------------------
+def source_file_is_safe(path: Path, output: Path) -> bool:
+    try:
+        p = path.resolve()
+        o = output.resolve()
+        if p == o or o in p.parents:
+            return False
+    except Exception:
+        return False
+    return p.name.lower() not in GENERATED_NAMES
+
+
+def load_source_list(path: Path, output: Path) -> list[str]:
+    if not path.exists() or not source_file_is_safe(path, output):
+        return []
+    out = []
+    for line in path.read_text("utf-8-sig", errors="replace").splitlines():
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        out.append(s)
+    return out
+
+
+def build_sources(args: argparse.Namespace) -> list[str]:
+    sources: list[str] = []
+    if not args.no_builtin_sources:
+        sources.extend(VERIFIED_REAL_SOURCES)
+    sources.extend(args.source or [])
+    for sl in args.source_list or []:
+        sources.extend(load_source_list(Path(sl).expanduser(), Path(args.output)))
+    out = []
+    seen = set()
+    for source in sources:
+        if is_placeholder_source(source):
+            continue
+        source = apply_host_rewrites(clean_url(source))
+        if source and source not in seen:
+            seen.add(source)
+            out.append(source)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 async def main_async(args: argparse.Namespace) -> int:
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
     iptv_out = ensure_iptv_output(output)
-    log_file = output / "scanner_ultra.log"
+    log_file = output / "scanner_ultra_mega.log"
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s | %(levelname)s | %(message)s",
@@ -1902,40 +2314,84 @@ async def main_async(args: argparse.Namespace) -> int:
         force=True,
     )
     log = logging.getLogger("ultra")
-    log.info("ULTRA START | version=%s | workers=%d | alt_workers=%d | source_workers=%d | ops/s=%.1f | min_alternatives=%d", VERSION, args.workers, args.alt_workers, args.source_workers, args.ops_per_second, args.min_alternatives)
-    log.info("ORBIT SEARCH | reference=+0 Moscow | primary=%s | rare=%s | qualities=%s", ",".join(ORBIT_SEARCH_ORDER[:11]), ",".join(ORBIT_SEARCH_ORDER[11:]), ",".join(ORBIT_QUALITY_TARGETS))
-    db_conn = db_connect(iptv_out / DB_NAME)
-    db_conn.close()
+    log.info(
+        "ULTRA-MEGA START | version=%s | workers=%d | alt_workers=%d | "
+        "source_workers=%d | ops/s=%.1f | min_alternatives=%d",
+        VERSION, args.workers, args.alt_workers, args.source_workers,
+        args.ops_per_second, args.min_alternatives,
+    )
+    log.info(
+        "ORBIT SEARCH | reference=+0 Moscow | primary=%s | rare=%s | qualities=%s",
+        ",".join(ORBIT_SEARCH_ORDER[:11]),
+        ",".join(ORBIT_SEARCH_ORDER[11:]),
+        ",".join(ORBIT_QUALITY_TARGETS),
+    )
+
+    # Load channel database: local + remote (primary) + builtin for orbits/qualities
+    extra_db_dirs = [output, Path.cwd()]
+    explicit_db_files: list[Path] = []
+    if args.channel_db:
+        for p in args.channel_db:
+            pp = Path(p).expanduser().resolve()
+            if pp.is_file():
+                explicit_db_files.append(pp)
+            elif pp.is_dir():
+                extra_db_dirs.append(pp)
+    # Pre-load explicit files so they always participate
+    if explicit_db_files:
+        pre = load_local_channel_files(explicit_db_files)
+        if pre:
+            # temporarily stash into global via build after full load
+            log.info("CHANNEL DB EXPLICIT: %d records from --channel-db", len(pre))
+    connector = aiohttp.TCPConnector(limit=16, ssl=False)
+    async with aiohttp.ClientSession(
+        connector=connector,
+        timeout=aiohttp.ClientTimeout(total=60),
+        headers={"User-Agent": DEFAULT_UA},
+    ) as session:
+        db_count = await load_external_channel_database(
+            session,
+            extra_dirs=extra_db_dirs,
+            skip_remote=args.no_remote_db,
+        )
+    # Merge explicit files on top if any were not picked by dir scan
+    if explicit_db_files:
+        extra_rows = load_local_channel_files(explicit_db_files)
+        if extra_rows:
+            merged = merge_db([*CHANNEL_DB, *extra_rows])
+            build_db_indexes(merged)
+            db_count = len(merged)
+    log.info("CHANNEL DATABASE READY: %d records", db_count)
 
     archive = Archive(output)
     start_pass = archive.load_pass()
-
     sources = build_sources(args)
     if not sources:
         print("Нет источников. Используй -s/--source или --source-list.")
         return 2
 
     loader = SourceLoader(
-        output=output, timeout=args.source_timeout, workers=args.source_workers, user_agent=args.user_agent,
+        output=output,
+        timeout=args.source_timeout,
+        workers=args.source_workers,
+        user_agent=args.user_agent,
+        ops_per_second=args.ops_per_second,
     )
-    loader.rate_limiter = AsyncRateLimiter(args.ops_per_second)
 
     for offset in range(args.passes):
         pass_no = start_pass + offset + 1
         print(f"\n### PASS {pass_no} ###")
         pass_started_at = time.perf_counter()
 
-        new_records = await loader.load_many(
-            sources,
-            pass_no,
-            archive.next_id(),
-        )
+        new_records = await loader.load_many(sources, pass_no, archive.next_id())
+        # Enrich any that missed DB (already done in parse, but safe)
+        for r in new_records:
+            if not r.db_id:
+                enrich_record_from_db(r)
 
-        # IMPORTANT: no deduplication here.
         archive.append_records(new_records)
         records = archive.records
 
-        # New records are checked first; failed historical records are rechecked too.
         events = await check_records(
             records,
             pass_no,
@@ -1943,14 +2399,19 @@ async def main_async(args: argparse.Namespace) -> int:
             args.timeout,
             args.ffprobe,
             recheck_failed=args.recheck_failed,
+            ops_per_second=args.ops_per_second,
         )
         archive.append_diagnostics(events)
         by_id_for_log = {r.record_id: r for r in records}
         for e in events:
             rr = by_id_for_log.get(e.record_id)
-            log.info("CHECK #%d | %s | %s | HTTP=%s | %.1fms | %s", e.record_id, "OK" if e.working else "FAIL", rr.name if rr else "", e.status_code, e.latency_ms, e.error or e.protocol)
+            log.info(
+                "CHECK #%d | %s | %s | HTTP=%s | %.1fms | %s",
+                e.record_id, "OK" if e.working else "FAIL",
+                rr.name if rr else "", e.status_code, e.latency_ms,
+                e.error or e.protocol,
+            )
 
-        # Search alternatives for failures, then append working alternatives.
         alt_records, alt_events = await find_and_test_alternatives(
             records,
             pass_no=pass_no,
@@ -1964,19 +2425,21 @@ async def main_async(args: argparse.Namespace) -> int:
         )
         if alt_records:
             archive.append_records(alt_records)
-
         if alt_events:
             archive.append_alternatives(alt_events)
 
         records = archive.records
-
-        # Outputs are views. They may be overwritten; the archive never is.
         working = [r for r in records if r.working]
         all_records = list(records)
         diverse_view: list[StreamRecord] = []
-        for key in sorted({r.normalized_channel for r in working}):
-            rs = [r for r in working if r.normalized_channel == key]
+        seen_keys: set[str] = set()
+        for r in sorted(working, key=score, reverse=True):
+            key = r.db_id or r.normalized_channel
+            if key in seen_keys:
+                continue
+            rs = [x for x in working if (x.db_id or x.normalized_channel) == key]
             diverse_view.extend(choose_diverse(rs, args.min_alternatives))
+            seen_keys.add(key)
 
         write_m3u(output / "all.m3u", all_records, "ALL RECORDS")
         write_m3u(output / "online.m3u", working, "ALL WORKING")
@@ -1986,12 +2449,9 @@ async def main_async(args: argparse.Namespace) -> int:
         write_snapshot(output, pass_no, records)
         write_channel_report(output, records)
 
-        # New permanent output_iptv tree.
         write_versioned_playlist_bundle(iptv_out, pass_no, records, diverse_view)
         sync_database_and_ml(iptv_out, pass_no, records, events, alt_events)
-        append_telemetry(
-            iptv_out, pass_no, records, events, alt_events, pass_started_at
-        )
+        append_telemetry(iptv_out, pass_no, records, events, alt_events, pass_started_at)
         (iptv_out / "snapshots" / f"snapshot_pass_{pass_no:05d}.json").write_text(
             json.dumps(
                 {
@@ -2007,7 +2467,6 @@ async def main_async(args: argparse.Namespace) -> int:
 
         archive.save_pass(pass_no)
         print_stats(pass_no, records)
-
         if alt_records:
             print(f"New working alternatives appended: {len(alt_records)}")
 
@@ -2015,25 +2474,19 @@ async def main_async(args: argparse.Namespace) -> int:
     print("records.jsonl      — все найденные записи, append-only")
     print("diagnostics.jsonl  — история всех проверок")
     print("alternatives.jsonl — история поиска альтернатив")
-    print("all.m3u            — вообще все записи")
-    print("online.m3u         — все рабочие записи")
-    print("all_with_alts.m3u  — все рабочие, включая альтернативы")
-    print("best.m3u           — разнообразный view, не архив")
-    print("channels_report.json — статистика по каналам/орбитам/регионам")
+    print("all.m3u / online.m3u / best.m3u")
+    print("channels_report.json — статистика по каналам/орбитам/регионам/DB")
     print(f"{iptv_out}/ — постоянный каталог результатов")
-    print("output_iptv/Stable.m3u — стабильный разнообразный набор")
-    print("output_iptv/Mega.m3u   — все рабочие потоки")
-    print("output_iptv/Ultra.m3u  — все архивные записи")
-    print("output_iptv/M3U_Base.db — SQLite база запасных потоков и проверок")
-    print("output_iptv/M3U.JSON — ML-readable feature dataset")
-    print("output_iptv/Vladik_llm.ml — накопительная статистическая ML-модель")
-    print("output_iptv/telemetry/telemetry.jsonl — полная телеметрия проходов")
+    print("  Stable.m3u / Mega.m3u / Ultra.m3u / Russia.m3u")
+    print("  M3U_Base.db — SQLite база")
+    print("  M3U.JSON / Vladik_llm.ml — ML feature dataset + stats model")
+    print("  telemetry/telemetry.jsonl — телеметрия проходов")
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        description="Ultra IPTV Checker 5.0 — append-only channel and stream archive"
+        description="Ultra-Mega IPTV Collector 6.0 — unified append-only channel/stream archive"
     )
     p.add_argument("-s", "--source", action="append", default=[],
                    help="M3U/TXT file or HTTP(S) playlist. Repeatable.")
@@ -2041,7 +2494,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Text file containing source URLs/paths.")
     p.add_argument("--no-builtin-sources", action="store_true",
                    help="Do not use the built-in public IPTV playlist indexes.")
-    p.add_argument("-o", "--output", default="ultra_iptv_data",
+    p.add_argument("-o", "--output", default="ultra_mega_iptv_data",
                    help="Persistent archive/output directory.")
     p.add_argument("--passes", type=int, default=1,
                    help="Number of passes in this run.")
@@ -2058,15 +2511,20 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--min-alternatives", type=int, default=DEFAULT_MIN_ALTERNATIVES,
                    help="Target number of diverse working streams per channel.")
     p.add_argument("--alternative-candidates", type=int, default=DEFAULT_ALTERNATIVE_CANDIDATES,
-                   help="How many candidate records to test per failed record.")
+                   help="How many candidate records to test per under-covered channel.")
     p.add_argument("--ops-per-second", type=float, default=DEFAULT_OPS_PER_SECOND,
-                   help="Maximum network operation start rate; concurrency remains independent.")
-    p.add_argument("--similarity", type=float, default=0.60,
+                   help="Maximum network operation start rate.")
+    p.add_argument("--similarity", type=float, default=DEFAULT_SIMILARITY,
                    help="Minimum channel-name similarity for alternatives.")
     p.add_argument("--recheck-failed", action="store_true",
                    help="Recheck all historical failed records on every pass.")
     p.add_argument("--ffprobe", action="store_true",
-                   help="Run ffprobe on working streams to get resolution/bitrate/codec.")
+                   help="Run ffprobe on working streams for resolution/bitrate/codec.")
+    p.add_argument("--channel-db", action="append", default=[],
+                   help="Local channel DB file or directory (csv/json/py). Repeatable. "
+                        "Also auto-loads channels.csv/json/py from cwd and output dir.")
+    p.add_argument("--no-remote-db", action="store_true",
+                   help="Do not download channel database from GitHub; use only local files.")
     p.add_argument("--user-agent", default=DEFAULT_UA)
     p.add_argument("-v", "--verbose", action="store_true")
     return p
