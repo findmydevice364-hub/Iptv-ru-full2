@@ -1,0 +1,275 @@
+#EXTM3U
+
+# ===== РОССИЙСКИЕ КАНАЛЫ =====
+
+#EXTINF:-1 tvg-name="Первый канал" group-title="Россия",Первый канал
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s14/index.m3u8
+
+#EXTINF:-1 tvg-name="РТР-Планета" group-title="Россия",РТР-Планета (Россия 1)
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s15/index.m3u8
+
+#EXTINF:-1 tvg-name="НТВ" group-title="Россия",НТВ
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s17/index.m3u8
+
+#EXTINF:-1 tvg-name="ТНТ" group-title="Россия",ТНТ
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s19/index.m3u8
+
+#EXTINF:-1 tvg-name="Матч ТВ" group-title="Россия",Матч ТВ
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s39/index.m3u8
+
+#EXTINF:-1 tvg-name="СТС" group-title="Россия",СТС
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s52/04.m3u8
+
+#EXTINF:-1 tvg-name="Пятый канал" group-title="Россия",Пятый канал
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s54/index.m3u8
+
+#EXTINF:-1 tvg-name="Домашний" group-title="Россия",Домашний
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s88/index.m3u8
+
+#EXTINF:-1 tvg-name="ТВ Центр" group-title="Россия",ТВ Центр
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s55/index.m3u8
+
+#EXTINF:-1 tvg-name="РЕН ТВ" group-title="Россия",РЕН ТВ
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s56/index.m3u8
+
+#EXTINF:-1 tvg-name="Звезда" group-title="Россия",Звезда
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s57/index.m3u8
+
+#EXTINF:-1 tvg-name="Мир" group-title="Россия",Мир
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s58/index.m3u8
+
+#EXTINF:-1 tvg-name="Мир 24" group-title="Россия",Мир 24
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s59/index.m3u8
+
+#EXTINF:-1 tvg-name="Карусель" group-title="Россия",Карусель
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s60/index.m3u8
+
+#EXTINF:-1 tvg-name="ОТР" group-title="Россия",ОТР
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s61/index.m3u8
+
+#EXTINF:-1 tvg-name="НТВ Мир" group-title="Россия",НТВ Мир
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s65/index.m3u8
+
+#EXTINF:-1 tvg-name="ТНТ International" group-title="Россия",ТНТ International
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s67/index.m3u8
+
+#EXTINF:-1 tvg-name="СТС International" group-title="Россия",СТС International
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s69/index.m3u8
+
+#EXTINF:-1 tvg-name="Домашний International" group-title="Россия",Домашний International
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s70/index.m3u8
+
+#EXTINF:-1 tvg-name="РБК ТВ" group-title="Россия",РБК ТВ
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s71/index.m3u8
+
+#EXTINF:-1 tvg-name="Amedia 1" group-title="Россия",Amedia 1
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s72/index.m3u8
+
+#EXTINF:-1 tvg-name="Amedia Premium" group-title="Россия",Amedia Premium
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s73/index.m3u8
+
+#EXTINF:-1 tvg-name="Amedia Hit" group-title="Россия",Amedia Hit
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s74/index.m3u8
+
+#EXTINF:-1 tvg-name="TV1000" group-title="Россия",TV1000
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s75/index.m3u8
+
+#EXTINF:-1 tvg-name="TV1000 Action" group-title="Россия",TV1000 Action
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s76/index.m3u8
+
+#EXTINF:-1 tvg-name="TV1000 Русское кино" group-title="Россия",TV1000 Русское кино
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s77/index.m3u8
+
+#EXTINF:-1 tvg-name="Viasat Explore" group-title="Россия",Viasat Explore
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s78/index.m3u8
+
+#EXTINF:-1 tvg-name="Viasat History" group-title="Россия",Viasat History
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s79/index.m3u8
+
+#EXTINF:-1 tvg-name="Viasat Nature" group-title="Россия",Viasat Nature
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s80/index.m3u8
+
+#EXTINF:-1 tvg-name="Детский мир" group-title="Россия",Детский мир
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s81/index.m3u8
+
+#EXTINF:-1 tvg-name="TiJi" group-title="Россия",TiJi
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s82/index.m3u8
+
+#EXTINF:-1 tvg-name="Дорама" group-title="Россия",Дорама
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s83/index.m3u8
+
+#EXTINF:-1 tvg-name="Наука" group-title="Россия",Наука
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s84/index.m3u8
+
+#EXTINF:-1 tvg-name="История" group-title="Россия",История
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s85/index.m3u8
+
+#EXTINF:-1 tvg-name="Setanta Sports" group-title="Россия",Setanta Sports
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s86/index.m3u8
+
+#EXTINF:-1 tvg-name="Мужское кино" group-title="Россия",Мужское кино
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s90/index.m3u8
+
+#EXTINF:-1 tvg-name="Русский роман" group-title="Россия",Русский роман
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s91/index.m3u8
+
+#EXTINF:-1 tvg-name="Русский детектив" group-title="Россия",Русский детектив
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s92/index.m3u8
+
+#EXTINF:-1 tvg-name="Русский бестселлер" group-title="Россия",Русский бестселлер
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s93/index.m3u8
+
+#EXTINF:-1 tvg-name="Кинокомедия" group-title="Россия",Кинокомедия
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s94/index.m3u8
+
+# ===== АРМЯНСКИЕ КАНАЛЫ =====
+
+#EXTINF:-1 tvg-name="Armenia 1" group-title="Армения",Armenia 1 (H1)
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s1/index.m3u8
+
+#EXTINF:-1 tvg-name="Shant TV" group-title="Армения",Shant TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s2/index.m3u8
+
+#EXTINF:-1 tvg-name="Kentron TV" group-title="Армения",Kentron TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s3/index.m3u8
+
+#EXTINF:-1 tvg-name="ATV" group-title="Армения",ATV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s4/index.m3u8
+
+#EXTINF:-1 tvg-name="Armenia TV" group-title="Армения",Armenia TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s5/index.m3u8
+
+#EXTINF:-1 tvg-name="Yerkir Media" group-title="Армения",Yerkir Media
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s6/index.m3u8
+
+#EXTINF:-1 tvg-name="H2" group-title="Армения",H2 (Армения 2)
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s7/index.m3u8
+
+#EXTINF:-1 tvg-name="21TV" group-title="Армения",21TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s8/index.m3u8
+
+#EXTINF:-1 tvg-name="Armnews" group-title="Армения",Armnews
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s9/index.m3u8
+
+#EXTINF:-1 tvg-name="Cineman ATV" group-title="Армения",Cineman ATV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s10/index.m3u8
+
+#EXTINF:-1 tvg-name="Kinoman ATV" group-title="Армения",Kinoman ATV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s11/index.m3u8
+
+#EXTINF:-1 tvg-name="ATV First" group-title="Армения",ATV First
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s12/index.m3u8
+
+#EXTINF:-1 tvg-name="Panarmenian TV" group-title="Армения",Panarmenian TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s13/index.m3u8
+
+#EXTINF:-1 tvg-name="Dar 21" group-title="Армения",Dar 21
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s16/index.m3u8
+
+#EXTINF:-1 tvg-name="Shant Premium" group-title="Армения",Shant Premium
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s18/index.m3u8
+
+#EXTINF:-1 tvg-name="Armenia Premium" group-title="Армения",Armenia Premium
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s20/index.m3u8
+
+#EXTINF:-1 tvg-name="7 TV" group-title="Армения",7 TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s21/index.m3u8
+
+#EXTINF:-1 tvg-name="Ararat TV" group-title="Армения",Ararat TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s22/index.m3u8
+
+#EXTINF:-1 tvg-name="MTV Armenia" group-title="Армения",MTV Armenia
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s23/index.m3u8
+
+#EXTINF:-1 tvg-name="Radio Van TV" group-title="Армения",Radio Van TV
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s24/index.m3u8
+
+#EXTINF:-1 tvg-name="Kentron Music" group-title="Армения",Kentron Music
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s25/index.m3u8
+
+# ===== МЕЖДУНАРОДНЫЕ =====
+
+#EXTINF:-1 tvg-name="Al Jazeera English" group-title="Международные",Al Jazeera English
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s30/index.m3u8
+
+#EXTINF:-1 tvg-name="Al Jazeera Arabic" group-title="Международные",Al Jazeera Arabic
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s31/index.m3u8
+
+#EXTINF:-1 tvg-name="BBC World News" group-title="Международные",BBC World News
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s32/index.m3u8
+
+#EXTINF:-1 tvg-name="Rai 1" group-title="Международные",Rai 1
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s33/index.m3u8
+
+#EXTINF:-1 tvg-name="Mezzo" group-title="Международные",Mezzo
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s34/index.m3u8
+
+#EXTINF:-1 tvg-name="Fast&Fun Box" group-title="Международные",Fast&Fun Box
+#EXTVLCOPT:http-user-agent=smartlabs
+http://ott-cdn.ucom.am/s35/index.m3u8
