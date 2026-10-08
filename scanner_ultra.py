@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ULTRA-MEGA IPTV COLLECTOR 6.0
+ULTRA-MEGA IPTV COLLECTOR 6.0.1
 =============================
 Единый мощный коллектор/чекер IPTV, объединяющий:
 
