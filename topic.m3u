@@ -1,0 +1,787 @@
+#EXTM3U url-tvg="https://epg.it999.ru/epg2.xml"
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Без названия
+http://178.162.218.85:8081/rustv/perec.stream/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Планета РТР
+http://178.162.218.85:8081/rustv/rtrpl.stream/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Кинопоказ
+http://95.183.43.237:8080/238/index.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Разное", Остросюжетное HD
+http://195.161.68.11:8000/play/a00a/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Советское кино
+https://mhd116.iptv2022.com/p/SE9b_ztTlv3ZUjXAAnQjWg,..m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Разное", Кино ТВ HD
+http://193.233.9.49/streams/media/KINO_TV_HD/index.m3u8
+
+#EXTINF:-1 tvg-id="cinema" group-title="Разное", Cinema
+http://193.233.9.49/streams/media/Cinema/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Комедия
+http://193.233.9.49/streams/media/Komediya/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Мосфильм. Золотая коллекция
+http://109.197.192.121:8080/mosfilm/index.m3u8
+
+#EXTINF:-1 tvg-id="bollywood" group-title="Разное", Bollywood
+http://212.73.75.200:8000/play/Bollywood/index.m3u8
+
+#EXTINF:-1 tvg-id="paramount_channel" group-title="Тематические", Paramount Channel
+https://livetv.mylifeisgood.ml/channels/paramount_channel.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Русский детектив
+http://212.73.75.200:8000/play/RusskiiDetektiv/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Русский роман
+http://212.73.75.200:8000/play/RusskiiRoman/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Наше новое кино
+http://109.197.192.121:8080/kinohit/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Мужское кино
+http://95.183.43.237:8080/54/index.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", НСТ
+http://178.162.218.85:8081/rustv/nst.stream/playlist.m3u8
+
+#EXTINF:-1 tvg-id="paramount_comedy" group-title="Тематические", Paramount Comedy
+https://livetv.mylifeisgood.ml/channels/paramount_comedy.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Дорама
+http://109.197.192.121:8080/dorama/index.m3u8
+
+#EXTINF:-1 tvg-id="zee_tv" group-title="Разное", Zee TV
+http://212.73.75.200:8000/play/ZeeRussia/index.m3u8
+
+#EXTINF:-1 tvg-id="scream_hd" group-title="Тематические", Scream HD
+https://nsk12.peers.tv/streaming/scream_hd/16/gvh1w/playlist.m3u8
+
+#EXTINF:-1 tvg-id="discovery_hd" group-title="Тематические", Discovery HD
+https://livetv.mylifeisgood.ml/channels/discovery.m3u8
+
+#EXTINF:-1 tvg-id="discovery" group-title="Тематические", Discovery
+https://sc.id-tv.kz:443/Disc_chHD_34_35.m3u8
+
+#EXTINF:-1 tvg-id="eurosport_1_hd" group-title="Тематические", Eurosport 1 HD
+https://livetv.mylifeisgood.ml/channels/eurosport1ru.m3u8
+
+#EXTINF:-1 tvg-id="eurosport_2_hd" group-title="Тематические", Eurosport 2 HD
+https://livetv.mylifeisgood.ml/channels/eurosport2.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Авто плюс
+http://185.32.44.154/avtoplyus/index.m3u8
+
+#EXTINF:-1 tvg-id="1_8" group-title="ВГТРК", Россия 1 (+8)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus8/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_8" group-title="ВГТРК", Россия 1 (+8)
+http://cdnmg.secure.live.rtr-vesti.ru/hls/russia1_plus8/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_8" group-title="Разное", Россия 1 (+8)
+http://dmi3y-tv.ru/hls/T2/CH_RUSSIA1_8.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Картонито
+http://89.251.69.6:81/udp/239.254.2.144:1234
+
+#EXTINF:-1 tvg-id="cartoonito_boomerang" group-title="Разное", Cartoonito (Boomerang)
+http://176.222.190.76/btv/SWM/Boomerang/Boomerang.m3u8
+
+#EXTINF:-1 tvg-id="baby_time" group-title="Яндекс", Baby Time
+http://strm.yandex.ru/kal/baby_time/baby_time0.m3u8
+
+#EXTINF:-1 tvg-id="cartoon_network" group-title="Разное", Cartoon Network
+http://176.222.190.76/btv/SWM/Cartoon-Network_SWM/Cartoon-Network_SWM.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Первый канал (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R03_1TV/variant.m3u8
+
+#EXTINF:-1 tvg-id="1_1" group-title="Ростелеком", Россия 1 (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R04_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", НТВ (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R05_NTV/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Пятый канал (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R06_5KANAL/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Россия К (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R07_RUSSIAK/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Карусель (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R08_KARUSEL/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", ОТР (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R09_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", ТВ Центр (+1)
+https://rt-vlg-samara-htlive.cdn.ngenix.net/hls/CH_R10_TVC/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Ростелеком", Волгодонский Вестник
+http://rt-sth-rd-htlive.cdn.ngenix.net/hls/CH_R06_VOL/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", НТК (Зеленогорск)
+http://rt-sib-krsk-htlive.cdn.ngenix.net/hls/CH_R03_NTK/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Известия-Сыктывкар
+https://rt-nw-komi-htlive.cdn.ngenix.net/hls/CH_R01_IZVESTIA/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Абакан 24
+https://rt-sib-abakan-htlive.cdn.ngenix.net/hls/CH_R01_ABAKAN24/variant.m3u8
+
+#EXTINF:-1 tvg-id="7" group-title="Ростелеком", Спас (+7)
+http://zabava-htlive.cdn.ngenix.net/hls/CH_SPAS_7/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Первый канал (Ухта)
+http://rt-nw-komi-htlive.cdn.ngenix.net/hls/CH_R03_1TV/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", СТС (Ухта)
+http://rt-nw-komi-htlive.cdn.ngenix.net/hls/CH_R02_STS/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ТНТ (Ухта)
+http://rt-nw-komi-htlive.cdn.ngenix.net/hls/CH_R01_TNT/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Ростелеком", Известия Магадан HD
+http://s20441.cdn.ngenix.net/hls/CH_R49_MGTK/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Ростелеком", Кош-Агач-ТВ HD
+http://rt-sib-galt-htlive.cdn.ngenix.net/hls/CH_R01_KOSHAH/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Москва 24
+http://livehlsvgtrkrf.cdnvideo.ru/hls/moscow_24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Ростелеком", Москва 24
+http://rt-mos-htlive.cdn.ngenix.net/hls/CH_R04_MOSKOV/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Детские", Никтуонс
+https://edge04.beetv.kz/btv/SWM/nicktoons/nicktoons_1.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Ростелеком", Известия-Владимир
+http://rt-ct-vlad-htlive.cdn.ngenix.net/hls/CH_R01_IZVESTIA/variant.m3u8
+
+#EXTINF:-1 tvg-id="7x7" group-title="Ростелеком", 7x7 (Иваново)
+http://rt-ct-ivan-htlive.cdn.ngenix.net/hls/CH_R03_7X7/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ОТВ Челябинск
+http://rt-ural-chel-htlive.cdn.ngenix.net/hls/CH_R02_OTV/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ОТВ Миасс
+http://rt-ural-chel-htlive.cdn.ngenix.net/hls/CH_R02_OTV_MIASS/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Тула 24
+http://rt-ct-tula-htlive.cdn.ngenix.net/hls/CH_R01_TULA24/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Город (Оренбург)
+http://176.99.135.119:8081/gorod/1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="gln_news" group-title="Региональные", РБК GLN News (Геленджик)
+http://rt-sth-krdar-htlive.cdn.ngenix.net/hls/CH_R06_RBKGLN/variant.m3u8
+
+#EXTINF:-1 tvg-id="givc1_hd" group-title="ВГТРК", GIVC1 HD
+http://radio-live-mg.rtr-vesti.ru/hls2/givc1_hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc8" group-title="ВГТРК", GIVC8
+http://radio-live-mg.rtr-vesti.ru/live/givc8.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc9" group-title="ВГТРК", GIVC9
+http://radio-live-mg.rtr-vesti.ru/live/givc9.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc10" group-title="ВГТРК", GIVC10
+http://radio-live-mg.rtr-vesti.ru/live/givc10.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc11_hd" group-title="ВГТРК", GIVC11 HD
+http://radio-live-mg.rtr-vesti.ru/hls2/givc11_hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc16" group-title="ВГТРК", GIVC16
+http://radio-live-mg.rtr-vesti.ru/hls2/givc16/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc17" group-title="ВГТРК", GIVC17
+http://radio-live-mg.rtr-vesti.ru/hls2/givc17/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc18" group-title="ВГТРК", GIVC18
+http://radio-live-mg.rtr-vesti.ru/hls2/givc18/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc19" group-title="ВГТРК", GIVC19
+http://radio-live-mg.rtr-vesti.ru/hls2/givc19/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc20" group-title="ВГТРК", GIVC20
+http://radio-live-mg.rtr-vesti.ru/hls2/givc20/playlist.m3u8
+
+#EXTINF:-1 tvg-id="givc21" group-title="ВГТРК", GIVC21
+http://radio-live-mg.rtr-vesti.ru/hls2/givc21/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_60" group-title="ВГТРК", Россия 1 (60 мин)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_60min/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ext_ingest1" group-title="ВГТРК", ext_ingest1
+http://radio-live-mg.rtr-vesti.ru/hls/ext_ingest1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ext_ingest2" group-title="ВГТРК", ext_ingest2
+http://radio-live-mg.rtr-vesti.ru/hls/ext_ingest2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1
+http://radio-live-mg.rtr-vesti.ru/live/r1.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="ВГТРК", Россия HD
+http://radio-live-mg.rtr-vesti.ru/hls2/russia_hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_1" group-title="ВГТРК", Россия 1 (+1)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_2" group-title="ВГТРК", Россия 1 (+2)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_3" group-title="ВГТРК", Россия 1 (+3)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus3/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_4" group-title="ВГТРК", Россия 1 (+4)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus4/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_5" group-title="ВГТРК", Россия 1 (+5)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus5/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_6" group-title="ВГТРК", Россия 1 (+6)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus6/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_7" group-title="ВГТРК", Россия 1 (+7)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus7/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_9" group-title="ВГТРК", Россия 1 (+9)
+http://radio-live-mg.rtr-vesti.ru/hls/russia1_plus9/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24
+http://radio-live-mg.rtr-vesti.ru/hls/russia_24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24_smil" group-title="ВГТРК", Россия 24 (smil)
+http://radio-live-mg.rtr-vesti.ru/live/r24.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="live" group-title="ВГТРК", Соловьёв LIVE
+http://radio-live-mg.rtr-vesti.ru/hls/solovievlive/playlist.m3u8
+
+#EXTINF:-1 tvg-id="fm" group-title="ВГТРК", Вести FM
+http://radio-live-mg.rtr-vesti.ru/hls2/vesti_fm/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Маяк
+http://radio-live-mg.rtr-vesti.ru/live/smil:mayak.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Радио России
+http://radio-live-mg.rtr-vesti.ru/hls/radio_rus/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Планета РТР (Европа)
+http://radio-live-mg.rtr-vesti.ru/hls/planeta_rtr_euro/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Планета РТР (Азия)
+http://radio-live-mg.rtr-vesti.ru/hls/planeta_rtr_asia/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Планета РТР (СНГ)
+http://radio-live-mg.rtr-vesti.ru/hls/planeta_rtr_sng/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Планета РТР (США)
+http://radio-live-mg.rtr-vesti.ru/hls/planeta_rtr_usa/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Россия К
+http://radio-live-mg.rtr-vesti.ru/hls/russia_k/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smil" group-title="ВГТРК", Россия К (smil)
+http://radio-live-mg.rtr-vesti.ru/live/rk.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Карусель
+http://radio-live-mg.rtr-vesti.ru/hls/karusel/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24_rtr" group-title="ВГТРК", Москва 24 (rtr)
+http://radio-live-mg.rtr-vesti.ru/hls/moscow_24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="ВГТРК", Доверие
+http://radio-live-mg.rtr-vesti.ru/hls/doverie/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Интернет Канал Семерка
+http://94.142.141.13/hls/index/oMtQbmBxrTtNodPUyYkx.m3u8
+
+#EXTINF:-1 tvg-id="24_hd" group-title="Ростелеком", Сибирь 24 HD
+http://rt-sib-nsk-htlive.cdn.ngenix.net/hls/CH_R02_SIBIR24/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Планета Дети
+http://192.162.64.222:4000/play/a05n/index.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Региональные", Новошахтинск ТВ HD
+http://rt-sth-rd-htlive.cdn.ngenix.net/hls/CH_R02_NOVOSHK/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Региональные", Шахты ТВ HD
+http://rt-sth-rd-htlive.cdn.ngenix.net/hls/CH_R02_SHAKHTY/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Региональные", Батайск ТВ HD
+http://rt-sth-rd-htlive.cdn.ngenix.net/hls/CH_R02_BATAYSK/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Региональные", Новочеркасск ТВ HD
+http://rt-sth-rd-htlive.cdn.ngenix.net/hls/CH_R02_NOVOCHERK/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Руть (Кострома)
+http://rt-nw-kostroma-htlive.cdn.ngenix.net/hls/CH_R01_RUS/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Липецкое время 24
+http://rt-ct-lipetsk-htlive.cdn.ngenix.net/hls/CH_R02_LIPETSK24/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Липецк 24
+http://rt-ct-lipetsk-htlive.cdn.ngenix.net/hls/CH_R01_LIPETSK/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Каскад (Калининград)
+http://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R01_KASKAD/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ОТС (Новосибирск)
+http://rt-sib-nsk-htlive.cdn.ngenix.net/hls/CH_R01_OTS/variant.m3u8
+
+#EXTINF:-1 tvg-id="49" group-title="Региональные", НСК 49 (Новосибирск)
+http://rt-sib-nsk-htlive.cdn.ngenix.net/hls/CH_R01_49/variant.m3u8
+
+#EXTINF:-1 tvg-id="8" group-title="Региональные", 8 канал (Новосибирск)
+http://rt-sib-nsk-htlive.cdn.ngenix.net/hls/CH_R01_8CHANNEL/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", НТС (Саров)
+http://rt-vlg-nn-htlive.cdn.ngenix.net/hls/CH_R01_OTT/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", КТРК (Кыштым)
+http://rt-ural-chel-htlive.cdn.ngenix.net/hls/CH_R02_KTRK/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Разное", Россия 1 (Донецк)
+http://109.254.7.193:4022/udp/238.1.1.154:1234
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 (Донецк ВГТРК)
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/HO4y0CelYt0/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Разное", Первый Псковский HD
+http://194.190.78.91/pskov/rewind-10800.m3u8
+
+#EXTINF:-1 tvg-id="hd_tracks" group-title="Разное", Первый Псковский HD (tracks)
+http://194.190.78.91/pskov/tracks-v1a1/rewind-10800.m3u8
+
+#EXTINF:-1 tvg-id="hd_mono" group-title="Разное", Первый Псковский HD (mono)
+http://194.190.78.91/pskov/tracks-v1a1/mono.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Квант (Междуреченск)
+https://rt-sib-nvkz-htlive.cdn.ngenix.net/hls/CH_R01_KVANT/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ТСТ (Черемхово)
+http://rt-sib-irk-htlive.cdn.ngenix.net/hls/CH_R04_OTT/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", ТВН (Кемерово)
+http://46.180.252.106:9999/udp/239.255.42.140:1234
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", РТК Омикс (Белово)
+http://46.180.252.106:9999/udp/239.255.42.239:1234
+
+#EXTINF:-1 tvg-id="10" group-title="Региональные", 10 канал (Саранск)
+http://rt-vlg-srnk-htlive.cdn.ngenix.net/hls/CH_R02_10CHANNEL/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Первый канал (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_1TV/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Региональные", Россия 1 (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Россия 24 (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_ROSSIA24/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ОТР (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="3" group-title="Региональные", ТВ3 (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_TV3/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Пятница (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_FRIDAY/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", ТНТ (Анадырь)
+https://s97982.cdn.ngenix.net/hls/CH_R87_TNT/variant.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Разное", НТВ HD
+http://cdn.ntv.ru/ntv0_hd/mono.m3u8
+
+#EXTINF:-1 tvg-id="ru_live_hd" group-title="Разное", Астрахань Ru Live HD
+https://streaming.astrakhan.ru/astrakhanrulivehd/index.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Чукотка
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/anadyr/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Алания
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/vladikavkaz/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Алания
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/vladikavkaz/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Воронеж
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/voroneg/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Воронеж
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/voroneg/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Горный Алтай
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/gornoaltaysk/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Горный Алтай
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/gornoaltaysk/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Удмуртия
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/igevsk/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Удмуртия
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/igevsk/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Марий Эл
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/yoshkarola/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Марий Эл
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/yoshkarola/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Татарстан
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/kazan/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Татарстан
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/kazan/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Кубань
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/krasnodar/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Кубань
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/krasnodar/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Красноярск
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/krasnoyarsk/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Красноярск
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/krasnoyarsk/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Тыва
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/kisil/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Тыва
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/kisil/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Самара
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/samara/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Самара
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/samara/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Таврида
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/simferopol/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Сочи
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/sochi/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Сочи
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/sochi/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Коми Гор
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/syktivkar/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Коми Гор
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/syktivkar/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Регион-Тюмень
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/tumen/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Регион-Тюмень
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/tumen/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Сахалин
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/ugnosahalin/russia1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="ВГТРК", Россия 24 / ГТРК Сахалин
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/ugnosahalin/russia24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Донецк
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/HO4y0CelYt0/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="ВГТРК", Россия 1 / ГТРК Луганск
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/HO3gcQAHbok/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Мир", Мир HD
+https://hls-mirtv.cdnvideo.ru/mirtv-parampublish/mirtv/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd_2" group-title="Мир", Мир HD +2
+https://hls-mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_plus2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="2" group-title="Мир", Мир +2 Казахстан
+http://tvcdn01.esilnet.kz/tv/mir/index.m3u8
+
+#EXTINF:-1 tvg-id="hd_4" group-title="Мир", Мир HD +4
+https://hls-mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_plus4/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd_7" group-title="Мир", Мир HD +7
+http://hls-mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_plus7/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd" group-title="Беларусь", Беларусь 1 HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:btr1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="2_hd" group-title="Беларусь", Беларусь 2 HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:btr2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="3_hd" group-title="Беларусь", Беларусь 3 HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:btr3/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24_hd" group-title="Беларусь", Беларусь 24 HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:belarus24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="5_hd" group-title="Беларусь", Беларусь 5 HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:btr5/playlist.m3u8
+
+#EXTINF:-1 tvg-id="5_hd" group-title="Беларусь", Беларусь 5 интернет HD
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:btr5int/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Беларусь", Первый информационный HD Беларусь
+https://edge50.dc.beltelecom.by/ngtrk/_definst_/smil:pit/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Беларусь", СТВ HD Беларусь
+https://edge50.dc.beltelecom.by/ctv/_definst_/ctv.stream/playlist.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Беларусь", ОНТ Беларусь
+https://stream.dc.beltelecom.by/ont/ont/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd" group-title="ВГТРК", Россия 1 HD
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/0/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_1" group-title="ВГТРК", Россия 1 HD (+1)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/1/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_2" group-title="ВГТРК", Россия 1 HD (+2)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/2/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_3" group-title="ВГТРК", Россия 1 HD (+3)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/3/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_4" group-title="ВГТРК", Россия 1 HD (+4)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/4/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_5" group-title="ВГТРК", Россия 1 HD (+5)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/5/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_6" group-title="ВГТРК", Россия 1 HD (+6)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/6/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_7" group-title="ВГТРК", Россия 1 HD (+7)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/7/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_8" group-title="ВГТРК", Россия 1 HD (+8)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/8/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="1_hd_9" group-title="ВГТРК", Россия 1 HD (+9)
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/9/russia1-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="24_hd" group-title="ВГТРК", Россия 24 HD
+http://vgtrkregion-reg.cdnvideo.ru/vgtrk/0/russia24-hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Ростелеком", Пятый Канал HD
+http://s25617.cdn.ngenix.net/mdrm/CH_5KANALHD/manifest.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Ростелеком", РЕН ТВ HD
+http://s25617.cdn.ngenix.net/mdrm/CH_RENTVHD/manifest.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Известия-Чита
+http://rt-sib-chita-htlive.cdn.ngenix.net/hls/CH_R02_IZVESTIA/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Первый канал (-1)
+https://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R03_1TV/variant.m3u8
+
+#EXTINF:-1 tvg-id="1_1" group-title="Ростелеком", Россия 1 (-1)
+https://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R04_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Инсит ТВ (Копейск)
+http://rt-ural-chel-htlive.cdn.ngenix.net/hls/CH_R01_INSIT/variant.m3u8
+
+#EXTINF:-1 tvg-id="21" group-title="Региональные", ТВ-21+ (Мурманск)
+http://rt-nw-murm-htlive.cdn.ngenix.net/hls/CH_R01_TV21/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="UDP потоки", Первый городской Омск
+udp://225.54.206.43:5000
+
+#EXTINF:-1 tvg-id="channel" group-title="Ростелеком", Белорецкое телевидение
+http://s45177.cdn.ngenix.net/hls/CH_R01_BELORETSK/variant.m3u8
+
+#EXTINF:-1 tvg-id="n1_hd" group-title="Региональные", N1 HD (Нижневартовск)
+http://rt-ural-sur-htlive.cdn.ngenix.net/hls/CH_R01_OTT/variant.m3u8
+
+#EXTINF:-1 tvg-id="38" group-title="Региональные", Губерния 38 (Иркутск)
+http://rt-sib-irk-htlive.cdn.ngenix.net/hls/CH_R02_SIBIR/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Россия 1 (Чукотка)
+http://s97982.cdn.ngenix.net/hls/CH_R87_ROSSIA1_CHAO/variant.m3u8
+
+#EXTINF:-1 tvg-id="1" group-title="Ростелеком", Россия 1 (Якутия)
+http://s34351.cdn.ngenix.net/hls/CH_R04_OTT_DV_YKT_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="9" group-title="Ростелеком", Первый канал (+9)
+http://s14131.cdn.ngenix.net/hls/CH_R03_1TV_KAM/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Лента (Артём)
+http://s91030.cdn.ngenix.net/hls/CH_R25_LENTA/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Мыски Медиа
+http://rt-sib-nvkz-htlive.cdn.ngenix.net/hls/CH_R02_MYSKI/variant.m3u8
+
+#EXTINF:-1 tvg-id="24" group-title="Региональные", Сибирь 24 Томск
+http://rt-sib-tomsk-htlive.cdn.ngenix.net/hls/CH_R02_SIBIR24/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Ростелеком", Патриот
+https://s81169.cdn.ngenix.net/mdrm/CH_PATRIOT/manifest.m3u8
+
+#EXTINF:-1 tvg-id="2" group-title="Ростелеком", ОТР (+2)
+http://rt-ural-chel-htlive.cdn.ngenix.net/hls/CH_R01_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="4" group-title="Ростелеком", ОТР (+4)
+http://rt-sib-galt-htlive.cdn.ngenix.net/hls/CH_R02_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="6" group-title="Ростелеком", ОТР (+6)
+http://s97982.cdn.ngenix.net/hls/CH_R27_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="7" group-title="Ростелеком", Первый канал (+7)
+http://s91030.cdn.ngenix.net/hls/CH_R25_1TV/variant.m3u8
+
+#EXTINF:-1 tvg-id="1_7" group-title="Ростелеком", Россия 1 (+7)
+http://s91030.cdn.ngenix.net/hls/CH_R25_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="8" group-title="Ростелеком", ОТР (+8)
+http://s97983.cdn.ngenix.net/hls/CH_R87_OTR/variant.m3u8
+
+#EXTINF:-1 tvg-id="1_3" group-title="Ростелеком", Россия 1 (+3)
+https://rt-sib-omsk-htlive.cdn.ngenix.net/hls/CH_R04_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="1_5" group-title="Ростелеком", Россия 1 (+5)
+https://rt-sib-irk-htlive.cdn.ngenix.net/hls/CH_R04_ROSSIA1/variant.m3u8
+
+#EXTINF:-1 tvg-id="5" group-title="Ростелеком", Первый канал (+5)
+http://zabava-htlive.cdn.ngenix.net/hls/CH_1TVSD_5/variant.m3u8
+
+#EXTINF:-1 tvg-id="3" group-title="Ростелеком", Первый канал (+3)
+http://zabava-htlive.cdn.ngenix.net/hls/CH_1TVSD_3/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Кунел Радио
+http://89.251.159.37:8080/hls/kunelfm.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Разное", Эфир Челны (Набережные Челны)
+http://89.251.159.37:8080/hls/kunelfm2.m3u8
+
+#EXTINF:-1 tvg-id="hd" group-title="Региональные", ТВ-Богданович HD
+http://rt-ural-ekt-htlive.cdn.ngenix.net/hls/CH_R01_OBO/variant.m3u8
+
+#EXTINF:-1 tvg-id="channel" group-title="Региональные", Лабытнанги ТВ
+http://rt-ural-nbk-htlive.cdn.ngenix.net/hls/CH_R04_OBN/variant.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_1" group-title="ВГТРК", Smotrim Россия 1 (+1)
+https://stream.smotrim.ru/hls2/russia1_plus1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_2" group-title="ВГТРК", Smotrim Россия 1 (+2)
+https://stream.smotrim.ru/hls2/russia1_plus2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_3" group-title="ВГТРК", Smotrim Россия 1 (+3)
+https://stream.smotrim.ru/hls2/russia1_plus3/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_4" group-title="ВГТРК", Smotrim Россия 1 (+4)
+https://stream.smotrim.ru/hls2/russia1_plus4/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_5" group-title="ВГТРК", Smotrim Россия 1 (+5)
+https://stream.smotrim.ru/hls2/russia1_plus5/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_6" group-title="ВГТРК", Smotrim Россия 1 (+6)
+https://stream.smotrim.ru/hls2/russia1_plus6/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_7" group-title="ВГТРК", Smotrim Россия 1 (+7)
+https://stream.smotrim.ru/hls2/russia1_plus7/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_8" group-title="ВГТРК", Smotrim Россия 1 (+8)
+https://stream.smotrim.ru/hls2/russia1_plus8/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1_9" group-title="ВГТРК", Smotrim Россия 1 (+9)
+https://stream.smotrim.ru/hls2/russia1_plus9/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Карусель
+https://stream.smotrim.ru/hls2/karusel/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_24" group-title="ВГТРК", Smotrim Москва 24
+https://stream.smotrim.ru/hls2/moscow_24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Доверие
+https://stream.smotrim.ru/hls2/doverie/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_24" group-title="ВГТРК", Smotrim Россия 24
+https://stream.smotrim.ru/hls2/russia_24/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Планета РТР Европа
+https://stream.smotrim.ru/hls2/planeta_rtr_euro/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Планета РТР США
+https://stream.smotrim.ru/hls2/planeta_rtr_usa/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Планета РТР Азия
+https://stream.smotrim.ru/hls2/planeta_rtr_asia/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Планета РТР СНГ
+https://stream.smotrim.ru/hls2/planeta_rtr_sng/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_live" group-title="ВГТРК", Smotrim Соловьёв LIVE
+https://stream.smotrim.ru/hls2/solovievlive/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_spb_tv" group-title="ВГТРК", Smotrim SPB TV
+https://stream.smotrim.ru/hls2/ext_spbtv/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_static" group-title="ВГТРК", Smotrim Static
+https://stream.smotrim.ru/hls2/static/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_01" group-title="ВГТРК", Smotrim FastTV 01
+https://stream.smotrim.ru/hls2/fasttv01/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_02" group-title="ВГТРК", Smotrim FastTV 02
+https://stream.smotrim.ru/hls2/fasttv02/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_03" group-title="ВГТРК", Smotrim FastTV 03
+https://stream.smotrim.ru/hls2/fasttv03/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_04" group-title="ВГТРК", Smotrim FastTV 04
+https://stream.smotrim.ru/hls2/fasttv04/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_05" group-title="ВГТРК", Smotrim FastTV 05
+https://stream.smotrim.ru/hls2/fasttv05/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fasttv_06" group-title="ВГТРК", Smotrim FastTV 06
+https://stream.smotrim.ru/hls2/fasttv06/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Россия К
+https://stream.smotrim.ru/hls2/russia_k/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_1" group-title="ВГТРК", Smotrim Россия К дубль1
+https://stream.smotrim.ru/hls2/russia_k_dubl1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_2" group-title="ВГТРК", Smotrim Россия К дубль2
+https://stream.smotrim.ru/hls2/russia_k_dubl2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_3" group-title="ВГТРК", Smotrim Россия К дубль3
+https://stream.smotrim.ru/hls2/russia_k_dubl3/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_fm" group-title="ВГТРК", Smotrim Вести FM
+https://stream.smotrim.ru/hls2/vesti_fm/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim" group-title="ВГТРК", Smotrim Радио России
+https://stream.smotrim.ru/hls2/radio_rus/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_radio_fm" group-title="ВГТРК", Smotrim Radio Вести FM
+https://stream.smotrim.ru/hls2/RadioVestiFM/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_radio" group-title="ВГТРК", Smotrim Radio Маяк
+https://stream.smotrim.ru/hls2/RadioMayak/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_radio_rfm" group-title="ВГТРК", Smotrim Radio RFM
+https://stream.smotrim.ru/hls2/RadioRFM/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_radio" group-title="ВГТРК", Smotrim Radio Культура
+https://stream.smotrim.ru/hls2/RadioKultura/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_radio" group-title="ВГТРК", Smotrim Radio Юность
+https://stream.smotrim.ru/hls2/RadioUnost/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_hd" group-title="ВГТРК", Smotrim Россия HD
+https://stream.smotrim.ru/hls2/russia_hd/playlist.m3u8
+
+#EXTINF:-1 tvg-id="smotrim_24" group-title="ВГТРК", Smotrim Лента 24
+https://stream.smotrim.ru/hls2/lentv24/playlist.m3u8
