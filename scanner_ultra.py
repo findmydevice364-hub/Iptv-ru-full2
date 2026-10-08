@@ -1527,7 +1527,9 @@ async def find_and_test_alternatives(
     ffprobe: bool,
     min_similarity: float,
     archive: Archive,
+    ops_per_second: float = DEFAULT_OPS_PER_SECOND,
 ) -> tuple[list[StreamRecord], list[AlternativeEvent]]:
+    log = logging.getLogger("ultra")
     groups: dict[str, list[StreamRecord]] = defaultdict(list)
     for r in records:
         # Prefer db_id for grouping when available
@@ -1585,14 +1587,28 @@ async def find_and_test_alternatives(
         jobs.append((key, rs, [c for _, c in scored[:candidate_limit]]))
 
     if not jobs:
+        log.info("ALTS: no under-covered channels, skip")
         return [], []
+
+    total_candidates = sum(len(c) for _, _, c in jobs)
+    log.info(
+        "ALTS START | jobs=%d | candidates=%d | workers=%d | ops/s=%.1f | target=%d",
+        len(jobs), total_candidates, workers, ops_per_second, target,
+    )
 
     all_events: list[AlternativeEvent] = []
     new_records: list[StreamRecord] = []
-    next_id = archive.next_id()
-    rate_limiter = AsyncRateLimiter(DEFAULT_OPS_PER_SECOND)
+    next_id_lock = asyncio.Lock()
+    next_id_box = [archive.next_id()]
+    events_lock = asyncio.Lock()
+    records_lock = asyncio.Lock()
+    progress = {"done_jobs": 0, "checked": 0, "working": 0}
+    rate_limiter = AsyncRateLimiter(ops_per_second)
     connector = aiohttp.TCPConnector(limit=max(8, workers), ssl=False)
+    # Общий лимит сетевых проверок = alt-workers (без потолка 16)
     sem = asyncio.Semaphore(max(1, workers))
+    # Параллельные channel-jobs = alt-workers целиком
+    job_sem = asyncio.Semaphore(max(1, workers))
 
     async with aiohttp.ClientSession(
         connector=connector,
@@ -1604,83 +1620,115 @@ async def find_and_test_alternatives(
                 e = await check_stream(session, candidate, timeout, rate_limiter)
                 return candidate, e
 
-        for key, rs, candidates in jobs:
+        async def run_job(key: str, rs: list[StreamRecord], candidates: list[StreamRecord]):
             working = [r for r in rs if r.working]
             selected = choose_diverse(working, target)
             existing_urls = {normalize_url(r.url) for r in working if r.url}
             rank = 0
-            for coro in asyncio.as_completed([test(c) for c in candidates]):
-                candidate, event = await coro
-                rank += 1
-                sim = channel_similarity(rs[0].name, candidate.name)
-                all_events.append(AlternativeEvent(
-                    pass_no=pass_no,
-                    timestamp=now_iso(),
-                    failed_record_id=rs[0].record_id,
-                    failed_name=rs[0].name,
-                    candidate_record_id=candidate.record_id,
-                    candidate_name=candidate.name,
-                    candidate_url=apply_host_rewrites(candidate.url),
-                    similarity=sim,
-                    working=event.working,
-                    rank=rank,
-                    region=candidate.region,
-                    host=candidate.host,
-                    operator=candidate.operator,
-                    orbit=candidate.orbit,
-                    quality=candidate.quality,
-                ))
-                if event.working and normalize_url(candidate.url) not in existing_urls:
-                    nr = StreamRecord(
-                        record_id=next_id,
-                        name=rs[0].name or candidate.name,
-                        url=apply_host_rewrites(candidate.url),
-                        group=candidate.group or rs[0].group,
-                        tvg_id=rs[0].tvg_id or candidate.tvg_id,
-                        tvg_name=rs[0].tvg_name or candidate.tvg_name,
-                        logo=rs[0].logo or candidate.logo,
-                        source=candidate.source,
-                        source_type="working_alternative",
-                        discovered_pass=pass_no,
+            local_new: list[StreamRecord] = []
+            local_events: list[AlternativeEvent] = []
+            async with job_sem:
+                for coro in asyncio.as_completed([test(c) for c in candidates]):
+                    candidate, event = await coro
+                    rank += 1
+                    progress["checked"] += 1
+                    if progress["checked"] % 100 == 0:
+                        log.info(
+                            "ALTS PROGRESS | checked=%d/%d | jobs_done=%d/%d | working_alts=%d",
+                            progress["checked"], total_candidates,
+                            progress["done_jobs"], len(jobs), progress["working"],
+                        )
+                    sim = channel_similarity(rs[0].name, candidate.name)
+                    local_events.append(AlternativeEvent(
+                        pass_no=pass_no,
+                        timestamp=now_iso(),
+                        failed_record_id=rs[0].record_id,
+                        failed_name=rs[0].name,
+                        candidate_record_id=candidate.record_id,
+                        candidate_name=candidate.name,
+                        candidate_url=apply_host_rewrites(candidate.url),
+                        similarity=sim,
+                        working=event.working,
+                        rank=rank,
                         region=candidate.region,
                         host=candidate.host,
                         operator=candidate.operator,
-                        normalized_channel=key if not key.startswith("id:") else normalize_name(rs[0].name),
                         orbit=candidate.orbit,
                         quality=candidate.quality,
-                        special=any(x.special for x in rs) or candidate.special,
-                        russian_priority=any(x.russian_priority for x in rs) or candidate.russian_priority,
-                        db_id=rs[0].db_id or candidate.db_id,
-                        db_name=rs[0].db_name or candidate.db_name,
-                        db_aliases=list(dict.fromkeys(rs[0].db_aliases + candidate.db_aliases)),
-                        db_country=rs[0].db_country or candidate.db_country,
-                        db_language=rs[0].db_language or candidate.db_language,
-                        db_network=rs[0].db_network or candidate.db_network,
-                        db_match_score=max(rs[0].db_match_score, candidate.db_match_score),
-                        db_match_type=rs[0].db_match_type or candidate.db_match_type,
-                        alternative_of=rs[0].name,
-                        alternative_rank=rank,
-                        similarity=sim,
-                        is_alternative=True,
-                    )
-                    apply_event(nr, event)
-                    new_records.append(nr)
-                    existing_urls.add(normalize_url(nr.url))
-                    selected.append(nr)
-                    next_id += 1
+                    ))
+                    if event.working and normalize_url(candidate.url) not in existing_urls:
+                        async with next_id_lock:
+                            rid = next_id_box[0]
+                            next_id_box[0] += 1
+                        nr = StreamRecord(
+                            record_id=rid,
+                            name=rs[0].name or candidate.name,
+                            url=apply_host_rewrites(candidate.url),
+                            group=candidate.group or rs[0].group,
+                            tvg_id=rs[0].tvg_id or candidate.tvg_id,
+                            tvg_name=rs[0].tvg_name or candidate.tvg_name,
+                            logo=rs[0].logo or candidate.logo,
+                            source=candidate.source,
+                            source_type="working_alternative",
+                            discovered_pass=pass_no,
+                            region=candidate.region,
+                            host=candidate.host,
+                            operator=candidate.operator,
+                            normalized_channel=key if not str(key).startswith("id:") else normalize_name(rs[0].name),
+                            orbit=candidate.orbit,
+                            quality=candidate.quality,
+                            special=any(x.special for x in rs) or candidate.special,
+                            russian_priority=any(x.russian_priority for x in rs) or candidate.russian_priority,
+                            db_id=rs[0].db_id or candidate.db_id,
+                            db_name=rs[0].db_name or candidate.db_name,
+                            db_aliases=list(dict.fromkeys(rs[0].db_aliases + candidate.db_aliases)),
+                            db_country=rs[0].db_country or candidate.db_country,
+                            db_language=rs[0].db_language or candidate.db_language,
+                            db_network=rs[0].db_network or candidate.db_network,
+                            db_match_score=max(rs[0].db_match_score, candidate.db_match_score),
+                            db_match_type=rs[0].db_match_type or candidate.db_match_type,
+                            alternative_of=rs[0].name,
+                            alternative_rank=rank,
+                            similarity=sim,
+                            is_alternative=True,
+                        )
+                        apply_event(nr, event)
+                        local_new.append(nr)
+                        existing_urls.add(normalize_url(nr.url))
+                        selected.append(nr)
+                        progress["working"] += 1
 
-                    diverse_count = len(choose_diverse(selected, target))
-                    covered_primary = {
-                        (str(x.quality or "UNKNOWN").upper(), str(x.orbit or "+0"))
-                        for x in selected
-                    }
-                    primary_missing = any(
-                        (q, o) not in covered_primary
-                        for q in ORBIT_QUALITY_TARGETS
-                        for o in ORBIT_SEARCH_ORDER[:11]
-                    )
-                    if diverse_count >= target and not primary_missing:
-                        break
+                        diverse_count = len(choose_diverse(selected, target))
+                        covered_primary = {
+                            (str(x.quality or "UNKNOWN").upper(), str(x.orbit or "+0"))
+                            for x in selected
+                        }
+                        primary_missing = any(
+                            (q, o) not in covered_primary
+                            for q in ORBIT_QUALITY_TARGETS
+                            for o in ORBIT_SEARCH_ORDER[:11]
+                        )
+                        if diverse_count >= target and not primary_missing:
+                            break
+
+            async with events_lock:
+                all_events.extend(local_events)
+            async with records_lock:
+                new_records.extend(local_new)
+            progress["done_jobs"] += 1
+            if progress["done_jobs"] % 25 == 0 or progress["done_jobs"] == len(jobs):
+                log.info(
+                    "ALTS JOBS | done=%d/%d | checked=%d | working_alts=%d",
+                    progress["done_jobs"], len(jobs),
+                    progress["checked"], progress["working"],
+                )
+
+        await asyncio.gather(*(run_job(k, rs, cands) for k, rs, cands in jobs))
+
+    log.info(
+        "ALTS DONE | jobs=%d | checked=%d | new_working=%d | events=%d",
+        len(jobs), progress["checked"], len(new_records), len(all_events),
+    )
     return new_records, all_events
 
 
@@ -1705,6 +1753,10 @@ async def check_records(
     rate_limiter = AsyncRateLimiter(ops_per_second)
     events: list[CheckEvent] = []
 
+    log = logging.getLogger("ultra")
+    total = len(targets)
+    log.info("CHECK START | targets=%d | workers=%d | ops/s=%.1f", total, workers, ops_per_second)
+    done = 0
     async with aiohttp.ClientSession(
         connector=connector,
         timeout=aiohttp.ClientTimeout(total=timeout),
@@ -1727,6 +1779,10 @@ async def check_records(
         for coro in asyncio.as_completed([one(r) for r in targets]):
             e = await coro
             events.append(e)
+            done += 1
+            if done % 500 == 0 or done == total:
+                ok = sum(1 for x in events if x.working)
+                log.info("CHECK PROGRESS | %d/%d | ok=%d | fail=%d", done, total, ok, done - ok)
 
     by_id = {r.record_id: r for r in records}
     for e in events:
@@ -2422,6 +2478,7 @@ async def main_async(args: argparse.Namespace) -> int:
             ffprobe=args.ffprobe,
             min_similarity=args.similarity,
             archive=archive,
+            ops_per_second=args.ops_per_second,
         )
         if alt_records:
             archive.append_records(alt_records)
