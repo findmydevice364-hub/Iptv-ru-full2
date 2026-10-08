@@ -44,14 +44,14 @@ jobs:
           python scanner_ultra.py \
             --output ./iptv_output \
             --passes 1 \
-            --workers 34 \
-            --alt-workers 28 \
-            --source-workers 26 \
+            --workers 64 \
+            --alt-workers 48 \
+            --source-workers 64 \
             --timeout 12 \
             --source-timeout 30 \
             --min-alternatives 6 \
             --alternative-candidates 50 \
-            --ops-per-second 8 \
+            --ops-per-second 64 \
             --similarity 0.60 \
             --ffprobe \
             --source-list ./sources.txt
