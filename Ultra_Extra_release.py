@@ -283,7 +283,7 @@ PRIORITY_SOURCES = [
     "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/100_plus.m3u",
 ]
 TRUSTED_PLAYLIST_SOURCES = {
-    "https://raw.githubusercontent.com/Phoenix89S/IpTV_playlist_2026Ru/gh-pages/test_channels.m3u",
+    "https://raw.githubusercontent.com/Phoenix89S/IpTV_playlist_2026Ru/gh-pages/Extra_channels.m3u",
 }
 
 # Узел fs.uplink.kz — мастер-шаблон mono.m3u8?token=onlinetv
