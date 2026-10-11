@@ -194,3 +194,13 @@ https://dumatv.iptv2022.com/index.m3u8
 #EXTINF:-1 tvg-id="DumaTV-2" tvg-name="Дума ТВ" group-title="Россия",Дума ТВ (вариант 2)
 https://dumatv.iptv2022.com/playlist.m3u8
 
+
+
+#EXTINF:-1 tvg-id="dumatv" group-title="Информационные",Дума ТВ HD — вариант 3
+https://dumatv.iptv2022.com/tracks-v2a1/mono.m3u8
+#EXTINF:-1 tvg-id="dumatv" group-title="Информационные",Дума ТВ — вариант 4
+https://zabava-htlive.cdn.ngenix.net/hls/CH_DUMATV/variant.m3u8
+#EXTINF:-1 tvg-id="dumatv" group-title="Информационные",Дума ТВ — вариант 5
+https://mhd128.iptv2022.com/p/S73-pB_y6B_UHBtTYLUZ5g,1743195612/streaming/dumatv/324/1/tracks-v5a1/mono.m3u8
+
+
