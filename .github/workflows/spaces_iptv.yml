@@ -9,7 +9,7 @@ on:
 
   push:
     paths:
-      - "Spaces_iptv.py"
+      - "spaces_iptv.py"
       - "sources.txt"
       - ".github/workflows/spaces-iptv.yml"
 
@@ -38,12 +38,12 @@ jobs:
           python-version: "3.12"
 
       - name: Check Python syntax
-        run: python -m py_compile Spaces_iptv.py
+        run: python -m py_compile spaces_iptv.py
 
       - name: Run Spaces IPTV collector
         env:
           PYTHONUNBUFFERED: "1"
-        run: python -u Spaces_iptv.py
+        run: python -u spaces_iptv.py
 
       - name: Show generated files
         if: always()
