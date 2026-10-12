@@ -1,0 +1,80 @@
+
+name: Spaces IPTV Collector
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "20 3 * * *"
+
+  push:
+    paths:
+      - "Spaces_iptv.py"
+      - "sources.txt"
+      - ".github/workflows/spaces-iptv.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: spaces-iptv-collector
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: Collect and merge IPTV playlists
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check Python syntax
+        run: python -m py_compile Spaces_iptv.py
+
+      - name: Run Spaces IPTV collector
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: python -u Spaces_iptv.py
+
+      - name: Show generated files
+        if: always()
+        run: |
+          echo "=== Processed files ==="
+          if [ -d processed ]; then
+            find processed -maxdepth 2 -type f -printf '%p (%s bytes)\n'
+          else
+            echo "processed directory not found"
+          fi
+
+      - name: Upload processing results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spaces-iptv-results
+          path: processed/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Commit updated playlists and reports
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add processed/
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Spaces IPTV playlists and reports"
+            git push
+          fi
