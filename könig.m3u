@@ -10,6 +10,22 @@ http://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R03_OTT_NW_KLGR_1TV/variant.m3u8?
 #EXTINF:-1 tvg-id="kluch" tvg-name="Ключ" tvg-logo="https://asinsckievgeni.github.io/zala/logos/kluch.png" group-title="Познавательные",Ключ
 https://mfe.svc.ott.zala.by/hls/CH_KEY_HLS/variant.m3u8
 
+
+
+
+#EXTINF:-1 tvg-id="kluch" group-title="Ключ — проверить",Ключ (Zabava / Ростелеком)
+https://zabava-htlive.cdn.ngenix.net/hls/CH_KEY/variant.m3u8
+
+#EXTINF:-1 tvg-name="Ключ HD" group-title="Ключ — проверить",Ключ HD (архив 2025)
+https://mhd128.iptv2022.com/p/7qpqCL_DdntVC59gA6B0uQ,1743195606/streaming/kluchhd/324/1/index.m3u8
+
+#EXTINF:-1 tvg-name="Ключ HD" group-title="Ключ — проверить",Ключ HD (архив 2023)
+https://mhd116.iptv2022.com/p/OZmliihPqg9XrLy1rkxfBA,1688072412/streaming/kluchhd/324/1/index.m3u8
+
+
+
+
+
 #EXTINF:-1 tvg-id="tv3-ru" tvg-shift="-1" group-title="Калининград (−1)",ТВ3 (−1)
 #EXTVLCOPT:http-user-agent=WINK/1.40.1 (AndroidTV/9) HlsWinkPlayer
 http://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R01_TV3/variant.m3u8?version=2
