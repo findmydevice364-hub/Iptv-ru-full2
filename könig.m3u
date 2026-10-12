@@ -11,7 +11,12 @@ http://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R03_OTT_NW_KLGR_1TV/variant.m3u8?
 https://mfe.svc.ott.zala.by/hls/CH_KEY_HLS/variant.m3u8
 
 
+#--- поиск канала ключ
 
+
+
+#EXTINF:-1 tvg-name="Ключ HD" group-title="Ключ — проверить",Ключ HD (Telstar, архив)
+http://158.101.214.187:8080/channel/220a8a2/index.m3u8?q=b92e505ee8a30dc40ddf8c9d0c3bbb38
 
 #EXTINF:-1 tvg-id="kluch" group-title="Ключ — проверить",Ключ (Zabava / Ростелеком)
 https://zabava-htlive.cdn.ngenix.net/hls/CH_KEY/variant.m3u8
