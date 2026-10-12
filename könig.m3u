@@ -13,8 +13,8 @@ https://mfe.svc.ott.zala.by/hls/CH_KEY_HLS/variant.m3u8
 
 #--- поиск канала ключ
 
-
-
+#EXTINF:-1 tvg-name="Ключ HD" group-title="Ключ — проверить",Ключ HD (beetv, архив)
+https://bkm.beetv.kz/btv/live/hls/000004585.m3u8
 #EXTINF:-1 tvg-name="Ключ HD" group-title="Ключ — проверить",Ключ HD (Telstar, архив)
 http://158.101.214.187:8080/channel/220a8a2/index.m3u8?q=b92e505ee8a30dc40ddf8c9d0c3bbb38
 
