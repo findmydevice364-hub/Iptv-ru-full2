@@ -5,7 +5,7 @@
     "final_url": "https://raw.githubusercontent.com/smolnp/IPTVru/refs/heads/gh-pages/IPTVru.m3u",
     "channels": 328,
     "error": null,
-    "elapsed_seconds": 1.683
+    "elapsed_seconds": 1.958
   },
   {
     "source": "https://smolnp.github.io/IPTVru/IPTVru.m3u",
@@ -13,7 +13,7 @@
     "final_url": "https://smolnp.github.io/IPTVru/IPTVru.m3u",
     "channels": 328,
     "error": null,
-    "elapsed_seconds": 0.218
+    "elapsed_seconds": 0.235
   },
   {
     "source": "https://raw.githubusercontent.com/RomanTheQuant/IPtv/refs/heads/main/IPTV_SHARED.m3u",
@@ -21,7 +21,7 @@
     "final_url": "https://raw.githubusercontent.com/RomanTheQuant/IPtv/refs/heads/main/IPTV_SHARED.m3u",
     "channels": 3109,
     "error": null,
-    "elapsed_seconds": 0.358
+    "elapsed_seconds": 0.494
   },
   {
     "source": "https://pastebin.com/raw/d3mDM8Tv",
@@ -29,7 +29,7 @@
     "final_url": "https://pastebin.com/raw/d3mDM8Tv",
     "channels": 180,
     "error": null,
-    "elapsed_seconds": 0.775
+    "elapsed_seconds": 0.963
   },
   {
     "source": "https://iptv.axenov.dev/mult",
@@ -37,31 +37,31 @@
     "final_url": "https://raw.githubusercontent.com/user797/Playlists/refs/heads/main/Cartoons.m3u8",
     "channels": 307,
     "error": null,
-    "elapsed_seconds": 1.578
+    "elapsed_seconds": 1.89
   },
   {
     "source": "https://iptv-org.github.io/iptv/index.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/index.m3u",
-    "channels": 11259,
+    "channels": 11343,
     "error": null,
-    "elapsed_seconds": 0.291
+    "elapsed_seconds": 0.282
   },
   {
     "source": "https://iptv-org.github.io/iptv/index.category.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/index.category.m3u",
-    "channels": 11960,
+    "channels": 12051,
     "error": null,
-    "elapsed_seconds": 0.509
+    "elapsed_seconds": 0.439
   },
   {
     "source": "https://iptv-org.github.io/iptv/index.language.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/index.language.m3u",
-    "channels": 12703,
+    "channels": 12809,
     "error": null,
-    "elapsed_seconds": 0.202
+    "elapsed_seconds": 0.796
   },
   {
     "source": "https://iptv-org.github.io/iptv/countries/ru.m3u",
@@ -69,39 +69,39 @@
     "final_url": "https://iptv-org.github.io/iptv/countries/ru.m3u",
     "channels": 516,
     "error": null,
-    "elapsed_seconds": 0.057
+    "elapsed_seconds": 0.263
   },
   {
     "source": "https://iptv-org.github.io/iptv/categories/news.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/categories/news.m3u",
-    "channels": 1015,
+    "channels": 1018,
     "error": null,
-    "elapsed_seconds": 0.103
+    "elapsed_seconds": 0.125
   },
   {
     "source": "https://iptv-org.github.io/iptv/categories/sports.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/categories/sports.m3u",
-    "channels": 459,
+    "channels": 469,
     "error": null,
-    "elapsed_seconds": 0.078
+    "elapsed_seconds": 0.285
   },
   {
     "source": "https://iptv-org.github.io/iptv/categories/animation.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/categories/animation.m3u",
-    "channels": 173,
+    "channels": 174,
     "error": null,
-    "elapsed_seconds": 0.07
+    "elapsed_seconds": 0.129
   },
   {
     "source": "https://iptv-org.github.io/iptv/categories/documentary.m3u",
     "status": 200,
     "final_url": "https://iptv-org.github.io/iptv/categories/documentary.m3u",
-    "channels": 268,
+    "channels": 273,
     "error": null,
-    "elapsed_seconds": 0.078
+    "elapsed_seconds": 0.076
   },
   {
     "source": "https://ngrch.github.io/iptv/ru.m3u",
@@ -109,7 +109,7 @@
     "final_url": "https://ngrch.github.io/iptv/ru.m3u",
     "channels": 995,
     "error": null,
-    "elapsed_seconds": 0.157
+    "elapsed_seconds": 0.322
   },
   {
     "source": "https://ngrch.github.io/iptv/music.m3u",
@@ -117,7 +117,7 @@
     "final_url": "https://ngrch.github.io/iptv/music.m3u",
     "channels": 334,
     "error": null,
-    "elapsed_seconds": 0.103
+    "elapsed_seconds": 0.248
   },
   {
     "source": "https://ngrch.github.io/iptv/cartoons.m3u",
@@ -125,7 +125,7 @@
     "final_url": "https://ngrch.github.io/iptv/cartoons.m3u",
     "channels": 376,
     "error": null,
-    "elapsed_seconds": 0.222
+    "elapsed_seconds": 0.306
   },
   {
     "source": "https://raw.githubusercontent.com/substanc1/iptv-russia/main/streams/ru.m3u",
@@ -133,7 +133,7 @@
     "final_url": "https://raw.githubusercontent.com/substanc1/iptv-russia/main/streams/ru.m3u",
     "channels": 745,
     "error": null,
-    "elapsed_seconds": 0.101
+    "elapsed_seconds": 0.123
   },
   {
     "source": "https://substanc1.github.io/iptv-russia/streams/ru.m3u",
@@ -141,7 +141,7 @@
     "final_url": "https://substanc1.github.io/iptv-russia/streams/ru.m3u",
     "channels": 745,
     "error": null,
-    "elapsed_seconds": 0.132
+    "elapsed_seconds": 0.172
   },
   {
     "source": "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv.m3u",
@@ -149,7 +149,7 @@
     "final_url": "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv.m3u",
     "channels": 842,
     "error": null,
-    "elapsed_seconds": 0.188
+    "elapsed_seconds": 0.184
   },
   {
     "source": "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv-top.m3u",
@@ -157,7 +157,7 @@
     "final_url": "https://raw.githubusercontent.com/denxvofficial/IPTV/refs/heads/main/iptv-top.m3u",
     "channels": 391,
     "error": null,
-    "elapsed_seconds": 0.137
+    "elapsed_seconds": 0.188
   },
   {
     "source": "https://raw.githubusercontent.com/user797/Playlists/refs/heads/main/Cartoons.m3u8",
@@ -165,7 +165,7 @@
     "final_url": "https://raw.githubusercontent.com/user797/Playlists/refs/heads/main/Cartoons.m3u8",
     "channels": 307,
     "error": null,
-    "elapsed_seconds": 0.156
+    "elapsed_seconds": 0.321
   },
   {
     "source": "https://telekarta-tv.ru/wp-content/uploads/kids-all.m3u",
@@ -173,7 +173,7 @@
     "final_url": "https://telekarta-tv.ru/wp-content/uploads/kids-all.m3u",
     "channels": 1517,
     "error": null,
-    "elapsed_seconds": 1.783
+    "elapsed_seconds": 2.012
   },
   {
     "source": "https://smart-iptv.ru/radio.m3u",
@@ -181,7 +181,7 @@
     "final_url": "https://smart-iptv.ru/radio.m3u",
     "channels": 624,
     "error": null,
-    "elapsed_seconds": 1.488
+    "elapsed_seconds": 1.442
   },
   {
     "source": "https://loganet.vercel.app/LoganetXAll.m3u",
@@ -189,7 +189,7 @@
     "final_url": "https://loganet.vercel.app/LoganetXAll.m3u",
     "channels": 682,
     "error": null,
-    "elapsed_seconds": 0.161
+    "elapsed_seconds": 0.417
   },
   {
     "source": "https://tfrthuikijuyg.online/IPTV.m3u",
@@ -197,7 +197,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 1.194
+    "elapsed_seconds": 1.381
   },
   {
     "source": "https://satexpresstv.ru/apk/setv.m3u",
@@ -205,7 +205,7 @@
     "final_url": "https://satexpresstv.ru/apk/setv.m3u",
     "channels": 1430,
     "error": null,
-    "elapsed_seconds": 1.686
+    "elapsed_seconds": 1.965
   },
   {
     "source": "https://shamilbro.ucoz.net/TV.m3u8",
@@ -213,7 +213,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.798
+    "elapsed_seconds": 0.883
   },
   {
     "source": "https://shamilbro.ucoz.net/Wink.m3u8",
@@ -221,23 +221,23 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.671
+    "elapsed_seconds": 0.818
   },
   {
     "source": "https://goo.su/KIp3",
     "status": 200,
     "final_url": "https://raw.githubusercontent.com/Dimonovich/TV/Dimonovich/FREE/TV",
-    "channels": 3399,
+    "channels": 3400,
     "error": null,
-    "elapsed_seconds": 1.301
+    "elapsed_seconds": 0.739
   },
   {
     "source": "https://raw.githubusercontent.com/Dimonovich/TV/Dimonovich/FREE/TV",
     "status": 200,
     "final_url": "https://raw.githubusercontent.com/Dimonovich/TV/Dimonovich/FREE/TV",
-    "channels": 3399,
+    "channels": 3400,
     "error": null,
-    "elapsed_seconds": 0.26
+    "elapsed_seconds": 0.168
   },
   {
     "source": "https://polzafre.short.gy/IPTV",
@@ -245,7 +245,7 @@
     "final_url": "https://raw.githubusercontent.com/polzafre/PolzaIPTV/refs/heads/main/Polza-IPTV.m3u",
     "channels": 2,
     "error": null,
-    "elapsed_seconds": 0.42
+    "elapsed_seconds": 0.46
   },
   {
     "source": "https://raw.githubusercontent.com/Dimonovich/TV/Dimonovich/FREE/FILMS",
@@ -253,7 +253,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.107
+    "elapsed_seconds": 0.099
   },
   {
     "source": "https://github.com/suzukantv/IPTV/raw/refs/heads/main/SuzuSCloudFreeGedemTvNET.m3u",
@@ -261,7 +261,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.194
+    "elapsed_seconds": 0.287
   },
   {
     "source": "https://raw.githubusercontent.com/IPTVSHARED/iptv/refs/heads/main/MEDIASHARED.m3u",
@@ -269,7 +269,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.094
+    "elapsed_seconds": 0.086
   },
   {
     "source": "https://raw.githubusercontent.com/suzukantv/IPTV-FILM/refs/heads/main/mediateka.m3u",
@@ -277,7 +277,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.072
+    "elapsed_seconds": 0.295
   },
   {
     "source": "https://raw.githubusercontent.com/suzukantv/IPTV/refs/heads/main/KolobokHatNet2.m3u",
@@ -285,7 +285,7 @@
     "final_url": null,
     "channels": 0,
     "error": "HTTP Error 404: Not Found",
-    "elapsed_seconds": 0.09
+    "elapsed_seconds": 0.079
   },
   {
     "source": "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
@@ -293,6 +293,6 @@
     "final_url": "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
     "channels": 2017,
     "error": null,
-    "elapsed_seconds": 0.084
+    "elapsed_seconds": 0.187
   }
 ]
