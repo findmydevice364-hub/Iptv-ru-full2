@@ -2,230 +2,263 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-NTV CDN playlist auditor
-Проверяет известные пути на cdn.ntv.ru, cdn2.ntv.ru, cdn3.ntv.ru,
-ищет HLS master/media playlists и сохраняет отчёты.
-
-Файлы:
-  ntv_report.csv       — результаты HTTP-проверок
-  ntv_found.m3u        — найденные HLS-ссылки
-  ntv_masters.txt      — ответы, похожие на master playlist
-"""
-
 import asyncio
 import csv
 import re
-import sys
 from urllib.parse import urljoin, urlparse
 
 import aiohttp
-
 
 HOSTS = [
     "https://cdn.ntv.ru",
     "https://cdn2.ntv.ru",
     "https://cdn3.ntv.ru",
+    "https://cdn-dvr.ntv.ru",
 ]
 
-# Известные идентификаторы каналов — стартовый список,
-# а не утверждение, что каждый путь существует на каждом узле.
-CHANNELS = [
-    "ntv0", "ntv0_hd", "ntv1", "ntv2", "ntv4", "ntv7",
-    "th_hit", "th_serial", "th_style", "th_pravo",
-    "unknown_russia", "sledstvie_veli", "svoya_igra",
-]
-
-PLAYLIST_NAMES = [
+# Известные и опубликованные пути для первичной проверки.
+# Это список кандидатов, а не подтверждение их доступности.
+PATHS = [
+    "ntv0/playlist.m3u8",
+    "ntv0_hd/playlist.m3u8",
+    "ntv1/playlist.m3u8",
+    "ntv2/playlist.m3u8",
+    "ntv4/playlist.m3u8",
+    "ntv7/playlist.m3u8",
+    "vitrina/index.m3u8",
+    "ntv-spb/index.m3u8",
+    "th_hit/playlist.m3u8",
+    "th_serial/playlist.m3u8",
+    "th_style/playlist.m3u8",
+    "th_pravo/playlist.m3u8",
+    "unknown_russia/playlist.m3u8",
+    "sledstvie_veli/playlist.m3u8",
+    "svoya_igra/playlist.m3u8",
     "playlist.m3u8",
     "index.m3u8",
     "master.m3u8",
 ]
 
-TIMEOUT = aiohttp.ClientTimeout(total=12, connect=5)
-CONCURRENCY = 12
+TARGETS = {
+    "НТВ Следствие вели…": (
+        "следствие вели", "sledstvie", "sledstvie_veli"
+    ),
+    "НТВ Своя игра": (
+        "своя игра", "svoya_igra", "svoya-igra"
+    ),
+}
+
+TIMEOUT = aiohttp.ClientTimeout(total=15, connect=6)
 MAX_BODY = 1_000_000
-USER_AGENT = "Mozilla/5.0 NTV-Playlist-Auditor/1.0"
-
-# Дополнительные типовые пути. Не перебираем случайные имена
-# и не пытаемся обходить авторизацию или ограничения сервера.
-EXTRA_PATHS = [
-    "/playlist.m3u8",
-    "/index.m3u8",
-    "/master.m3u8",
-    "/ntv/playlist.m3u8",
-]
+CONCURRENCY = 12
+UA = "Mozilla/5.0 NTVPlaylistAudit/2.0"
 
 
-def build_candidates():
-    urls = set(EXTRA_PATHS)
-
-    for channel in CHANNELS:
-        for name in PLAYLIST_NAMES:
-            urls.add(f"/{channel}/{name}")
-
-    result = []
-    for host in HOSTS:
-        for path in sorted(urls):
-            result.append(host + path)
-
-    return result
+def is_ntv_url(url):
+    host = (urlparse(url).hostname or "").lower()
+    return host == "ntv.ru" or host.endswith(".ntv.ru")
 
 
-def parse_hls(text, base_url):
-    """Возвращает дочерние HLS-ссылки и признак master playlist."""
-    children = []
-    lines = [line.strip() for line in text.splitlines() if line.strip()]
+def parse_playlist(text, base_url):
+    """Разбирает HLS master/media playlist и сохраняет EXTINF."""
+    lines = [x.strip() for x in text.splitlines() if x.strip()]
     is_master = any(
-        line.startswith("#EXT-X-STREAM-INF")
-        or line.startswith("#EXT-X-I-FRAME-STREAM-INF")
-        for line in lines
+        x.startswith("#EXT-X-STREAM-INF")
+        or x.startswith("#EXT-X-I-FRAME-STREAM-INF")
+        for x in lines
     )
 
+    children = []
+    entries = []
+    pending_extinf = None
+    pending_stream = False
+
     for line in lines:
+        if line.startswith("#EXTINF:"):
+            pending_extinf = line
+            continue
+
+        if line.startswith("#EXT-X-STREAM-INF"):
+            pending_stream = True
+            continue
+
         if line.startswith("#"):
-            # URI может быть внутри атрибута URI="..."
+            # URI="..." иногда содержится прямо в атрибуте тега.
             match = re.search(r'URI="([^"]+)"', line)
             if match:
                 children.append(urljoin(base_url, match.group(1)))
             continue
 
-        if line.lower().startswith(("http://", "https://", "/", "./", "../")):
-            children.append(urljoin(base_url, line))
+        url = urljoin(base_url, line)
+        if not url.lower().split("?", 1)[0].endswith(".m3u8"):
+            continue
 
-    return is_master, list(dict.fromkeys(children))
+        children.append(url)
+        if pending_extinf:
+            entries.append((pending_extinf, url))
+            pending_extinf = None
+
+        pending_stream = False
+
+    return is_master, list(dict.fromkeys(children)), entries
+
+
+def target_name(*values):
+    text = " ".join(str(x or "") for x in values).casefold()
+    text = text.replace("ё", "е")
+
+    for label, aliases in TARGETS.items():
+        if any(a.replace("ё", "е") in text for a in aliases):
+            return label
+    return None
 
 
 async def fetch(session, sem, url):
     async with sem:
         try:
             async with session.get(
-                url,
-                allow_redirects=True,
-                headers={"User-Agent": USER_AGENT},
-            ) as response:
-                body = await response.content.read(MAX_BODY)
+                url, allow_redirects=True,
+                headers={"User-Agent": UA},
+            ) as r:
+                body = await r.content.read(MAX_BODY)
                 text = body.decode("utf-8", errors="replace")
-                content_type = response.headers.get("Content-Type", "")
-                looks_hls = (
-                    "#EXTM3U" in text[:4096]
-                    or "mpegurl" in content_type.lower()
+                hls = "#EXTM3U" in text[:4096]
+                master, children, entries = (
+                    parse_playlist(text, str(r.url))
+                    if hls else (False, [], [])
                 )
-                is_master, children = parse_hls(text, str(response.url)) \
-                    if looks_hls else (False, [])
 
                 return {
                     "url": url,
-                    "final_url": str(response.url),
-                    "status": response.status,
-                    "content_type": content_type,
-                    "bytes_read": len(body),
-                    "looks_hls": looks_hls,
-                    "is_master": is_master,
+                    "final_url": str(r.url),
+                    "status": r.status,
+                    "content_type": r.headers.get("Content-Type", ""),
+                    "bytes": len(body),
+                    "hls": hls,
+                    "master": master,
                     "children": children,
+                    "entries": entries,
+                    "body": text if hls else "",
                     "error": "",
-                    "body": text if looks_hls else "",
                 }
-
-        except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
+        except Exception as e:
             return {
-                "url": url,
-                "final_url": "",
-                "status": 0,
-                "content_type": "",
-                "bytes_read": 0,
-                "looks_hls": False,
-                "is_master": False,
-                "children": [],
-                "error": type(exc).__name__ + ": " + str(exc),
-                "body": "",
+                "url": url, "final_url": "", "status": 0,
+                "content_type": "", "bytes": 0,
+                "hls": False, "master": False,
+                "children": [], "entries": [], "body": "",
+                "error": f"{type(e).__name__}: {e}",
             }
 
 
 async def main():
-    candidates = build_candidates()
     sem = asyncio.Semaphore(CONCURRENCY)
-    connector = aiohttp.TCPConnector(limit=CONCURRENCY, ssl=True)
+    connector = aiohttp.TCPConnector(limit=CONCURRENCY)
+    headers = {"User-Agent": UA}
 
-    headers = {"User-Agent": USER_AGENT}
+    candidates = {
+        f"{host}/{path}"
+        for host in HOSTS for path in PATHS
+    }
+
     async with aiohttp.ClientSession(
         timeout=TIMEOUT,
         connector=connector,
         headers=headers,
     ) as session:
-        print(f"Проверяю кандидатов: {len(candidates)}")
+        print(f"Первичная проверка: {len(candidates)} URL")
         results = await asyncio.gather(
-            *(fetch(session, sem, url) for url in candidates)
+            *(fetch(session, sem, u) for u in sorted(candidates))
         )
 
-        # Разбираем найденные master-плейлисты на один уровень вниз.
-        child_urls = set()
-        for item in results:
-            if item["is_master"]:
-                child_urls.update(item["children"])
+        # Обход дочерних HLS URL только на доменах NTV.
+        seen = {x["url"] for x in results}
+        for depth in range(2):
+            next_urls = set()
+            for item in results:
+                for child in item["children"]:
+                    if is_ntv_url(child) and child not in seen:
+                        next_urls.add(child)
 
-        child_urls = {
-            u for u in child_urls
-            if urlparse(u).scheme in ("http", "https")
-            and urlparse(u).hostname
-            and urlparse(u).hostname.endswith("ntv.ru")
-        }
-        child_urls -= {r["url"] for r in results}
+            if not next_urls:
+                break
 
-        print(f"Найдено дочерних ссылок NTV: {len(child_urls)}")
-        if child_urls:
-            child_results = await asyncio.gather(
-                *(fetch(session, sem, u) for u in sorted(child_urls))
+            seen.update(next_urls)
+            print(f"Уровень {depth + 1}: найдено ссылок {len(next_urls)}")
+            batch = await asyncio.gather(
+                *(fetch(session, sem, u) for u in sorted(next_urls))
             )
-            results.extend(child_results)
+            results.extend(batch)
 
-    # CSV-отчёт
-    columns = [
-        "url", "final_url", "status", "content_type", "bytes_read",
-        "looks_hls", "is_master", "child_count", "error",
-    ]
+    # CSV: каждый проверенный URL и результат ответа.
     with open("ntv_report.csv", "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=columns)
+        fields = [
+            "url", "final_url", "status", "content_type",
+            "bytes", "hls", "master", "error",
+        ]
+        writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        for item in results:
-            row = {key: item.get(key, "") for key in columns}
-            row["child_count"] = len(item["children"])
-            writer.writerow(row)
+        for r in results:
+            writer.writerow({k: r[k] for k in fields})
 
-    # Все обнаруженные HLS-URL
-    found = {}
-    for item in results:
-        if item["looks_hls"]:
-            found[item["final_url"] or item["url"]] = item
+    # M3U: сохраняем реальные EXTINF, найденные в ответах.
+    # Для потоков без EXTINF используем нейтральную подпись,
+    # а не угадываем название канала по идентификатору.
+    streams = {}
+    for r in results:
+        for extinf, url in r["entries"]:
+            streams[url] = extinf
+
+    for r in results:
+        if r["hls"] and not r["master"]:
+            url = r["final_url"] or r["url"]
+            streams.setdefault(
+                url,
+                "#EXTINF:-1 group-title=\"NTV audit\",NTV поток (название не указано)"
+            )
 
     with open("ntv_found.m3u", "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for url, item in sorted(found.items()):
-            name = urlparse(url).path.strip("/").replace("/", " / ") or url
-            f.write(f'#EXTINF:-1 group-title="NTV audit",{name}\n{url}\n')
+        for url, extinf in sorted(streams.items()):
+            f.write(extinf + "\n" + url + "\n")
 
+    # Сохраняем содержимое master-плейлистов для диагностики.
     with open("ntv_masters.txt", "w", encoding="utf-8") as f:
-        for item in results:
-            if item["is_master"]:
-                f.write(f'URL: {item["url"]}\n')
-                f.write(item["body"])
-                f.write("\n\n" + "-" * 72 + "\n\n")
+        for r in results:
+            if r["master"]:
+                f.write(f"URL: {r['url']}\n")
+                f.write(r["body"] + "\n\n" + "=" * 70 + "\n\n")
 
-    good = sum(1 for x in results if x["status"] == 200)
-    hls = sum(1 for x in results if x["looks_hls"])
-    masters = sum(1 for x in results if x["is_master"])
+    # Отдельная сводка по двум искомым каналам.
+    with open("ntv_target_channels.txt", "w", encoding="utf-8") as f:
+        for label, aliases in TARGETS.items():
+            hits = []
+            for r in results:
+                haystack = (
+                    r["url"] + " " + r["final_url"] + " " + r["body"]
+                ).casefold().replace("ё", "е")
+                if any(a.replace("ё", "е") in haystack for a in aliases):
+                    hits.append(r)
 
-    print("\nГотово.")
+            f.write(label + "\n")
+            if not hits:
+                f.write("Совпадений в проверенных ответах не найдено.\n")
+            else:
+                for r in hits:
+                    f.write(
+                        f"HTTP={r['status']} HLS={r['hls']} "
+                        f"URL={r['final_url'] or r['url']}\n"
+                    )
+            f.write("\n")
+
+    print("\nСканирование завершено.")
     print(f"Проверено URL: {len(results)}")
-    print(f"HTTP 200: {good}")
-    print(f"Похоже на HLS: {hls}")
-    print(f"Master-плейлистов: {masters}")
-    print("Отчёты: ntv_report.csv, ntv_found.m3u, ntv_masters.txt")
+    print(f"HTTP 200: {sum(r['status'] == 200 for r in results)}")
+    print(f"HLS-ответов: {sum(r['hls'] for r in results)}")
+    print(f"Master playlist: {sum(r['master'] for r in results)}")
+    print("Созданы ntv_report.csv, ntv_found.m3u,")
+    print("ntv_masters.txt и ntv_target_channels.txt")
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\nОстановлено пользователем.")
-        sys.exit(130)
+    asyncio.run(main())
