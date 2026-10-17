@@ -29,11 +29,13 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = Path(os.getenv("NTV_OUTPUT_DIR", str(ROOT / "Ntv" / "output")))
 DEFAULT_CONFIG_URL = (
     "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/"
-    "main/Ntv/ntv_scan_config.%20json"
+    "main/Ntv/ntv_scan_config.json"
 )
 CONFIG_PATH = Path(os.getenv("NTV_CONFIG", str(ROOT / "Ntv" / "ntv_scan_config.json")))
 CONFIG_URL = os.getenv("NTV_CONFIG_URL", DEFAULT_CONFIG_URL)
 
+# CDN host candidates. Their presence here means "test this host", not that
+# every hostname is confirmed active or serves every channel.
 DEFAULT_HOSTS = [
     "https://cdn.ntv.ru",
     "https://cdn2.ntv.ru",
@@ -41,6 +43,24 @@ DEFAULT_HOSTS = [
     "https://cdn-dvr.ntv.ru",
 ]
 PATH_SUFFIXES = ("playlist.m3u8", "index.m3u8")
+
+# Exact themed-channel URLs to test independently on every run, even when a
+# remote JSON config overrides or empties its own "extra_urls" list.
+# These are candidates, not verified working streams.
+PRIORITY_EXACT_URLS = [
+    {
+        "channel": "НТВ — Своя игра",
+        "alias": "svoya_igra",
+        "url": "https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8",
+        "mapping_status": "known_published_candidate_unverified",
+    },
+    {
+        "channel": "НТВ — Следствие вели",
+        "alias": "sledstvie_veli",
+        "url": "https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8",
+        "mapping_status": "user_supplied_candidate_unverified",
+    },
+]
 
 # Aliases are candidate path components, not claims that the origin uses them.
 CHANNELS = [
@@ -188,7 +208,22 @@ def validate_config(user_cfg: object) -> dict:
         "qualities": list(QUALITIES),
         "orbit_templates": [],
         "orbit_path_patterns_by_quality": {"SD": "ntv{offset}", "HD": "ntv{offset}_hd"},
-        "extra_urls": [],
+        # Exact themed-channel HLS candidates supplied for verification.
+        # These are NOT marked working until HTTP + HLS + segment checks pass.
+        "extra_urls": [
+            {
+                "channel": "НТВ — Своя игра",
+                "alias": "svoya_igra",
+                "url": "https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8",
+                "mapping_status": "known_published_candidate_unverified",
+            },
+            {
+                "channel": "НТВ — Следствие вели",
+                "alias": "sledstvie_veli",
+                "url": "https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8",
+                "mapping_status": "user_supplied_candidate_unverified",
+            },
+        ],
         "timezone_map": {},
     }
     cfg.update(user_cfg)
@@ -334,6 +369,18 @@ def build_candidates(cfg: dict) -> list[dict]:
                             "quality_requested": quality,
                             "mapping_status": "configured_template_unverified",
                         })
+    # Always test the two supplied exact URLs independently of remote config.
+    # Their aliases are also tested on every configured host by the loop above.
+    for item in PRIORITY_EXACT_URLS:
+        rows.append({
+            "url": item["url"], "kind": "priority_exact_url",
+            "channel": item["channel"], "alias": item["alias"],
+            "path_pattern": urlparse(item["url"]).path,
+            "orbit_offset": "", "quality_requested": "",
+            "mapping_status": item["mapping_status"],
+        })
+
+    # User-configured extra URLs are checked as well.
     for item in cfg.get("extra_urls", []):
         if isinstance(item, str):
             rows.append({
@@ -718,6 +765,11 @@ async def async_main(args) -> None:
         concurrency = DEFAULT_CONCURRENCY
     timeout = args.timeout or DEFAULT_TIMEOUT
     print(f"NTV scanner: nodes={len(cfg['hosts'])}, concurrency={concurrency}")
+    print("Приоритетные тематические кандидаты:")
+    print("  Своя игра: /svoya_igra/index.m3u8")
+    print("  Следствие вели: /sledstvie_veli/index.m3u8")
+    print("Проверка выполняется не только на cdn-dvr.ntv.ru, но и на каждом узле из hosts.")
+    print("ВНИМАНИЕ: узлы и URL — кандидаты; работоспособность определяется результатами HTTP/HLS/segment-проверок.")
     print(f"Кандидатов URL: {len(build_candidates(cfg))}")
     results, candidates = await run_scan(cfg, concurrency, timeout)
     paths = create_reports(results, cfg)
