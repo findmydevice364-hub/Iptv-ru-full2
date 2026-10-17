@@ -27,7 +27,12 @@ import aiohttp
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = Path(os.getenv("NTV_OUTPUT_DIR", str(ROOT / "Ntv" / "output")))
+DEFAULT_CONFIG_URL = (
+    "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/"
+    "main/Ntv/ntv_scan_config.%20json"
+)
 CONFIG_PATH = Path(os.getenv("NTV_CONFIG", str(ROOT / "Ntv" / "ntv_scan_config.json")))
+CONFIG_URL = os.getenv("NTV_CONFIG_URL", DEFAULT_CONFIG_URL)
 
 DEFAULT_HOSTS = [
     "https://cdn.ntv.ru",
@@ -171,23 +176,97 @@ def quality_label(attrs: dict) -> str:
     return " / ".join(pieces)
 
 
-def load_config() -> dict:
-    if CONFIG_PATH.exists():
-        with CONFIG_PATH.open(encoding="utf-8") as f:
-            user_cfg = json.load(f)
-    else:
-        user_cfg = {}
+def validate_config(user_cfg: object) -> dict:
+    """Validate JSON and merge defaults; malformed optional config must not crash the scan."""
+    if not isinstance(user_cfg, dict):
+        raise ValueError("Корень JSON должен быть объектом.")
+
     cfg = {
         "hosts": DEFAULT_HOSTS,
         "channels": CHANNELS,
         "orbit_offsets": ORBIT_OFFSETS,
         "qualities": list(QUALITIES),
         "orbit_templates": [],
+        "orbit_path_patterns_by_quality": {"SD": "ntv{offset}", "HD": "ntv{offset}_hd"},
         "extra_urls": [],
         "timezone_map": {},
     }
     cfg.update(user_cfg)
+
+    if not isinstance(cfg.get("hosts"), list) or not cfg["hosts"]:
+        raise ValueError("'hosts' должен быть непустым массивом URL.")
+    cfg["hosts"] = [str(h).strip().rstrip("/") for h in cfg["hosts"] if str(h).strip()]
+    if not cfg["hosts"] or any(not h.startswith(("http://", "https://")) for h in cfg["hosts"]):
+        raise ValueError("Каждый элемент 'hosts' должен начинаться с http:// или https://.")
+
+    if not isinstance(cfg.get("channels"), list):
+        raise ValueError("'channels' должен быть массивом.")
+    clean_channels = []
+    for item in cfg["channels"]:
+        if not isinstance(item, dict) or not item.get("label") or not isinstance(item.get("aliases"), list):
+            raise ValueError("Каждый канал должен содержать 'label' и массив 'aliases'.")
+        clean_channels.append({
+            "label": str(item["label"]),
+            "aliases": [str(a).strip() for a in item["aliases"] if str(a).strip()],
+        })
+    cfg["channels"] = clean_channels or CHANNELS
+
+    try:
+        cfg["orbit_offsets"] = [int(x) for x in cfg.get("orbit_offsets", ORBIT_OFFSETS)]
+    except (TypeError, ValueError):
+        raise ValueError("'orbit_offsets' должен содержать целые числа.")
+
+    qualities = cfg.get("qualities", list(QUALITIES))
+    if not isinstance(qualities, list):
+        raise ValueError("'qualities' должен быть массивом.")
+    cfg["qualities"] = [str(q).upper() for q in qualities if str(q).upper() in ("SD", "HD")]
+    if not cfg["qualities"]:
+        cfg["qualities"] = list(QUALITIES)
+
+    for key in ("orbit_templates", "extra_urls"):
+        if not isinstance(cfg.get(key, []), list):
+            raise ValueError(f"'{key}' должен быть массивом.")
+    if not isinstance(cfg.get("timezone_map", {}), dict):
+        raise ValueError("'timezone_map' должен быть объектом.")
+    if not isinstance(cfg.get("orbit_path_patterns_by_quality", {}), dict):
+        cfg["orbit_path_patterns_by_quality"] = {"SD": "ntv{offset}", "HD": "ntv{offset}_hd"}
     return cfg
+
+
+def load_config() -> dict:
+    """Load local JSON first, then remote JSON; fall back to built-in defaults on any failure."""
+    errors = []
+    if CONFIG_PATH.exists():
+        try:
+            with CONFIG_PATH.open(encoding="utf-8-sig") as f:
+                cfg = validate_config(json.load(f))
+            print(f"Конфигурация загружена из файла: {CONFIG_PATH}")
+            return cfg
+        except (OSError, json.JSONDecodeError, ValueError, TypeError) as exc:
+            errors.append(f"local config: {type(exc).__name__}: {exc}")
+
+    try:
+        import urllib.request
+        req = urllib.request.Request(CONFIG_URL, headers={"User-Agent": UA, "Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=12) as response:
+            raw = response.read(2_000_000).decode("utf-8-sig")
+        remote_data = json.loads(raw)
+        cfg = validate_config(remote_data)
+        print(f"Конфигурация загружена по URL: {CONFIG_URL}")
+        try:
+            CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+            CONFIG_PATH.write_text(json.dumps(remote_data, ensure_ascii=False, indent=2), encoding="utf-8")
+        except OSError:
+            pass
+        return cfg
+    except Exception as exc:
+        errors.append(f"remote config: {type(exc).__name__}: {exc}")
+
+    print("ПРЕДУПРЕЖДЕНИЕ: JSON-конфигурация недоступна или некорректна.")
+    for error in errors:
+        print(f"  - {error}")
+    print("Продолжаю со встроенными настройками, чтобы сканер не падал.")
+    return validate_config({})
 
 
 def build_candidates(cfg: dict) -> list[dict]:
@@ -327,7 +406,8 @@ async def fetch(session: aiohttp.ClientSession, sem: asyncio.Semaphore, row: dic
                     out["error"] = f"HTTP {resp.status}; response is not HLS"
                 else:
                     out["error"] = "HTTP response is not an HLS playlist"
-        except (aiohttp.ClientError, asyncio.TimeoutError, ValueError) as exc:
+        except Exception as exc:
+            # A bad URL or unexpected server response must not abort the whole scan.
             out["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
             out["error"] = f"{type(exc).__name__}: {exc}"
     return out
@@ -344,7 +424,7 @@ async def check_segment(session: aiohttp.ClientSession, sem: asyncio.Semaphore, 
                 row["sample_segment_content_type"] = resp.headers.get("Content-Type", "")
                 # Read only a tiny prefix to avoid downloading media.
                 await resp.content.read(128)
-        except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
+        except Exception as exc:
             row["sample_segment_status"] = 0
             row["sample_segment_content_type"] = ""
             row["error"] = (row.get("error", "") + f" | segment: {type(exc).__name__}: {exc}").strip(" |")
