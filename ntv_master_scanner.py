@@ -1,592 +1,664 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-NTV CDN Master Playlist Auditor
---------------------------------
-Проверяет известные пути на CDN NTV, рекурсивно разбирает HLS,
-сохраняет фактические ответы и собирает единый M3U.
+NTV CDN/HLS auditor.
 
-Выходные файлы:
-  ntv_report.csv          Все HTTP-проверки
-  ntv_found.m3u           Найденные HLS-потоки
-  ntv_masters.txt         Содержимое обнаруженных master playlists
-  ntv_target_channels.txt Отчёт по «Следствие вели…» и «Своя игра»
-  ntv_streams.csv         Отдельный список вариантов потоков
-
-Примечание:
-  Перебор известных путей не означает полный перебор CDN.
-  В скрипте нет обхода авторизации или ограничений доступа.
+Outputs are written to Ntv/output/. This scanner tests explicitly configured
+CDN nodes and candidate URL patterns; it does not bypass access controls.
+Orbital URL templates are configurable because offset-to-path mapping must be
+confirmed from a real NTV master playlist or operator documentation.
 """
+from __future__ import annotations
 
+import argparse
 import asyncio
 import csv
+import json
+import os
 import re
+import socket
+import time
 from collections import deque
+from datetime import datetime, timezone
+from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 import aiohttp
 
+ROOT = Path(__file__).resolve().parent
+OUTPUT_DIR = Path(os.getenv("NTV_OUTPUT_DIR", str(ROOT / "Ntv" / "output")))
+CONFIG_PATH = Path(os.getenv("NTV_CONFIG", str(ROOT / "Ntv" / "ntv_scan_config.json")))
 
-HOSTS = [
+DEFAULT_HOSTS = [
     "https://cdn.ntv.ru",
     "https://cdn2.ntv.ru",
     "https://cdn3.ntv.ru",
     "https://cdn-dvr.ntv.ru",
 ]
+PATH_SUFFIXES = ("playlist.m3u8", "index.m3u8")
 
-PATHS = [
-    "ntv0/playlist.m3u8",
-    "ntv0/index.m3u8",
-    "ntv0/master.m3u8",
-    "ntv0_hd/playlist.m3u8",
-    "ntv1/playlist.m3u8",
-    "ntv2/playlist.m3u8",
-    "ntv4/playlist.m3u8",
-    "ntv7/playlist.m3u8",
-    "vitrina/playlist.m3u8",
-    "vitrina/index.m3u8",
-    "ntv-spb/playlist.m3u8",
-    "ntv-spb/index.m3u8",
-    "th_hit/playlist.m3u8",
-    "th_hit/index.m3u8",
-    "th_serial/playlist.m3u8",
-    "th_serial/index.m3u8",
-    "th_style/playlist.m3u8",
-    "th_style/index.m3u8",
-    "th_pravo/playlist.m3u8",
-    "th_pravo/index.m3u8",
-    "unknown_russia/playlist.m3u8",
-    "unknown_russia/index.m3u8",
-    "sledstvie_veli/playlist.m3u8",
-    "svoya_igra/playlist.m3u8",
-    "playlist.m3u8",
-    "index.m3u8",
-    "master.m3u8",
+# Aliases are candidate path components, not claims that the origin uses them.
+CHANNELS = [
+    {"label": "НТВ — основной", "aliases": ["ntv0", "ntv", "ntv_main"]},
+    {"label": "НТВ HD", "aliases": ["ntv0_hd", "ntv_hd"]},
+    {"label": "НТВ Мир", "aliases": ["ntv_mir", "Mir"]},
+    {"label": "НТВ Беларусь", "aliases": ["ntv_belarus", "Belarus"]},
+    {"label": "НТВ Витрина", "aliases": ["vitrina"]},
+    {"label": "НТВ — Следствие вели", "aliases": ["sledstvie_veli"]},
+    {"label": "НТВ — Своя игра", "aliases": ["svoya_igra"]},
+    {"label": "НТВ Право", "aliases": ["th_pravo", "pravo"]},
+    {"label": "НТВ Стиль жизни", "aliases": ["th_style", "stil_zhizni", "style_life"]},
+    {"label": "Неизвестная Россия", "aliases": ["unknown_russia", "neizvestnaya_rossiya"]},
+    {"label": "НТВ Сериал", "aliases": ["th_serial", "serial"]},
+    {"label": "НТВ-Хит", "aliases": ["th_hit"]},
 ]
-
-CHANNEL_LABELS = {
-    "ntv0": "НТВ",
-    "ntv0_hd": "НТВ HD",
-    "ntv1": "НТВ — вариант 1",
-    "ntv2": "НТВ — вариант 2",
-    "ntv4": "НТВ — вариант 4",
-    "ntv7": "НТВ — вариант 7",
-    "vitrina": "НТВ Витрина",
-    "ntv-spb": "НТВ — Санкт-Петербург",
-    "th_hit": "НТВ-Хит",
-    "th_serial": "НТВ Сериал",
-    "th_style": "НТВ Стиль жизни",
-    "th_pravo": "НТВ Право",
-    "unknown_russia": "Неизвестная Россия",
-    "sledstvie_veli": "НТВ Следствие вели…",
-    "sledstvie": "НТВ Следствие вели…",
-    "sledstvieveli": "НТВ Следствие вели…",
-    "svoya_igra": "НТВ Своя игра",
-    "svoyaigra": "НТВ Своя игра",
-    "svoya-igra": "НТВ Своя игра",
-}
-
-TARGETS = {
-    "НТВ Следствие вели…": (
-        "следствие вели",
-        "sledstvie_veli",
-        "sledstvieveli",
-    ),
-    "НТВ Своя игра": (
-        "своя игра",
-        "svoya_igra",
-        "svoyaigra",
-        "svoya-igra",
-    ),
-}
-
-TIMEOUT = aiohttp.ClientTimeout(total=18, connect=7)
-MAX_BODY = 1_500_000
-CONCURRENCY = 12
+TARGET_NAMES = [
+    "НТВ — основной", "НТВ HD", "НТВ Мир", "НТВ Беларусь", "НТВ Витрина",
+    "НТВ — Следствие вели", "НТВ — Своя игра", "НТВ Право",
+    "НТВ Стиль жизни", "Неизвестная Россия", "НТВ Сериал", "НТВ-Хит",
+]
+ORBIT_OFFSETS = list(range(-1, 10))
+QUALITIES = ("SD", "HD")
+MAX_BODY = 2_000_000
+MAX_URLS = 2500
 MAX_DEPTH = 4
-MAX_URLS = 1500
-UA = "Mozilla/5.0 NTV-CDN-Auditor/3.0"
+DEFAULT_CONCURRENCY = 24
+DEFAULT_TIMEOUT = 15
+UA = "Mozilla/5.0 (compatible; NTV-HLS-Auditor/4.0)"
+HLS_MARKER = "#EXTM3U"
 
 
-def normalize_text(value):
-    return str(value or "").casefold().replace("ё", "е")
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def is_ntv_url(url):
+def normal(s: object) -> str:
+    return str(s or "").casefold().replace("ё", "е")
+
+
+def is_ntv_host(url: str) -> bool:
     host = (urlparse(url).hostname or "").lower()
     return host == "ntv.ru" or host.endswith(".ntv.ru")
 
 
-def channel_from_url(url):
-    """Название только по известному идентификатору в пути URL."""
-    parts = [
-        p.lower()
-        for p in urlparse(url).path.strip("/").split("/")
-        if p
-    ]
-
-    for part in reversed(parts):
-        if part in CHANNEL_LABELS:
-            return CHANNEL_LABELS[part]
-
-    return ""
+def safe_filename_part(s: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", s).strip("_") or "unknown"
 
 
-def detect_target(*values):
-    text = normalize_text(" ".join(str(v or "") for v in values))
-
-    for label, aliases in TARGETS.items():
-        for alias in aliases:
-            if normalize_text(alias) in text:
-                return label
-
-    return ""
-
-
-def parse_attributes(line):
-    """Разбирает атрибуты HLS, включая значения в кавычках."""
-    result = {}
-    for match in re.finditer(
-        r'([A-Z0-9-]+)=("[^"]*"|[^,]*)',
-        line,
-    ):
-        value = match.group(2).strip()
+def parse_attrs(line: str) -> dict[str, str]:
+    out = {}
+    for m in re.finditer(r'([A-Z0-9-]+)=("[^"]*"|[^,]*)', line):
+        value = m.group(2).strip()
         if value.startswith('"') and value.endswith('"'):
             value = value[1:-1]
-        result[match.group(1)] = value
-    return result
+        out[m.group(1)] = value
+    return out
 
 
-def parse_playlist(text, base_url):
-    """
-    Возвращает:
-      is_master, children, variants, extinf_entries
-
-    variants содержит URI вариантов качества и атрибуты
-    предшествующего EXT-X-STREAM-INF.
-    """
-    lines = [line.strip() for line in text.splitlines() if line.strip()]
-
-    is_master = any(
-        line.startswith((
-            "#EXT-X-STREAM-INF:",
-            "#EXT-X-I-FRAME-STREAM-INF:",
-            "#EXT-X-MEDIA:",
-        ))
-        for line in lines
-    )
-
-    children = []
-    variants = []
-    extinf_entries = []
-    pending_stream = None
+def parse_hls(body: str, base_url: str) -> dict:
+    lines = [x.strip() for x in body.splitlines() if x.strip()]
+    is_master = any(x.startswith(("#EXT-X-STREAM-INF:", "#EXT-X-I-FRAME-STREAM-INF:", "#EXT-X-MEDIA:")) for x in lines)
+    children, variants, extinf_entries = [], [], []
+    pending_variant = None
     pending_extinf = None
-
     for line in lines:
         if line.startswith("#EXT-X-STREAM-INF:"):
-            pending_stream = parse_attributes(line)
+            pending_variant = parse_attrs(line)
             continue
-
         if line.startswith("#EXT-X-I-FRAME-STREAM-INF:"):
-            attrs = parse_attributes(line)
+            attrs = parse_attrs(line)
             uri = attrs.get("URI")
             if uri:
-                variants.append({
-                    "url": urljoin(base_url, uri),
-                    "attrs": attrs,
-                })
-                children.append(urljoin(base_url, uri))
+                child = urljoin(base_url, uri)
+                variants.append({"url": child, "attrs": attrs})
+                children.append(child)
             continue
-
         if line.startswith("#EXTINF:"):
             pending_extinf = line
             continue
-
         if line.startswith("#"):
-            attrs = parse_attributes(line)
-            uri = attrs.get("URI")
-            if uri and line.startswith("#EXT-X-MEDIA:"):
-                child = urljoin(base_url, uri)
-                children.append(child)
+            if line.startswith("#EXT-X-MEDIA:"):
+                uri = parse_attrs(line).get("URI")
+                if uri:
+                    children.append(urljoin(base_url, uri))
             continue
-
         child = urljoin(base_url, line)
         if urlparse(child).scheme not in ("http", "https"):
-            pending_stream = None
-            pending_extinf = None
+            pending_variant = pending_extinf = None
             continue
-
-        # URI после EXT-X-STREAM-INF — вариант качества.
-        if pending_stream is not None:
-            variants.append({
-                "url": child,
-                "attrs": pending_stream,
-            })
-            pending_stream = None
-
-        # URI после EXTINF — запись обычного M3U.
+        if pending_variant is not None:
+            variants.append({"url": child, "attrs": pending_variant})
+            pending_variant = None
         if pending_extinf is not None:
-            extinf_entries.append({
-                "extinf": pending_extinf,
-                "url": child,
-            })
+            extinf_entries.append({"extinf": pending_extinf, "url": child})
             pending_extinf = None
-
         if child.lower().split("?", 1)[0].endswith(".m3u8"):
             children.append(child)
-
-    return (
-        is_master,
-        list(dict.fromkeys(children)),
-        variants,
-        extinf_entries,
-    )
-
-
-async def fetch(session, sem, url):
-    async with sem:
-        try:
-            async with session.get(
-                url,
-                allow_redirects=True,
-                headers={"User-Agent": UA},
-            ) as response:
-                body = await response.content.read(MAX_BODY)
-                text = body.decode("utf-8", errors="replace")
-                hls = "#EXTM3U" in text[:4096]
-
-                if hls:
-                    master, children, variants, entries = parse_playlist(
-                        text, str(response.url)
-                    )
-                else:
-                    master, children, variants, entries = (
-                        False, [], [], []
-                    )
-
-                return {
-                    "url": url,
-                    "final_url": str(response.url),
-                    "status": response.status,
-                    "content_type": response.headers.get(
-                        "Content-Type", ""
-                    ),
-                    "bytes": len(body),
-                    "hls": hls,
-                    "master": master,
-                    "children": children,
-                    "variants": variants,
-                    "entries": entries,
-                    "body": text if hls else "",
-                    "error": "",
-                }
-
-        except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
-            return {
-                "url": url,
-                "final_url": "",
-                "status": 0,
-                "content_type": "",
-                "bytes": 0,
-                "hls": False,
-                "master": False,
-                "children": [],
-                "variants": [],
-                "entries": [],
-                "body": "",
-                "error": f"{type(exc).__name__}: {exc}",
-            }
-
-
-def quality_label(attrs):
-    resolution = attrs.get("RESOLUTION", "")
-    bandwidth = attrs.get("AVERAGE-BANDWIDTH") or attrs.get("BANDWIDTH", "")
-    codecs = attrs.get("CODECS", "")
-
-    parts = []
-    if resolution:
-        parts.append(resolution)
-    if bandwidth.isdigit():
-        parts.append(f"{int(bandwidth) // 1000} kbps")
-    if codecs:
-        parts.append(codecs)
-
-    return " / ".join(parts)
-
-
-def make_extinf(name, attrs=None, group="NTV"):
-    attrs = attrs or {}
-    details = quality_label(attrs)
-
-    if not name:
-        name = "NTV поток — имя не определено"
-
-    if details:
-        name = f"{name} [{details}]"
-
-    safe_group = group.replace('"', "'")
-    safe_name = name.replace("\r", " ").replace("\n", " ")
-
-    return f'#EXTINF:-1 group-title="{safe_group}",{safe_name}'
-
-
-async def main():
-    sem = asyncio.Semaphore(CONCURRENCY)
-    connector = aiohttp.TCPConnector(limit=CONCURRENCY)
-    timeout = TIMEOUT
-
-    candidates = {
-        f"{host.rstrip('/')}/{path.lstrip('/')}"
-        for host in HOSTS
-        for path in PATHS
+    return {
+        "master": is_master,
+        "children": list(dict.fromkeys(children)),
+        "variants": variants,
+        "entries": extinf_entries,
+        "segments": [
+            urljoin(base_url, x) for x in lines
+            if not x.startswith("#") and not x.lower().split("?", 1)[0].endswith(".m3u8")
+        ][:5],
     }
 
-    results = []
-    by_url = {}
-    queue = deque((url, 0, "") for url in sorted(candidates))
-    queued = set(candidates)
 
+def quality_from_attrs(attrs: dict) -> str:
+    resolution = attrs.get("RESOLUTION", "")
+    if resolution:
+        m = re.match(r"\d+x(\d+)", resolution)
+        if m:
+            height = int(m.group(1))
+            return "HD" if height >= 720 else "SD"
+    bw = attrs.get("AVERAGE-BANDWIDTH") or attrs.get("BANDWIDTH") or ""
+    if bw.isdigit():
+        return "HD" if int(bw) >= 2_000_000 else "SD"
+    return "unknown"
+
+
+def quality_label(attrs: dict) -> str:
+    pieces = []
+    if attrs.get("RESOLUTION"):
+        pieces.append(attrs["RESOLUTION"])
+    bw = attrs.get("AVERAGE-BANDWIDTH") or attrs.get("BANDWIDTH") or ""
+    if bw.isdigit():
+        pieces.append(f"{int(bw)//1000} kbps")
+    if attrs.get("CODECS"):
+        pieces.append(attrs["CODECS"])
+    return " / ".join(pieces)
+
+
+def load_config() -> dict:
+    if CONFIG_PATH.exists():
+        with CONFIG_PATH.open(encoding="utf-8") as f:
+            user_cfg = json.load(f)
+    else:
+        user_cfg = {}
+    cfg = {
+        "hosts": DEFAULT_HOSTS,
+        "channels": CHANNELS,
+        "orbit_offsets": ORBIT_OFFSETS,
+        "qualities": list(QUALITIES),
+        "orbit_templates": [],
+        "extra_urls": [],
+        "timezone_map": {},
+    }
+    cfg.update(user_cfg)
+    return cfg
+
+
+def build_candidates(cfg: dict) -> list[dict]:
+    rows = []
+    # Channel aliases: exactly two independent patterns per alias and CDN node.
+    for host in cfg["hosts"]:
+        for channel in cfg["channels"]:
+            for alias in channel["aliases"]:
+                for suffix in PATH_SUFFIXES:
+                    rows.append({
+                        "url": f"{host.rstrip('/')}/{alias}/{suffix}",
+                        "kind": "channel_path",
+                        "channel": channel["label"],
+                        "alias": alias,
+                        "path_pattern": f"/{alias}/{suffix}",
+                        "orbit_offset": "",
+                        "quality_requested": "",
+                        "mapping_status": "candidate_alias_unverified",
+                    })
+    # Orbital candidates: these naming hypotheses are probed but remain
+    # unverified until a real master playlist confirms the offset mapping.
+    for host in cfg["hosts"]:
+        for offset in cfg.get("orbit_offsets", ORBIT_OFFSETS):
+            for quality in cfg.get("qualities", QUALITIES):
+                # Initial hypothesis: plain ntvN is SD and ntvN_hd is HD.
+                # This naming convention is only a candidate and is recorded as such.
+                patterns = cfg.get("orbit_path_patterns_by_quality", {
+                    "SD": "ntv{offset}", "HD": "ntv{offset}_hd"
+                })
+                alias_pattern = patterns.get(quality, "ntv{offset}")
+                alias = alias_pattern.format(offset=offset, offset_signed=f"{offset:+d}")
+                for suffix in PATH_SUFFIXES:
+                    path = f"{alias}/{suffix}"
+                    rows.append({
+                        "url": f"{host.rstrip('/')}/{path}",
+                        "kind": "orbit_candidate",
+                        "channel": "НТВ — орбитальный вариант",
+                        "alias": alias,
+                        "path_pattern": "/" + path,
+                        "orbit_offset": offset,
+                        "quality_requested": quality,
+                        "mapping_status": "unverified_candidate_alias",
+                    })
+        for template in cfg.get("orbit_templates", []):
+            for offset in cfg.get("orbit_offsets", ORBIT_OFFSETS):
+                for quality in cfg.get("qualities", QUALITIES):
+                    for suffix in PATH_SUFFIXES:
+                        try:
+                            path = template.format(
+                                offset=offset,
+                                offset_signed=f"{offset:+d}",
+                                quality=quality.lower(),
+                                quality_upper=quality.upper(),
+                                suffix=suffix,
+                            ).lstrip("/")
+                        except (KeyError, ValueError):
+                            continue
+                        rows.append({
+                            "url": f"{host.rstrip('/')}/{path}",
+                            "kind": "orbit_candidate",
+                            "channel": "НТВ — орбитальный вариант",
+                            "alias": "",
+                            "path_pattern": "/" + path,
+                            "orbit_offset": offset,
+                            "quality_requested": quality,
+                            "mapping_status": "configured_template_unverified",
+                        })
+    for item in cfg.get("extra_urls", []):
+        if isinstance(item, str):
+            rows.append({
+                "url": item, "kind": "extra_url", "channel": "",
+                "alias": "", "path_pattern": urlparse(item).path,
+                "orbit_offset": "", "quality_requested": "",
+                "mapping_status": "user_configured",
+            })
+        elif isinstance(item, dict) and item.get("url"):
+            rows.append({
+                "url": item["url"], "kind": "extra_url",
+                "channel": item.get("channel", ""),
+                "alias": item.get("alias", ""),
+                "path_pattern": urlparse(item["url"]).path,
+                "orbit_offset": item.get("orbit_offset", ""),
+                "quality_requested": item.get("quality_requested", ""),
+                "mapping_status": item.get("mapping_status", "user_configured"),
+            })
+    # Deduplicate by URL but preserve the most descriptive metadata.
+    unique = {}
+    for row in rows:
+        unique.setdefault(row["url"], row)
+    return list(unique.values())
+
+
+async def fetch(session: aiohttp.ClientSession, sem: asyncio.Semaphore, row: dict) -> dict:
+    started = time.perf_counter()
+    out = dict(row)
+    out.update({
+        "checked_at_utc": utc_now(), "final_url": "", "http_status": 0,
+        "content_type": "", "bytes": 0, "latency_ms": 0.0, "is_hls": False,
+        "is_master": False, "is_media_playlist": False, "valid_hls": False,
+        "variant_count": 0, "variants_json": "[]", "resolution": "",
+        "detected_quality": "unknown", "sample_segment_url": "",
+        "sample_segment_status": "", "sample_segment_content_type": "",
+        "timezone": "unknown", "error": "", "_body": "", "_children": [],
+        "_variants": [], "_entries": [],
+    })
+    async with sem:
+        try:
+            async with session.get(row["url"], allow_redirects=True) as resp:
+                raw = await resp.content.read(MAX_BODY)
+                body = raw.decode("utf-8", errors="replace")
+                out.update({
+                    "final_url": str(resp.url),
+                    "http_status": resp.status,
+                    "content_type": resp.headers.get("Content-Type", ""),
+                    "bytes": len(raw),
+                    "is_hls": HLS_MARKER in body[:4096],
+                    "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+                })
+                if out["is_hls"]:
+                    parsed = parse_hls(body, str(resp.url))
+                    out.update({
+                        "is_master": parsed["master"],
+                        "is_media_playlist": not parsed["master"],
+                        "valid_hls": resp.status == 200,
+                        "variant_count": len(parsed["variants"]),
+                        "variants_json": json.dumps([
+                            {"url": v["url"], "attrs": v["attrs"],
+                             "detected_quality": quality_from_attrs(v["attrs"])}
+                            for v in parsed["variants"]
+                        ], ensure_ascii=False),
+                        "_body": body, "_children": parsed["children"],
+                        "_variants": parsed["variants"], "_entries": parsed["entries"],
+                    })
+                    if parsed["segments"]:
+                        out["sample_segment_url"] = parsed["segments"][0]
+                elif resp.status >= 400:
+                    out["error"] = f"HTTP {resp.status}; response is not HLS"
+                else:
+                    out["error"] = "HTTP response is not an HLS playlist"
+        except (aiohttp.ClientError, asyncio.TimeoutError, ValueError) as exc:
+            out["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
+            out["error"] = f"{type(exc).__name__}: {exc}"
+    return out
+
+
+async def check_segment(session: aiohttp.ClientSession, sem: asyncio.Semaphore, row: dict) -> None:
+    url = row.get("sample_segment_url")
+    if not url or not row.get("valid_hls"):
+        return
+    async with sem:
+        try:
+            async with session.get(url, allow_redirects=True) as resp:
+                row["sample_segment_status"] = resp.status
+                row["sample_segment_content_type"] = resp.headers.get("Content-Type", "")
+                # Read only a tiny prefix to avoid downloading media.
+                await resp.content.read(128)
+        except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
+            row["sample_segment_status"] = 0
+            row["sample_segment_content_type"] = ""
+            row["error"] = (row.get("error", "") + f" | segment: {type(exc).__name__}: {exc}").strip(" |")
+
+
+def infer_channel(row: dict, inherited: str = "") -> str:
+    hay = normal(" ".join([
+        row.get("channel", ""), row.get("alias", ""), row.get("url", ""),
+        row.get("final_url", ""), row.get("_body", ""),
+    ]))
+    for channel in CHANNELS:
+        if any(normal(a) in hay for a in channel["aliases"]) or normal(channel["label"]) in hay:
+            return channel["label"]
+    return row.get("channel") or inherited or "НТВ — имя не определено"
+
+
+def make_extinf(name: str, attrs: dict | None = None) -> str:
+    details = quality_label(attrs or {})
+    if details:
+        name = f"{name} [{details}]"
+    name = name.replace("\r", " ").replace("\n", " ").replace('"', "'")
+    return f'#EXTINF:-1 group-title="НТВ",{name}'
+
+
+def write_csv(path: Path, rows: list[dict], fields: list[str]) -> None:
+    with path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: row.get(k, "") for k in fields})
+
+
+def discover_orbit_rows(results: list[dict]) -> list[dict]:
+    """Find orbit/quality evidence in discovered master playlists.
+    This extracts real variant URLs and attributes; it does not invent offset
+    labels when a master playlist does not encode them.
+    """
+    out = []
+    for r in results:
+        for variant in r.get("_variants", []):
+            attrs = variant.get("attrs", {})
+            url = variant.get("url", "")
+            path = urlparse(url).path
+            m = re.search(r"(?<!\d)([+-]\d{1,2})(?!\d)", path)
+            offset = int(m.group(1)) if m else ""
+            out.append({
+                "source_url": r.get("url", ""),
+                "variant_url": url,
+                "resolution": attrs.get("RESOLUTION", ""),
+                "bandwidth": attrs.get("AVERAGE-BANDWIDTH") or attrs.get("BANDWIDTH", ""),
+                "codecs": attrs.get("CODECS", ""),
+                "detected_quality": quality_from_attrs(attrs),
+                "orbit_offset_detected_from_path": offset,
+                "mapping_status": "path_token_only_not_verified" if offset != "" else "offset_not_encoded",
+            })
+    return out
+
+
+async def run_scan(cfg: dict, concurrency: int, timeout_s: int) -> tuple[list[dict], list[dict]]:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    candidates = build_candidates(cfg)
+    # Seed recursive exploration with all candidate URLs.
+    queue = deque((row, 0, row.get("channel", "")) for row in candidates)
+    queued = {row["url"] for row in candidates}
+    by_url: dict[str, dict] = {}
+    sem = asyncio.Semaphore(concurrency)
+    connector = aiohttp.TCPConnector(limit=concurrency, ttl_dns_cache=300)
+    timeout = aiohttp.ClientTimeout(total=timeout_s, connect=min(7, timeout_s))
     async with aiohttp.ClientSession(
-        timeout=timeout,
-        connector=connector,
+        timeout=timeout, connector=connector,
         headers={"User-Agent": UA},
     ) as session:
         while queue and len(by_url) < MAX_URLS:
-            current_batch = []
-
-            while queue and len(current_batch) < CONCURRENCY:
-                url, depth, inherited_name = queue.popleft()
-                if url in by_url:
+            batch = []
+            while queue and len(batch) < concurrency:
+                row, depth, inherited = queue.popleft()
+                if row["url"] in by_url:
                     continue
-                current_batch.append((url, depth, inherited_name))
-
-            if not current_batch:
+                batch.append((row, depth, inherited))
+            if not batch:
                 break
-
-            print(
-                f"Проверка: {len(by_url) + len(current_batch)} "
-                f"/ лимит {MAX_URLS}"
-            )
-
-            fetched = await asyncio.gather(
-                *(fetch(session, sem, item[0]) for item in current_batch)
-            )
-
-            for (url, depth, inherited_name), result in zip(
-                current_batch, fetched
-            ):
+            print(f"Проверка URL: {min(len(by_url)+len(batch), MAX_URLS)}/{MAX_URLS}")
+            fetched = await asyncio.gather(*(fetch(session, sem, row) for row, _, _ in batch))
+            for (original, depth, inherited), result in zip(batch, fetched):
                 result["depth"] = depth
-                result["inherited_name"] = inherited_name
-                by_url[url] = result
-                results.append(result)
-
+                result["inherited_channel"] = inherited
+                result["channel_detected"] = infer_channel(result, inherited)
+                by_url[original["url"]] = result
                 if depth >= MAX_DEPTH:
                     continue
+                for child in result.get("_children", []):
+                    if not is_ntv_host(child) or child in queued or child in by_url or len(queued) >= MAX_URLS:
+                        continue
+                    queued.add(child)
+                    child_row = {
+                        "url": child, "kind": "recursive_hls_child",
+                        "channel": result["channel_detected"], "alias": "",
+                        "path_pattern": urlparse(child).path,
+                        "orbit_offset": "", "quality_requested": "",
+                        "mapping_status": "discovered_from_hls",
+                    }
+                    queue.append((child_row, depth + 1, result["channel_detected"]))
+        # Probe one small prefix of a segment for successful media playlists.
+        await asyncio.gather(*(check_segment(session, sem, r) for r in by_url.values()))
+    results = list(by_url.values())
+    return results, candidates
 
-                parent_name = (
-                    channel_from_url(url)
-                    or channel_from_url(result["final_url"])
-                    or inherited_name
-                )
 
-                for child in result["children"]:
-                    if (
-                        is_ntv_url(child)
-                        and child not in queued
-                        and child not in by_url
-                        and len(queued) < MAX_URLS
-                    ):
-                        queued.add(child)
-                        queue.append((child, depth + 1, parent_name))
-
-    # Собираем потоки и варианты качества.
+def create_reports(results: list[dict], cfg: dict) -> dict[str, Path]:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Report all requests, retaining candidate provenance and HLS details.
+    report_fields = [
+        "checked_at_utc", "kind", "channel", "channel_detected", "alias",
+        "path_pattern", "orbit_offset", "quality_requested", "mapping_status",
+        "url", "final_url", "http_status", "content_type", "bytes",
+        "latency_ms", "is_hls", "is_master", "is_media_playlist", "valid_hls",
+        "variant_count", "variants_json", "sample_segment_url",
+        "sample_segment_status", "sample_segment_content_type", "timezone",
+        "depth", "error",
+    ]
+    report_rows = []
     streams = {}
-
-    for result in results:
-        parent_name = (
-            channel_from_url(result["url"])
-            or channel_from_url(result["final_url"])
-            or result["inherited_name"]
-        )
-
-        for variant in result["variants"]:
-            url = variant["url"]
-            if not is_ntv_url(url):
+    masters = []
+    target_lines = []
+    node_checks = []
+    timezone_map = cfg.get("timezone_map", {})
+    for r in results:
+        r["timezone"] = timezone_map.get(urlparse(r.get("final_url") or r["url"]).hostname or "", "unknown")
+        report_rows.append(r)
+        node_checks.append({
+            "checked_at_utc": r.get("checked_at_utc", ""),
+            "cdn_node": urlparse(r["url"]).hostname or "",
+            "channel": r.get("channel", ""),
+            "alias": r.get("alias", ""),
+            "path_pattern": r.get("path_pattern", ""),
+            "kind": r.get("kind", ""),
+            "orbit_offset": r.get("orbit_offset", ""),
+            "quality_requested": r.get("quality_requested", ""),
+            "http_status": r.get("http_status", ""),
+            "final_url": r.get("final_url", ""),
+            "latency_ms": r.get("latency_ms", ""),
+            "is_hls": r.get("is_hls", False),
+            "valid_hls": r.get("valid_hls", False),
+            "sample_segment_status": r.get("sample_segment_status", ""),
+            "timezone": r.get("timezone", "unknown"),
+            "mapping_status": r.get("mapping_status", ""),
+            "error": r.get("error", ""),
+        })
+        if r.get("is_master"):
+            masters.append(f"URL: {r['url']}\nHTTP: {r['http_status']} FINAL: {r['final_url']}\n{r.get('_body','')}\n\n{'='*72}\n\n")
+        parent = r.get("channel_detected") or r.get("channel") or "НТВ — имя не определено"
+        for v in r.get("_variants", []):
+            url = v["url"]
+            if not is_ntv_host(url):
                 continue
-
-            name = (
-                channel_from_url(url)
-                or parent_name
-                or "NTV поток — имя не определено"
-            )
-            attrs = variant["attrs"]
-            streams[url] = {
-                "url": url,
-                "name": name,
-                "group": "НТВ",
-                "resolution": attrs.get("RESOLUTION", ""),
-                "bandwidth": attrs.get("AVERAGE-BANDWIDTH")
-                or attrs.get("BANDWIDTH", ""),
-                "codecs": attrs.get("CODECS", ""),
-                "source_url": result["url"],
-                "target": detect_target(name, url),
-                "extinf": make_extinf(name, attrs, "НТВ"),
-            }
-
-        for entry in result["entries"]:
-            url = entry["url"]
-            if not is_ntv_url(url):
-                continue
-
-            extinf = entry["extinf"]
-            name = extinf.rsplit(",", 1)[-1].strip() if "," in extinf else ""
-            name = name or parent_name or "NTV поток — имя не определено"
-
+            attrs = v.get("attrs", {})
+            name = parent
+            q = quality_from_attrs(attrs)
             streams.setdefault(url, {
-                "url": url,
-                "name": name,
-                "group": "НТВ",
-                "resolution": "",
-                "bandwidth": "",
-                "codecs": "",
-                "source_url": result["url"],
-                "target": detect_target(name, url, extinf),
+                "name": name, "url": url, "resolution": attrs.get("RESOLUTION", ""),
+                "bandwidth": attrs.get("AVERAGE-BANDWIDTH") or attrs.get("BANDWIDTH", ""),
+                "codecs": attrs.get("CODECS", ""), "detected_quality": q,
+                "source_url": r["url"], "orbit_offset": r.get("orbit_offset", ""),
+                "quality_requested": r.get("quality_requested", ""),
+                "extinf": make_extinf(name, attrs),
+            })
+        for e in r.get("_entries", []):
+            url = e["url"]
+            if not is_ntv_host(url):
+                continue
+            extinf = e["extinf"]
+            name = extinf.rsplit(",", 1)[-1].strip() if "," in extinf else parent
+            streams.setdefault(url, {
+                "name": name or parent, "url": url, "resolution": "",
+                "bandwidth": "", "codecs": "", "detected_quality": "unknown",
+                "source_url": r["url"], "orbit_offset": r.get("orbit_offset", ""),
+                "quality_requested": r.get("quality_requested", ""),
                 "extinf": extinf,
             })
-
-        # Медиа-плейлист тоже может быть конечным URL потока.
-        # Не добавляем master как отдельный канал, если он содержит варианты.
-        if result["hls"] and not result["master"]:
-            url = result["final_url"] or result["url"]
-            if is_ntv_url(url):
-                name = (
-                    channel_from_url(url)
-                    or parent_name
-                    or "NTV поток — имя не определено"
-                )
+        # Valid media playlist can itself be a playable URL.
+        if r.get("valid_hls") and r.get("is_media_playlist"):
+            url = r.get("final_url") or r["url"]
+            if is_ntv_host(url):
                 streams.setdefault(url, {
-                    "url": url,
-                    "name": name,
-                    "group": "НТВ",
-                    "resolution": "",
-                    "bandwidth": "",
-                    "codecs": "",
-                    "source_url": result["url"],
-                    "target": detect_target(name, url, result["body"]),
-                    "extinf": make_extinf(name, group="НТВ"),
+                    "name": parent, "url": url, "resolution": "",
+                    "bandwidth": "", "codecs": "", "detected_quality": "unknown",
+                    "source_url": r["url"], "orbit_offset": r.get("orbit_offset", ""),
+                    "quality_requested": r.get("quality_requested", ""),
+                    "extinf": make_extinf(parent),
                 })
 
-    # Отчёт всех HTTP-проверок.
-    report_fields = [
-        "url", "final_url", "status", "content_type",
-        "bytes", "hls", "master", "depth", "error",
-    ]
-    with open("ntv_report.csv", "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=report_fields)
-        writer.writeheader()
-        for result in results:
-            writer.writerow({
-                key: result.get(key, "")
-                for key in report_fields
-            })
+    paths = {}
+    p = OUTPUT_DIR / "ntv_report.csv"
+    write_csv(p, report_rows, report_fields); paths[p.name] = p
 
-    # Единый M3U.
-    with open("ntv_found.m3u", "w", encoding="utf-8") as f:
+    p = OUTPUT_DIR / "ntv_streams.csv"
+    stream_fields = ["name", "url", "resolution", "bandwidth", "codecs", "detected_quality", "source_url", "orbit_offset", "quality_requested"]
+    write_csv(p, list(streams.values()), stream_fields); paths[p.name] = p
+
+    p = OUTPUT_DIR / "ntv_found.m3u"
+    with p.open("w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for stream in sorted(streams.values(), key=lambda x: (
-            x["name"], x["url"]
-        )):
-            f.write(stream["extinf"] + "\n")
-            f.write(stream["url"] + "\n")
+        for s in sorted(streams.values(), key=lambda x: (x["name"], x["url"])):
+            f.write(s["extinf"] + "\n" + s["url"] + "\n")
+    paths[p.name] = p
 
-    # Все найденные мастер-плейлисты.
-    with open("ntv_masters.txt", "w", encoding="utf-8") as f:
-        for result in results:
-            if result["master"]:
-                f.write(f"URL: {result['url']}\n")
-                f.write(result["body"])
-                f.write("\n\n" + "=" * 70 + "\n\n")
+    p = OUTPUT_DIR / "ntv_masters.txt"
+    p.write_text("".join(masters) or "Мастер-плейлисты не обнаружены в проверенных URL.\n", encoding="utf-8")
+    paths[p.name] = p
 
-    # Список вариантов качества и источников.
-    stream_fields = [
-        "name", "url", "resolution", "bandwidth", "codecs",
-        "source_url", "target",
-    ]
-    with open("ntv_streams.csv", "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=stream_fields)
-        writer.writeheader()
-        for stream in sorted(streams.values(), key=lambda x: (
-            x["name"], x["url"]
-        )):
-            writer.writerow({
-                key: stream.get(key, "")
-                for key in stream_fields
-            })
-
-    # Отдельный отчёт по двум искомым каналам.
-    with open("ntv_target_channels.txt", "w", encoding="utf-8") as f:
-        for label, aliases in TARGETS.items():
-            hits = []
-
-            for result in results:
-                haystack = normalize_text(
-                    result["url"] + " "
-                    + result["final_url"] + " "
-                    + result["body"]
-                )
-                if any(normalize_text(alias) in haystack for alias in aliases):
-                    hits.append((
-                        result["status"],
-                        result["hls"],
-                        result["url"],
-                        result["final_url"],
-                    ))
-
-            for stream in streams.values():
-                if stream["target"] == label:
-                    hits.append((
-                        "stream",
-                        True,
-                        stream["source_url"],
-                        stream["url"],
-                    ))
-
-            # Убираем дубли записей отчёта.
-            hits = list(dict.fromkeys(hits))
-            f.write(label + "\n")
-
+    p = OUTPUT_DIR / "ntv_target_channels.txt"
+    with p.open("w", encoding="utf-8") as f:
+        for ch in cfg["channels"]:
+            label = ch["label"]
+            hits = [r for r in results if r.get("channel_detected") == label or r.get("channel") == label]
+            f.write(f"{label}\n")
             if not hits:
+                f.write("Совпадений не найдено в проверенных кандидатах; это не доказывает отсутствие канала.\n")
+            for r in hits:
                 f.write(
-                    "Совпадений в проверенных ответах не найдено. "
-                    "Это не доказывает отсутствие канала на CDN.\n"
+                    f"alias={r.get('alias','')} status={r.get('http_status',0)} "
+                    f"HLS={r.get('is_hls',False)} valid={r.get('valid_hls',False)} "
+                    f"latency_ms={r.get('latency_ms','')} URL={r.get('url','')} "
+                    f"FINAL={r.get('final_url','')} error={r.get('error','')}\n"
                 )
-            else:
-                for status, hls, source, url in hits:
-                    f.write(
-                        f"STATUS={status} HLS={hls}\n"
-                        f"Источник: {source}\n"
-                        f"URL: {url}\n\n"
-                    )
-
             f.write("\n")
+    paths[p.name] = p
 
-    # Сводка.
-    print("\nСканирование завершено.")
-    print(f"Проверено URL: {len(results)}")
-    print(f"HTTP 200: {sum(r['status'] == 200 for r in results)}")
-    print(f"HLS-ответов: {sum(r['hls'] for r in results)}")
-    print(f"Master playlists: {sum(r['master'] for r in results)}")
-    print(f"Уникальных потоков: {len(streams)}")
-    print("Созданы:")
-    print("  ntv_report.csv")
-    print("  ntv_found.m3u")
-    print("  ntv_masters.txt")
-    print("  ntv_target_channels.txt")
-    print("  ntv_streams.csv")
+    p = OUTPUT_DIR / "ntv_node_checks.csv"
+    write_csv(p, node_checks, [
+        "checked_at_utc", "cdn_node", "channel", "alias", "path_pattern", "kind",
+        "orbit_offset", "quality_requested", "http_status", "final_url", "latency_ms",
+        "is_hls", "valid_hls", "sample_segment_status", "timezone", "mapping_status", "error",
+    ])
+    paths[p.name] = p
+
+    p = OUTPUT_DIR / "ntv_node_timezones.csv"
+    hosts = sorted({urlparse(r["url"]).hostname or "" for r in results})
+    write_csv(p, [
+        {"cdn_node": h, "timezone": timezone_map.get(h, "unknown"),
+         "basis": "explicit_config" if h in timezone_map else "unknown_not_inferred_from_IP_or_hostname"}
+        for h in hosts
+    ], ["cdn_node", "timezone", "basis"])
+    paths[p.name] = p
+
+    orbit_evidence = discover_orbit_rows(results)
+    p = OUTPUT_DIR / "ntv_orbit_evidence.csv"
+    write_csv(p, orbit_evidence, [
+        "source_url", "variant_url", "resolution", "bandwidth", "codecs",
+        "detected_quality", "orbit_offset_detected_from_path", "mapping_status",
+    ])
+    paths[p.name] = p
+
+    by_kind = {}
+    for r in results:
+        kind = r.get("kind", "unknown")
+        by_kind[kind] = by_kind.get(kind, 0) + 1
+    summary = {
+        "generated_at_utc": utc_now(),
+        "output_dir": str(OUTPUT_DIR),
+        "candidate_count": len(results),
+        "http_200_count": sum(r.get("http_status") == 200 for r in results),
+        "hls_count": sum(bool(r.get("is_hls")) for r in results),
+        "valid_hls_count": sum(bool(r.get("valid_hls")) for r in results),
+        "master_playlist_count": sum(bool(r.get("is_master")) for r in results),
+        "unique_stream_count": len(streams),
+        "orbit_offsets_requested": cfg.get("orbit_offsets", ORBIT_OFFSETS),
+        "qualities_requested": cfg.get("qualities", list(QUALITIES)),
+        "orbit_template_count": len(cfg.get("orbit_templates", [])),
+        "orbit_warning": (
+            "Offsets -1..+9 and SD/HD are probed using candidate aliases ntv{offset} "
+            "and ntv{offset}_hd, plus any configured templates. These alias mappings "
+            "are unverified until confirmed by a real master playlist. Requested quality "
+            "is not treated as proof: detected quality comes from HLS resolution/bitrate."
+        ),
+        "counts_by_kind": by_kind,
+        "timezone_policy": "unknown unless explicitly configured in timezone_map",
+        "reports": sorted(paths.keys()),
+    }
+    p = OUTPUT_DIR / "ntv_scan_summary.json"
+    p.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths[p.name] = p
+    return paths
+
+
+async def async_main(args) -> None:
+    cfg = load_config()
+    if args.concurrency:
+        concurrency = args.concurrency
+    else:
+        concurrency = DEFAULT_CONCURRENCY
+    timeout = args.timeout or DEFAULT_TIMEOUT
+    print(f"NTV scanner: nodes={len(cfg['hosts'])}, concurrency={concurrency}")
+    print(f"Кандидатов URL: {len(build_candidates(cfg))}")
+    results, candidates = await run_scan(cfg, concurrency, timeout)
+    paths = create_reports(results, cfg)
+    print(f"\nСканирование завершено: проверено {len(results)} URL.")
+    print(f"HTTP 200: {sum(r.get('http_status') == 200 for r in results)}")
+    print(f"HLS: {sum(bool(r.get('is_hls')) for r in results)}; валидных HLS: {sum(bool(r.get('valid_hls')) for r in results)}")
+    print(f"Потоков в M3U: {sum(1 for _ in open(OUTPUT_DIR / 'ntv_found.m3u', encoding='utf-8') if _.startswith('#EXTINF'))}")
+    print(f"Отчёты: {OUTPUT_DIR}")
+    for name in paths:
+        print(f"  {name}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="NTV CDN and HLS auditor")
+    parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
+    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
+    args = parser.parse_args()
+    if args.concurrency < 1 or args.timeout < 1:
+        parser.error("--concurrency and --timeout must be positive")
+    asyncio.run(async_main(args))
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
-
+    main()
