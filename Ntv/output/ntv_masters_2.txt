@@ -1,0 +1,734 @@
+URL: https://cdn.ntv.ru/ntv0/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv0/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv0/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv0/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv0_hd/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv0_hd/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv0_hd/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv0_hd/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/vitrina/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/vitrina/playlist.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1070000,BANDWIDTH=1340000,RESOLUTION=870x404,FRAME-RATE=25.000,CODECS="avc1.4d001e",CLOSED-CAPTIONS=NONE
+tracks-v3/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1610000,BANDWIDTH=2010000,RESOLUTION=1304x606,FRAME-RATE=25.000,CODECS="avc1.4d001f",CLOSED-CAPTIONS=NONE
+tracks-v2/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3670000,BANDWIDTH=4590000,RESOLUTION=1740x808,FRAME-RATE=25.000,CODECS="avc1.4d0028",CLOSED-CAPTIONS=NONE
+tracks-v1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/vitrina/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/vitrina/index.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1070000,BANDWIDTH=1340000,RESOLUTION=870x404,FRAME-RATE=25.000,CODECS="avc1.4d001e",CLOSED-CAPTIONS=NONE
+tracks-v3/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1610000,BANDWIDTH=2010000,RESOLUTION=1304x606,FRAME-RATE=25.000,CODECS="avc1.4d001f",CLOSED-CAPTIONS=NONE
+tracks-v2/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3670000,BANDWIDTH=4590000,RESOLUTION=1740x808,FRAME-RATE=25.000,CODECS="avc1.4d0028",CLOSED-CAPTIONS=NONE
+tracks-v1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_pravo/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_pravo/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_pravo/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_pravo/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_style/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_style/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_style/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_style/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/unknown_russia/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/unknown_russia/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=910000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/unknown_russia/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/unknown_russia/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=910000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_serial/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_serial/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1150000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_serial/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_serial/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1150000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_hit/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_hit/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/th_hit/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/th_hit/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv0/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv0/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv0/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv0/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv0_hd/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv0_hd/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v5a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1250000,BANDWIDTH=1560000,SUBTITLES="subs",RESOLUTION=854x480,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v4a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2220000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v3a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2820000,BANDWIDTH=3530000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3870000,BANDWIDTH=4840000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d0028,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/vitrina/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/vitrina/playlist.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1070000,BANDWIDTH=1340000,RESOLUTION=870x404,FRAME-RATE=25.000,CODECS="avc1.4d001e",CLOSED-CAPTIONS=NONE
+tracks-v3/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1610000,BANDWIDTH=2010000,RESOLUTION=1304x606,FRAME-RATE=25.000,CODECS="avc1.4d001f",CLOSED-CAPTIONS=NONE
+tracks-v2/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3670000,BANDWIDTH=4590000,RESOLUTION=1740x808,FRAME-RATE=25.000,CODECS="avc1.4d0028",CLOSED-CAPTIONS=NONE
+tracks-v1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/vitrina/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/vitrina/index.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1070000,BANDWIDTH=1340000,RESOLUTION=870x404,FRAME-RATE=25.000,CODECS="avc1.4d001e",CLOSED-CAPTIONS=NONE
+tracks-v3/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1610000,BANDWIDTH=2010000,RESOLUTION=1304x606,FRAME-RATE=25.000,CODECS="avc1.4d001f",CLOSED-CAPTIONS=NONE
+tracks-v2/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3670000,BANDWIDTH=4590000,RESOLUTION=1740x808,FRAME-RATE=25.000,CODECS="avc1.4d0028",CLOSED-CAPTIONS=NONE
+tracks-v1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_pravo/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_pravo/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_pravo/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_pravo/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_style/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_style/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_style/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_style/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/unknown_russia/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/unknown_russia/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=910000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/unknown_russia/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/unknown_russia/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=910000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_serial/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_serial/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1150000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_serial/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_serial/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1150000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1750000,BANDWIDTH=2190000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_hit/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_hit/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/th_hit/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/th_hit/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1770000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2"
+tracks-v3a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2800000,BANDWIDTH=3490000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=5420000,BANDWIDTH=6760000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d4028,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2"
+tracks-v3a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2800000,BANDWIDTH=3490000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=5420000,BANDWIDTH=6760000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d4028,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1140000,RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2",CLOSED-CAPTIONS=NONE
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2810000,BANDWIDTH=3490000,RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2",CLOSED-CAPTIONS=NONE
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8
+#EXTM3U
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1140000,RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2",CLOSED-CAPTIONS=NONE
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2810000,BANDWIDTH=3490000,RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2",CLOSED-CAPTIONS=NONE
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="rus a1",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-a1/mono.ts.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="und a2",DEFAULT=NO,URI="tracks-a2/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=970000,BANDWIDTH=1180000,AUDIO="aac",SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1800000,BANDWIDTH=2230000,AUDIO="aac",SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/th_pravo/index.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/th_pravo/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="rus a1",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-a1/mono.ts.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="und a2",DEFAULT=NO,URI="tracks-a2/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=970000,BANDWIDTH=1180000,AUDIO="aac",SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401e,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1800000,BANDWIDTH=2230000,AUDIO="aac",SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v3a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2810000,BANDWIDTH=3490000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3850000,BANDWIDTH=4800000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d4028,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn-dvr.ntv.ru/th_hit/index.m3u8
+HTTP: 200 FINAL: https://cdn-dvr.ntv.ru/th_hit/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="rus t1",AUTOSELECT=YES,LANGUAGE="rus",URI="tracks-t1/mono.ts.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=930000,BANDWIDTH=1140000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v3a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2810000,BANDWIDTH=3490000,SUBTITLES="subs",RESOLUTION=1280x720,FRAME-RATE=25.000,CODECS="avc1.4d401f,mp4a.40.2"
+tracks-v2a1/mono.ts.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=3850000,BANDWIDTH=4800000,SUBTITLES="subs",RESOLUTION=1920x1080,FRAME-RATE=25.000,CODECS="avc1.4d4028,mp4a.40.2"
+tracks-v1a1/mono.ts.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv1/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv1/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv1/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv1/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv2/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv2/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1110000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1670000,BANDWIDTH=2090000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv2/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv2/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1110000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1670000,BANDWIDTH=2090000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv4/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv4/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=900000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1700000,BANDWIDTH=2130000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv4/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv4/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=900000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1700000,BANDWIDTH=2130000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv7/playlist.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv7/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1690000,BANDWIDTH=2120000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn.ntv.ru/ntv7/index.m3u8
+HTTP: 200 FINAL: https://cdn.ntv.ru/ntv7/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1690000,BANDWIDTH=2120000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv1/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv1/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv1/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv1/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=920000,BANDWIDTH=1160000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1760000,BANDWIDTH=2210000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv2/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv2/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1110000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1670000,BANDWIDTH=2090000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv2/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv2/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1110000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1670000,BANDWIDTH=2090000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv4/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv4/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=900000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1700000,BANDWIDTH=2130000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv4/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv4/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=900000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1700000,BANDWIDTH=2130000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv7/playlist.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv7/playlist.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1690000,BANDWIDTH=2120000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
+URL: https://cdn2.ntv.ru/ntv7/index.m3u8
+HTTP: 200 FINAL: https://cdn2.ntv.ru/ntv7/index.m3u8
+#EXTM3U
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="und t1",URI="tracks-t1/mono.m3u8"
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=890000,BANDWIDTH=1120000,SUBTITLES="subs",RESOLUTION=640x360,FRAME-RATE=25.000,CODECS="avc1.4d001e,mp4a.40.2"
+tracks-v2a1/mono.m3u8
+#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=1690000,BANDWIDTH=2120000,SUBTITLES="subs",RESOLUTION=1024x576,FRAME-RATE=25.000,CODECS="avc1.4d001f,mp4a.40.2"
+tracks-v1a1/mono.m3u8
+
+
+========================================================================
+
