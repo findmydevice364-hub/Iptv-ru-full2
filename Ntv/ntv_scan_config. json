@@ -1,0 +1,116 @@
+{
+  "hosts": [
+    "https://cdn.ntv.ru",
+    "https://cdn2.ntv.ru",
+    "https://cdn3.ntv.ru",
+    "https://cdn-dvr.ntv.ru"
+  ],
+  "channels": [
+    {
+      "label": "НТВ — основной",
+      "aliases": [
+        "ntv0",
+        "ntv",
+        "ntv_main"
+      ]
+    },
+    {
+      "label": "НТВ HD",
+      "aliases": [
+        "ntv0_hd",
+        "ntv_hd"
+      ]
+    },
+    {
+      "label": "НТВ Мир",
+      "aliases": [
+        "ntv_mir",
+        "Mir"
+      ]
+    },
+    {
+      "label": "НТВ Беларусь",
+      "aliases": [
+        "ntv_belarus",
+        "Belarus"
+      ]
+    },
+    {
+      "label": "НТВ Витрина",
+      "aliases": [
+        "vitrina"
+      ]
+    },
+    {
+      "label": "НТВ — Следствие вели",
+      "aliases": [
+        "sledstvie_veli"
+      ]
+    },
+    {
+      "label": "НТВ — Своя игра",
+      "aliases": [
+        "svoya_igra"
+      ]
+    },
+    {
+      "label": "НТВ Право",
+      "aliases": [
+        "th_pravo",
+        "pravo"
+      ]
+    },
+    {
+      "label": "НТВ Стиль жизни",
+      "aliases": [
+        "th_style",
+        "stil_zhizni",
+        "style_life"
+      ]
+    },
+    {
+      "label": "Неизвестная Россия",
+      "aliases": [
+        "unknown_russia",
+        "neizvestnaya_rossiya"
+      ]
+    },
+    {
+      "label": "НТВ Сериал",
+      "aliases": [
+        "th_serial",
+        "serial"
+      ]
+    },
+    {
+      "label": "НТВ-Хит",
+      "aliases": [
+        "th_hit"
+      ]
+    }
+  ],
+  "orbit_offsets": [
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "qualities": [
+    "SD",
+    "HD"
+  ],
+  "orbit_templates": [],
+  "extra_urls": [],
+  "timezone_map": {},
+  "orbit_path_patterns": [
+    "ntv{offset}",
+    "ntv{offset}_hd"
+  ]
+}
