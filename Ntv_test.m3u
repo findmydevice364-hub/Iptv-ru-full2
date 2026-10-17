@@ -1,0 +1,40 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="НТВ Основные" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ (Основной эфир HD)
+https://cdn.ntv.ru/ntv-spb/index.m3u8
+
+#EXTINF:-1 group-title="НТВ Основные" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Мир
+https://cdn.ntv.ru/ntv_world/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Основные" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Беларусь
+http://strm.yandex.ru/kal/ntv_belarus/ntv_belarus0.m3u8
+
+#EXTINF:-1 group-title="НТВ Тематические" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Хит
+https://cdn.ntv.ru/ntv_hit/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Тематические" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Сериал
+https://cdn.ntv.ru/ntv_serial/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Тематические" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Право
+https://cdn.ntv.ru/ntv_pravo/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Тематические" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",НТВ Стиль
+https://cdn.ntv.ru/ntv_style/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Тематические" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Неизвестная Россия
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/playlist.m3u8
+
+#EXTINF:-1 group-title="НТВ Проекты 24/7" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Своя игра 24/7
+https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8
+
+#EXTINF:-1 group-title="НТВ Проекты 24/7" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Следствие вели... 24/7
+https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8
+
+#EXTINF:-1 group-title="НТВ Проекты 24/7" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Первый отдел 24/7
+https://cdn-dvr.ntv.ru/Perviy_otdel/index.m3u8
+
+#EXTINF:-1 group-title="НТВ Проекты 24/7" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Балабол 24/7
+https://cdn-dvr.ntv.ru/Balabol/index.m3u8
+
+#EXTINF:-1 group-title="НТВ Проекты 24/7" tvg-logo="https://ar2020.gazprom-media.ru/images/content/NTV_white.png",Пёс 24/7
+https://cdn-dvr.ntv.ru/Pes/index.m3u8
