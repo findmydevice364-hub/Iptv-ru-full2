@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-10-17T19:07:56+00:00",
+  "generated_at_utc": "2026-10-18T07:31:40+00:00",
   "output_dir": "Ntv/output",
   "candidate_count": 435,
   "http_200_count": 155,
   "hls_count": 155,
   "valid_hls_count": 155,
   "master_playlist_count": 56,
-  "unique_stream_count": 417,
+  "unique_stream_count": 413,
   "orbit_offsets_requested": [
     -1,
     0,
