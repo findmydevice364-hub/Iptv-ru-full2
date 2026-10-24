@@ -1,0 +1,86 @@
+#EXTM3U url-tvg="https://iptvx.one/epg/epg_lite.xml.gz"
+#PLAYLIST: РФ: СЗФО и ЦФО + федеральные
+
+# --- ФЕДЕРАЛЬНЫЕ (МСК+0) ---
+#EXTINF:-1 tvg-id="pervy" group-title="Федеральные (МСК+0)",Первый канал
+https://zabava-htlive.cdn.ngenix.net/hls/CH_1TVSD/variant.m3u8
+#EXTINF:-1 tvg-id="pervy" group-title="Федеральные (МСК+0)",Первый канал (резерв)
+https://serv30.vintera.tv/restream/1_old/playlist.m3u8
+#EXTINF:-1 tvg-id="pervy" group-title="Федеральные (МСК+0)",Первый канал HD
+https://edge2.1internet.tv/dash-live2/streams/1tv-dvr/playlist.m3u8
+#EXTINF:-1 tvg-id="rossia1" group-title="Федеральные (МСК+0)",Россия 1
+https://zabava-htlive.cdn.ngenix.net/hls/CH_RUSSIA1/variant.m3u8
+#EXTINF:-1 tvg-id="rossia1" group-title="Федеральные (МСК+0)",Россия 1 HD
+https://live.smotrim.ru/vgtrk/0/russia1-hd/index.m3u8
+#EXTINF:-1 tvg-id="rossia-24" group-title="Федеральные (МСК+0)",Россия 24
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/0/russia24-hd/720p.m3u8
+#EXTINF:-1 tvg-id="rossia-k" group-title="Федеральные (МСК+0)",Россия К
+https://live.smotrim.ru/vgtrk/0/kultura-hd/track_105_319a299f/chunklist.m3u8
+#EXTINF:-1 tvg-id="match-tv" group-title="Федеральные (МСК+0)",Матч ТВ
+https://zabava-htlive.cdn.ngenix.net/hls/CH_MATCHTV/variant.m3u8
+#EXTINF:-1 tvg-id="tvc" group-title="Федеральные (МСК+0)",ТВ Центр
+https://zabava-htlive.cdn.ngenix.net/hls/CH_TVC_2/variant.m3u8
+#EXTINF:-1 tvg-id="sts" group-title="Федеральные (МСК+0)",СТС
+https://zabava-htlive.cdn.ngenix.net/hls/CH_STS/variant.m3u8
+#EXTINF:-1 tvg-id="domashny" group-title="Федеральные (МСК+0)",Домашний
+https://zabava-htlive.cdn.ngenix.net/hls/CH_DOMASHNIY/variant.m3u8
+#EXTINF:-1 tvg-id="2na2" group-title="Федеральные (МСК+0)",2x2
+https://zabava-htlive.cdn.ngenix.net/hls/CH_2X2/variant.m3u8
+#EXTINF:-1 tvg-id="che" group-title="Федеральные (МСК+0)",Че!
+https://zabava-htlive.cdn.ngenix.net/hls/CH_PERETZ/variant.m3u8
+#EXTINF:-1 tvg-id="piatnica" group-title="Федеральные (МСК+0)",Пятница!
+https://zabava-htlive.cdn.ngenix.net/hls/CH_PYATNIZZA/variant.m3u8
+#EXTINF:-1 tvg-id="yu" group-title="Федеральные (МСК+0)",Ю
+https://zabava-htlive.cdn.ngenix.net/hls/CH_U/variant.m3u8
+#EXTINF:-1 tvg-id="zvezda" group-title="Федеральные (МСК+0)",Звезда
+https://zabava-htlive.cdn.ngenix.net/hls/CH_ZVEZDA_2/variant.m3u8
+#EXTINF:-1 tvg-id="mir" group-title="Федеральные (МСК+0)",Мир
+http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_2500/playlist.m3u8
+#EXTINF:-1 tvg-id="mir-24" group-title="Федеральные (МСК+0)",Мир 24
+http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mir24_2500/playlist.m3u8
+#EXTINF:-1 tvg-id="rbk" group-title="Федеральные (МСК+0)",РБК
+http://online.video.rbc.ru/online/rbctvhd_1080p/index.m3u8
+#EXTINF:-1 tvg-id="izvestia" group-title="Федеральные (МСК+0)",Известия
+http://s20441.cdn.ngenix.net/hls/CH_R49_MGTK/variant.m3u8
+
+# --- СЗФО: Калининград (МСК-1) ---
+#EXTINF:-1 tvg-id="kaskad" group-title="СЗФО МСК-1 (Калининград)",Каскад (Калининград)
+http://rt-nw-klgr-htlive.cdn.ngenix.net/hls/CH_R01_KASKAD/variant.m3u8
+#EXTINF:-1 tvg-id="zapad-24" group-title="СЗФО МСК-1 (Калининград)",Запад 24 (Калининград)
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/kaliningrad/zapad24-hd/index.m3u8
+
+# --- СЗФО: МСК+0 ---
+#EXTINF:-1 tvg-id="lentv24" group-title="СЗФО МСК+0",Лен ТВ 24 (СПб/ЛО)
+https://rt-nw-spb-htlive.cdn.ngenix.net/hls/CH_R02_LENTVSD/variant.m3u8
+#EXTINF:-1 tvg-id="78kanal" group-title="СЗФО МСК+0",78 (Санкт-Петербург)
+https://rt-nw-spb-htlive.cdn.ngenix.net/hls/CH_R02_KANAL78/variant.m3u8
+#EXTINF:-1 tvg-id="yurgan" group-title="СЗФО МСК+0",Юрган (Республика Коми)
+http://rt-nw-komi-htlive.cdn.ngenix.net/hls/CH_R01_YURGAN/variant.m3u8
+#EXTINF:-1 tvg-id="sever" group-title="СЗФО МСК+0",Север (НАО, Нарьян-Мар)
+https://live2.mediacdn.ru/sr1/sever/playlist.m3u8
+#EXTINF:-1 tvg-id="region29" group-title="СЗФО МСК+0",Регион 29 (Архангельск)
+http://dmi3y-tv.ru/hls/zabava/region/ARKH/CH_REGION29.m3u8
+#EXTINF:-1 tvg-id="arktika-24" group-title="СЗФО МСК+0",Арктика 24 (Архангельск)
+https://vgtrkregion-reg.cdnvideo.ru/vgtrk/arhangelsk/arktika24-hd/index.m3u8
+
+# --- ЦФО (МСК+0) ---
+#EXTINF:-1 tvg-id="mir-belogoria" group-title="ЦФО МСК+0",Мир Белогорья (Белгород)
+http://mirbelogorya.ru:8080/mirbelogorya/index.m3u8
+#EXTINF:-1 tvg-id="tv-gubernia-voronezh" group-title="ЦФО МСК+0",ТВ Губерния (Воронеж)
+https://s68149.cdn.ngenix.net/s68149-media-origin/lvs/tvgub/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-id="vot-tv" group-title="ЦФО МСК+0",ВОТ ТВ (Липецк)
+http://rt-ct-lipetsk-htlive.cdn.ngenix.net/hls/CH_R01_VOTTV/variant.m3u8
+#EXTINF:-1 tvg-id="lipeckoe-vremia" group-title="ЦФО МСК+0",Липецкое время (Липецк)
+https://bl.rutube.ru/livestream/23afd7debed1cfc7a8efa0827c24d836/index.m3u8?s=IOkUTZHoPSqNn0IukRgYNw&e=2070623511&scheme=https
+#EXTINF:-1 tvg-id="rentv-istoki" group-title="ЦФО МСК+0",Истоки (Орёл)
+http://rt-ct-orl-htlive.cdn.ngenix.net/hls/CH_R01_ISTOKI/variant.m3u8
+#EXTINF:-1 tvg-id="pervy-oblastnoy" group-title="ЦФО МСК+0",Первый Областной (Орёл)
+http://rt-ct-orl-htlive.cdn.ngenix.net/hls/CH_R01_PERVOBL/variant.m3u8
+#EXTINF:-1 tvg-id="tk-variant" group-title="ЦФО МСК+0",ТК Вариант (Владимир)
+http://rt-ct-vlad-htlive.cdn.ngenix.net/hls/CH_R01_VARIANT_V/variant.m3u8
+#EXTINF:-1 tvg-id="1tula" group-title="ЦФО МСК+0",Первый Тульский Full HD
+https://strm.yandex.net/kal/1tula/1tula0_169_1080p.json/index-v1-a1.m3u8
+#EXTINF:-1 tvg-id="1tula" group-title="ЦФО МСК+0",Первый Тульский HD
+https://strm.yandex.net/kal/1tula/1tula0_169_720p.json/index-v1-a1.m3u8
+#EXTINF:-1 tvg-id="tverskoy-prospekt" group-title="ЦФО МСК+0",Тверской Проспект — Регион
+http://stream.fastlnk.ru:88/Tverskojj_prospekt/index.m3u8
