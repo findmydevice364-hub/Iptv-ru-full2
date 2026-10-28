@@ -2,39 +2,131 @@
 ======================================================================
 КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
 ======================================================================
-Время UTC: 2026-10-28T20:37:41.254849+00:00
+Время UTC: 2026-10-28T20:45:16.342073+00:00
 Python: 3.11.17
 ffprobe: /usr/bin/ffprobe
 
-Узел 1/2
+Узел 1/11
+
+======================================================================
+ПРОВЕРКА: http://stream.mcquack.net/412/index.m3u8
+======================================================================
+HTTP: 200
+Время ответа: 0.37 с.
+Конечный URL: http://stream.mcquack.net/412/index.m3u8
+Content-Type: application/vnd.apple.mpegurl
+[OK] Получен валидный HLS-плейлист.
+[Плейлист] Тип: мастер-плейлист
+  URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
+  Разрешение: 1920x1080
+  Битрейт: 4.88 Мбит/с
+  Кодеки: avc1.4d4028,mp4a.40.2
+  FPS: 25.000
+
+[Вариант] http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
+[ffprobe] Анализ потока...
+  Формат: hls
+  Длительность: не указана
+  Битрейт: не указан
+  Метаданные формата отсутствуют.
+  Поток #0: audio
+    Кодек: aac
+    Каналы: 2
+    Частота: 48000 Hz
+    Тег variant_bitrate: 0
+    Тег language: rus
+  Поток #1: video
+    Кодек: h264
+    Разрешение: 1920x1080
+    FPS: 25/1
+    Pixel format: yuv420p
+    Тег variant_bitrate: 0
+
+Узел 2/11
+
+======================================================================
+ПРОВЕРКА: http://stream0.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream0.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream0.mcquack.net', port=80): Failed to resolve 'stream0.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 3/11
 
 ======================================================================
 ПРОВЕРКА: http://stream1.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream1.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream1.mcquack.net', port=80): Failed to resolve 'stream1.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 2/2
+Узел 4/11
 
 ======================================================================
 ПРОВЕРКА: http://stream2.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream2.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream2.mcquack.net', port=80): Failed to resolve 'stream2.mcquack.net' ([Errno -2] Name or service not known)"))
 
+Узел 5/11
+
+======================================================================
+ПРОВЕРКА: http://stream3.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream3.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream3.mcquack.net', port=80): Failed to resolve 'stream3.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 6/11
+
+======================================================================
+ПРОВЕРКА: http://stream4.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream4.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream4.mcquack.net', port=80): Failed to resolve 'stream4.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 7/11
+
+======================================================================
+ПРОВЕРКА: http://stream5.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream5.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream5.mcquack.net', port=80): Failed to resolve 'stream5.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 8/11
+
+======================================================================
+ПРОВЕРКА: http://stream6.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream6.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream6.mcquack.net', port=80): Failed to resolve 'stream6.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 9/11
+
+======================================================================
+ПРОВЕРКА: http://stream7.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream7.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream7.mcquack.net', port=80): Failed to resolve 'stream7.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 10/11
+
+======================================================================
+ПРОВЕРКА: http://stream8.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream8.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream8.mcquack.net', port=80): Failed to resolve 'stream8.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 11/11
+
+======================================================================
+ПРОВЕРКА: http://stream9.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream9.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream9.mcquack.net', port=80): Failed to resolve 'stream9.mcquack.net' ([Errno -2] Name or service not known)"))
+
 ======================================================================
 ИТОГОВАЯ СТАТИСТИКА
 ======================================================================
-Всего узлов: 2
-HTTP 200: 0
-Валидных плейлистов: 0
-Мастер-плейлистов: 0
+Всего узлов: 11
+HTTP 200: 1
+Валидных плейлистов: 1
+Мастер-плейлистов: 1
 Медиа-плейлистов: 0
-Ошибок узлов: 2
-Успешных анализов ffprobe: 0
+Ошибок узлов: 10
+Успешных анализов ffprobe: 1
 Ошибок ffprobe: 0
-Завершено UTC: 2026-10-28T20:37:41.348375+00:00
-[X] Ни одного валидного HLS-плейлиста.
+Завершено UTC: 2026-10-28T20:45:19.007155+00:00
+[OK] Проверка завершена.
 
 ========================================
-Run finished at 2026-10-28 20:37:41 UTC
-Python exit code: 1
+Run finished at 2026-10-28 20:45:19 UTC
+Python exit code: 0
 ========================================
