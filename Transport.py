@@ -24,6 +24,9 @@ URLS = [
     "http://stream7.mcquack.net/412/index.m3u8",
     "http://stream8.mcquack.net/412/index.m3u8",
     "http://stream9.mcquack.net/412/index.m3u8",
+    "http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1",
+    "http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8",
+    "http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1",
 ]
 
 HEADERS = {
