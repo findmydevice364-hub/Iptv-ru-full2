@@ -1,0 +1,45 @@
+name: Run Transport.py + Commit Results
+
+on:
+  workflow_dispatch:          # ручной запуск
+  schedule:
+    - cron: '0 */6 * * *'     # каждые 6 часов (можно убрать)
+
+permissions:
+  contents: write             # нужно для коммита
+
+jobs:
+  run-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Run Transport.py and save results
+        run: |
+          python Transport.py > results.txt 2>&1
+          echo "=== Run finished at $(date -u) ===" >> results.txt
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add results.txt
+          git diff --staged --quiet || git commit -m "Update Transport.py results $(date -u +%Y-%m-%d_%H-%M)"
+          git push
