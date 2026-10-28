@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-10-27T08:29:14+00:00",
+  "generated_at_utc": "2026-10-28T09:07:12+00:00",
   "output_dir": "Ntv/output",
-  "candidate_count": 433,
-  "http_200_count": 153,
-  "hls_count": 153,
-  "valid_hls_count": 153,
-  "master_playlist_count": 56,
-  "unique_stream_count": 406,
+  "candidate_count": 426,
+  "http_200_count": 142,
+  "hls_count": 142,
+  "valid_hls_count": 142,
+  "master_playlist_count": 52,
+  "unique_stream_count": 370,
   "orbit_offsets_requested": [
     -1,
     0,
@@ -29,7 +29,7 @@
   "counts_by_kind": {
     "channel_path": 176,
     "orbit_candidate": 160,
-    "recursive_hls_child": 97
+    "recursive_hls_child": 90
   },
   "timezone_policy": "unknown unless explicitly configured in timezone_map",
   "reports": [
