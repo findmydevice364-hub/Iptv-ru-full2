@@ -1,0 +1,40 @@
+
+======================================================================
+КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
+======================================================================
+Время UTC: 2026-10-28T20:37:41.254849+00:00
+Python: 3.11.17
+ffprobe: /usr/bin/ffprobe
+
+Узел 1/2
+
+======================================================================
+ПРОВЕРКА: http://stream1.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream1.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream1.mcquack.net', port=80): Failed to resolve 'stream1.mcquack.net' ([Errno -2] Name or service not known)"))
+
+Узел 2/2
+
+======================================================================
+ПРОВЕРКА: http://stream2.mcquack.net/412/index.m3u8
+======================================================================
+[X] Ошибка подключения: HTTPConnectionPool(host='stream2.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream2.mcquack.net', port=80): Failed to resolve 'stream2.mcquack.net' ([Errno -2] Name or service not known)"))
+
+======================================================================
+ИТОГОВАЯ СТАТИСТИКА
+======================================================================
+Всего узлов: 2
+HTTP 200: 0
+Валидных плейлистов: 0
+Мастер-плейлистов: 0
+Медиа-плейлистов: 0
+Ошибок узлов: 2
+Успешных анализов ffprobe: 0
+Ошибок ffprobe: 0
+Завершено UTC: 2026-10-28T20:37:41.348375+00:00
+[X] Ни одного валидного HLS-плейлиста.
+
+========================================
+Run finished at 2026-10-28 20:37:41 UTC
+Python exit code: 1
+========================================
