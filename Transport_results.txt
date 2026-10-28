@@ -2,17 +2,17 @@
 ======================================================================
 КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
 ======================================================================
-Время UTC: 2026-10-28T20:45:16.342073+00:00
+Время UTC: 2026-10-28T21:50:48.027378+00:00
 Python: 3.11.17
 ffprobe: /usr/bin/ffprobe
 
-Узел 1/11
+Узел 1/14
 
 ======================================================================
 ПРОВЕРКА: http://stream.mcquack.net/412/index.m3u8
 ======================================================================
 HTTP: 200
-Время ответа: 0.37 с.
+Время ответа: 0.35 с.
 Конечный URL: http://stream.mcquack.net/412/index.m3u8
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -42,91 +42,187 @@ Content-Type: application/vnd.apple.mpegurl
     Pixel format: yuv420p
     Тег variant_bitrate: 0
 
-Узел 2/11
+Узел 2/14
 
 ======================================================================
 ПРОВЕРКА: http://stream0.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream0.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream0.mcquack.net', port=80): Failed to resolve 'stream0.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 3/11
+Узел 3/14
 
 ======================================================================
 ПРОВЕРКА: http://stream1.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream1.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream1.mcquack.net', port=80): Failed to resolve 'stream1.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 4/11
+Узел 4/14
 
 ======================================================================
 ПРОВЕРКА: http://stream2.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream2.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream2.mcquack.net', port=80): Failed to resolve 'stream2.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 5/11
+Узел 5/14
 
 ======================================================================
 ПРОВЕРКА: http://stream3.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream3.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream3.mcquack.net', port=80): Failed to resolve 'stream3.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 6/11
+Узел 6/14
 
 ======================================================================
 ПРОВЕРКА: http://stream4.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream4.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream4.mcquack.net', port=80): Failed to resolve 'stream4.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 7/11
+Узел 7/14
 
 ======================================================================
 ПРОВЕРКА: http://stream5.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream5.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream5.mcquack.net', port=80): Failed to resolve 'stream5.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 8/11
+Узел 8/14
 
 ======================================================================
 ПРОВЕРКА: http://stream6.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream6.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream6.mcquack.net', port=80): Failed to resolve 'stream6.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 9/11
+Узел 9/14
 
 ======================================================================
 ПРОВЕРКА: http://stream7.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream7.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream7.mcquack.net', port=80): Failed to resolve 'stream7.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 10/11
+Узел 10/14
 
 ======================================================================
 ПРОВЕРКА: http://stream8.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream8.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream8.mcquack.net', port=80): Failed to resolve 'stream8.mcquack.net' ([Errno -2] Name or service not known)"))
 
-Узел 11/11
+Узел 11/14
 
 ======================================================================
 ПРОВЕРКА: http://stream9.mcquack.net/412/index.m3u8
 ======================================================================
 [X] Ошибка подключения: HTTPConnectionPool(host='stream9.mcquack.net', port=80): Max retries exceeded with url: /412/index.m3u8 (Caused by NameResolutionError("HTTPConnection(host='stream9.mcquack.net', port=80): Failed to resolve 'stream9.mcquack.net' ([Errno -2] Name or service not known)"))
 
+Узел 12/14
+
+======================================================================
+ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
+======================================================================
+HTTP: 200
+Время ответа: 0.28 с.
+Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
+Content-Type: application/vnd.apple.mpegurl
+[OK] Получен валидный HLS-плейлист.
+[Плейлист] Тип: медиаплейлист
+  Сегментов: 4
+  Суммарная длительность: 00:20
+  ENDLIST: отсутствует
+[ffprobe] Анализ потока...
+  Формат: hls
+  Длительность: не указана
+  Битрейт: не указан
+  Метаданные формата отсутствуют.
+  Поток #0: audio
+    Кодек: aac
+    Каналы: 2
+    Частота: 48000 Hz
+    Тег variant_bitrate: 0
+    Тег language: rus
+  Поток #1: video
+    Кодек: h264
+    Разрешение: 1920x1080
+    FPS: 25/1
+    Pixel format: yuv420p
+    Тег variant_bitrate: 0
+
+Узел 13/14
+
+======================================================================
+ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
+======================================================================
+HTTP: 200
+Время ответа: 0.13 с.
+Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
+Content-Type: application/vnd.apple.mpegurl
+[OK] Получен валидный HLS-плейлист.
+[Плейлист] Тип: медиаплейлист
+  Сегментов: 4
+  Суммарная длительность: 00:20
+  ENDLIST: отсутствует
+[ffprobe] Анализ потока...
+  Формат: hls
+  Длительность: не указана
+  Битрейт: не указан
+  Метаданные формата отсутствуют.
+  Поток #0: audio
+    Кодек: aac
+    Каналы: 2
+    Частота: 48000 Hz
+    Тег variant_bitrate: 0
+    Тег language: rus
+  Поток #1: video
+    Кодек: h264
+    Разрешение: 1920x1080
+    FPS: 25/1
+    Pixel format: yuv420p
+    Тег variant_bitrate: 0
+
+Узел 14/14
+
+======================================================================
+ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
+======================================================================
+HTTP: 200
+Время ответа: 0.14 с.
+Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
+Content-Type: application/vnd.apple.mpegurl
+[OK] Получен валидный HLS-плейлист.
+[Плейлист] Тип: медиаплейлист
+  Сегментов: 4
+  Суммарная длительность: 00:20
+  ENDLIST: отсутствует
+[ffprobe] Анализ потока...
+  Формат: hls
+  Длительность: не указана
+  Битрейт: не указан
+  Метаданные формата отсутствуют.
+  Поток #0: audio
+    Кодек: aac
+    Каналы: 2
+    Частота: 48000 Hz
+    Тег variant_bitrate: 0
+    Тег language: rus
+  Поток #1: video
+    Кодек: h264
+    Разрешение: 1920x1080
+    FPS: 25/1
+    Pixel format: yuv420p
+    Тег variant_bitrate: 0
+
 ======================================================================
 ИТОГОВАЯ СТАТИСТИКА
 ======================================================================
-Всего узлов: 11
-HTTP 200: 1
-Валидных плейлистов: 1
+Всего узлов: 14
+HTTP 200: 4
+Валидных плейлистов: 4
 Мастер-плейлистов: 1
-Медиа-плейлистов: 0
+Медиа-плейлистов: 3
 Ошибок узлов: 10
-Успешных анализов ffprobe: 1
+Успешных анализов ffprobe: 4
 Ошибок ffprobe: 0
-Завершено UTC: 2026-10-28T20:45:19.007155+00:00
+Завершено UTC: 2026-10-28T21:50:55.780603+00:00
 [OK] Проверка завершена.
 
 ========================================
-Run finished at 2026-10-28 20:45:19 UTC
+Run finished at 2026-10-28 21:50:55 UTC
 Python exit code: 0
 ========================================
