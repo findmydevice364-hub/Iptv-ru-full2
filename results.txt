@@ -1,0 +1,6 @@
+  File "/home/runner/work/Iptv-ru-full2/Iptv-ru-full2/Transport.py", line 21
+    print(  [Плейлист] Тип: {'Мастер-плейлист (содержит варианты качеств)' if is_master else 'Медиа-плейлист (содержит чанки потока)'}")
+                                                                                                                                      ^
+SyntaxError: unterminated string literal (detected at line 21)
+=== Run finished at Wed Oct 28 20:24:20 UTC 2026 ===
+Python exit code: 1
