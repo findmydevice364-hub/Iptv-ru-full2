@@ -9,13 +9,20 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: transport-check
+  cancel-in-progress: false
+
 jobs:
   run-and-commit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,44 +32,65 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          python -m pip install requests
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      - name: Check Python syntax
+        run: |
+          python -m py_compile Transport.py
+
       - name: Run Transport.py and save results
+        id: transport
         shell: bash
         run: |
           set +e
-          python -u Transport.py > results.txt 2>&1
+
+          python -u Transport.py > Transport_results.txt 2>&1
           code=$?
 
-          echo "=== Run finished at $(date -u) ===" >> results.txt
-          echo "Python exit code: $code" >> results.txt
-          echo "$code" > transport_exit_code.txt
+          {
+            echo ""
+            echo "========================================"
+            echo "Run finished at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            echo "Python exit code: $code"
+            echo "========================================"
+          } >> Transport_results.txt
 
-          echo "===== Transport.py output ====="
-          cat results.txt
+          echo "$code" > transport_exit_code.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+
+          cat Transport_results.txt
 
       - name: Commit and push results
-        if: always()
+        if: always() && steps.transport.outcome != 'skipped'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add results.txt transport_exit_code.txt
+          git add Transport_results.txt transport_exit_code.txt
 
-          if ! git diff --staged --quiet; then
-            git commit -m "Update Transport.py results $(date -u +%Y-%m-%d_%H-%M)"
-            git push
-          else
-            echo "No changes to commit"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
           fi
 
+          git commit -m "Update Transport results $(date -u +'%Y-%m-%d_%H-%M')"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
       - name: Report Python failure
-        if: always()
+        if: always() && steps.transport.outcome != 'skipped'
+        shell: bash
         run: |
           if [ -f transport_exit_code.txt ]; then
             code=$(cat transport_exit_code.txt)
+
             if [ "$code" != "0" ]; then
               echo "::error::Transport.py failed with exit code $code"
               exit 1
