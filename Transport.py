@@ -13,8 +13,17 @@ from urllib.parse import urljoin, urlparse
 import requests
 
 URLS = [
+    "http://stream.mcquack.net/412/index.m3u8",
+    "http://stream0.mcquack.net/412/index.m3u8",
     "http://stream1.mcquack.net/412/index.m3u8",
     "http://stream2.mcquack.net/412/index.m3u8",
+    "http://stream3.mcquack.net/412/index.m3u8",
+    "http://stream4.mcquack.net/412/index.m3u8",
+    "http://stream5.mcquack.net/412/index.m3u8",
+    "http://stream6.mcquack.net/412/index.m3u8",
+    "http://stream7.mcquack.net/412/index.m3u8",
+    "http://stream8.mcquack.net/412/index.m3u8",
+    "http://stream9.mcquack.net/412/index.m3u8",
 ]
 
 HEADERS = {
