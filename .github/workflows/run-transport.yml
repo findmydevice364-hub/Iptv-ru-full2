@@ -1,12 +1,13 @@
+
 name: Run Transport.py + Commit Results
 
 on:
-  workflow_dispatch:          # ручной запуск
+  workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'     # каждые 6 часов (можно убрать)
+    - cron: '0 */6 * * *'
 
 permissions:
-  contents: write             # нужно для коммита
+  contents: write
 
 jobs:
   run-and-commit:
@@ -15,8 +16,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,15 +30,44 @@ jobs:
           sudo apt-get install -y ffmpeg
 
       - name: Run Transport.py and save results
+        shell: bash
         run: |
-          python Transport.py > results.txt 2>&1
+          set +e
+          python -u Transport.py > results.txt 2>&1
+          code=$?
+
           echo "=== Run finished at $(date -u) ===" >> results.txt
+          echo "Python exit code: $code" >> results.txt
+          echo "$code" > transport_exit_code.txt
+
+          echo "===== Transport.py output ====="
+          cat results.txt
 
       - name: Commit and push results
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add results.txt
-          git diff --staged --quiet || git commit -m "Update Transport.py results $(date -u +%Y-%m-%d_%H-%M)"
-          git push
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add results.txt transport_exit_code.txt
+
+          if ! git diff --staged --quiet; then
+            git commit -m "Update Transport.py results $(date -u +%Y-%m-%d_%H-%M)"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Report Python failure
+        if: always()
+        run: |
+          if [ -f transport_exit_code.txt ]; then
+            code=$(cat transport_exit_code.txt)
+            if [ "$code" != "0" ]; then
+              echo "::error::Transport.py failed with exit code $code"
+              exit 1
+            fi
+          else
+            echo "::error::Transport.py did not produce an exit code"
+            exit 1
+          fi
