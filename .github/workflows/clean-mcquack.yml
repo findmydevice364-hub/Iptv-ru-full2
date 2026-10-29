@@ -1,0 +1,46 @@
+name: Clean McQuack IPTV
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Download latest playlist
+        run: |
+          mkdir -p processed
+          curl -fL \
+            "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/main/processed/combined_by_name.m3u" \
+            -o processed/combined_by_name.m3u
+
+      - name: Run McQuack cleaner
+        run: python clean_mcquack.py
+
+      - name: Publish cleaned playlist
+        run: |
+          cp combined_by_name_clean.m3u processed/combined_by_name_clean.m3u
+
+      - name: Commit cleaned playlist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add processed/combined_by_name_clean.m3u
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Clean McQuack IPTV streams"
+            git push
+          fi
