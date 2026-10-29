@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Преобразование потоков McQuack в IPTV-плейлисте."""
 
@@ -7,6 +6,8 @@ import sys
 from pathlib import Path
 
 PLAYLIST = Path("processed/combined_by_name.m3u")
+OUTPUT_CLEAN = Path("processed/combined_by_name_clean.m3u")
+OUTPUT_ROOT = Path("combined_by_name_clean.m3u")
 
 PATTERN = re.compile(
     r"http://stream\.mcquack\.net/(\d+)/index\.m3u8"
@@ -32,10 +33,11 @@ def main() -> int:
     cleaned, count = clean_playlist(original)
 
     if count:
-        PLAYLIST.write_text(cleaned, encoding="utf-8")
-    
+        OUTPUT_CLEAN.write_text(cleaned, encoding="utf-8")
+        OUTPUT_ROOT.write_text(cleaned, encoding="utf-8")
+
     print(f"Обработка завершена. Замен ссылок: {count}")
-    print(f"Файл: {PLAYLIST}")
+    print(f"Файлы сохранены:\n  - {OUTPUT_CLEAN}\n  - {OUTPUT_ROOT}")
     return 0
 
 
