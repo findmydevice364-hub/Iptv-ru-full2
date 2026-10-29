@@ -1,0 +1,45 @@
+{
+  "generated_at_utc": "2026-10-29T09:05:29+00:00",
+  "output_dir": "Ntv/output",
+  "candidate_count": 426,
+  "http_200_count": 142,
+  "hls_count": 142,
+  "valid_hls_count": 142,
+  "master_playlist_count": 52,
+  "unique_stream_count": 371,
+  "orbit_offsets_requested": [
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "qualities_requested": [
+    "SD",
+    "HD"
+  ],
+  "orbit_template_count": 0,
+  "orbit_warning": "Offsets -1..+9 and SD/HD are probed using candidate aliases ntv{offset} and ntv{offset}_hd, plus any configured templates. These alias mappings are unverified until confirmed by a real master playlist. Requested quality is not treated as proof: detected quality comes from HLS resolution/bitrate.",
+  "counts_by_kind": {
+    "channel_path": 176,
+    "orbit_candidate": 160,
+    "recursive_hls_child": 90
+  },
+  "timezone_policy": "unknown unless explicitly configured in timezone_map",
+  "reports": [
+    "ntv_found.m3u",
+    "ntv_masters.txt",
+    "ntv_node_checks.csv",
+    "ntv_node_timezones.csv",
+    "ntv_orbit_evidence.csv",
+    "ntv_report.csv",
+    "ntv_streams.csv",
+    "ntv_target_channels.txt"
+  ]
+}
