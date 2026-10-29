@@ -19,28 +19,17 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Download latest playlist
-        run: |
-          mkdir -p output
-          curl -fL \
-            "https://raw.githubusercontent.com/findmydevice364-hub/Iptv-ru-full2/refs/heads/main/output/all.m3u" \
-            -o output/all.m3u
-
       - name: Run McQuack cleaner
         run: python clean_mcquack.py
-
-      - name: Publish cleaned playlist
-        run: |
-          cp all_clean.m3u output/all_clean.m3u
 
       - name: Commit cleaned playlist
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add output/all_clean.m3u
+          git add output/all_clean.m3u all_clean.m3u
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Clean McQuack IPTV streams"
+            git commit -m "Clean McQuack IPTV streams and generate reports"
             git push
           fi
