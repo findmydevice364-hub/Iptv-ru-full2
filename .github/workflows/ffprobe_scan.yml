@@ -1,51 +1,72 @@
 name: FFprobe Playlist Scan
 
 on:
-  workflow_dispatch: # Позволяет запускать вручную из вкладки Actions
+  workflow_dispatch:
+
   schedule:
-    - cron: '0 3 * * 0' # Каждое воскресенье в 3:00 ночи (можете изменить)
+    - cron: '0 3 * * 0'
+
+permissions:
+  contents: write
 
 jobs:
   scan:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
 
     steps:
-      # 1. Клонируем репозиторий (включая папку output, если там есть исходный all_clean.m3u)
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2. Устанавливаем Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip'
 
-      # 3. Устанавливаем ffprobe (входит в пакет ffmpeg)
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+          ffprobe -version
 
-      # 4. Запускаем ваш скрипт пробивки с правильным именем файла
-      - name: Run probe script
+      - name: Verify input playlist
         run: |
-          python3 FFprobe_PlaylistScan.py
+          test -f output/all_clean.m3u || {
+            echo "::error::Missing output/all_clean.m3u"
+            exit 1
+          }
 
-      # 5. Сохраняем результаты (папку output) как артефакт GitHub
+          test -f FFprobe_PlaylistScan.py || {
+            echo "::error::Missing FFprobe_PlaylistScan.py"
+            exit 1
+          }
+
+      - name: Run probe script
+        run: python3 FFprobe_PlaylistScan.py
+
       - name: Upload results artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playlist-probe-results
           path: output/
+          if-no-files-found: warn
           retention-days: 30
 
-      # 6. Автоматический коммит обновленных результатов обратно в репозиторий
-      - name: Commit and push changes if results changed
+      - name: Commit and push results
+        if: success()
         run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
           git add output/
-          git status
-          git diff --staged --quiet || git commit -m "Auto-update playlist probe results [skip ci]"
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Update IPTV probe results [skip ci]"
           git push
