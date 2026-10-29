@@ -1,2 +1,3 @@
-#EXTM3U #EXTINF:-1 tvg-id="" tvg-name="Канал 412" group-title="Тест",Канал 412 http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
+#EXTM3U 
+#EXTINF:-1 tvg-id="" tvg-name="Канал 412" group-title="Тест",Канал 412 http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 
