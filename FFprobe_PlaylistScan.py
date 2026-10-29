@@ -1,362 +1,1106 @@
 #!/usr/bin/env python3
-"""
-Полная пробивка всего плейлиста через ffprobe.
+# -*- coding: utf-8 -*-
 
-- Берёт unique URL из all_clean.m3u
-- ffprobe с таймаутом
-- 200 + данные → сохраняем полную инфу
-- 403 / timeout / error → пропускаем
-- В конце: отчёт + real_multiaudio.m3u (≥2 audio)
-- Прогресс сохраняется → можно продолжать
+"""
+Полное техническое сканирование IPTV-плейлиста.
+
+Вход:
+    output/all_clean.m3u
+
+Выход:
+    output/probe_multi.json
+    output/probe_multi.txt
+    output/real_multiaudio.m3u
+    output/probe_all_ok.json
+    output/probe_full_report.txt
+    output/probe_full_progress.json
+
+Требования:
+    Python 3.10+
+    ffprobe (поставляется вместе с FFmpeg)
+
+Успешный ffprobe означает, что поток удалось разобрать.
+Это само по себе не гарантирует HTTP-статус 200.
 """
 
+import concurrent.futures
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
-from collections import defaultdict
 
-# ========== НАСТРОЙКИ ==========
-INPUT_PLAYLIST = Path("output/all_clean.m3u")
+
+# ============================================================
+# НАСТРОЙКИ
+# ============================================================
+
+INPUT_M3U = Path("output/all_clean.m3u")
 OUTPUT_DIR = Path("output")
 
-PROGRESS_FILE = OUTPUT_DIR / "probe_full_progress.json"
-ALL_RESULTS_JSON = OUTPUT_DIR / "probe_all_ok.json"          # все, кто ответил 200
-MULTI_RESULTS_JSON = OUTPUT_DIR / "probe_multi.json"         # только ≥2 audio
-REPORT_TXT = OUTPUT_DIR / "probe_full_report.txt"
+MULTI_JSON = OUTPUT_DIR / "probe_multi.json"
+MULTI_TXT = OUTPUT_DIR / "probe_multi.txt"
 MULTI_M3U = OUTPUT_DIR / "real_multiaudio.m3u"
 
-MAX_WORKERS = 16
-TIMEOUT_SEC = 9
+ALL_OK_JSON = OUTPUT_DIR / "probe_all_ok.json"
+FULL_REPORT_TXT = OUTPUT_DIR / "probe_full_report.txt"
+PROGRESS_JSON = OUTPUT_DIR / "probe_full_progress.json"
+
+MAX_WORKERS = 8
+TIMEOUT_SEC = 30
+SAVE_EVERY = 20
+
+ANALYZE_DURATION = "10000000"
+PROBE_SIZE = "10000000"
+
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/120.0.0.0 Safari/537.36"
+    "AppleWebKit/537.36 Chrome/131.0 Safari/537.36"
 )
-SAVE_EVERY = 40
-# ==============================
+
+FFPROBE_BINARY = os.environ.get("FFPROBE", "ffprobe")
 
 
-def parse_m3u_unique(path: Path) -> list[dict]:
-    """Возвращает список уникальных каналов по URL (первый встретившийся)."""
-    text = path.read_text(encoding="utf-8", errors="replace")
-    lines = text.splitlines()
-    seen = set()
-    channels = []
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        if line.startswith("#EXTINF:"):
-            url = lines[i + 1].strip() if i + 1 < len(lines) else ""
-            if url.startswith("http") and url not in seen:
-                seen.add(url)
-                name = line.split(",")[-1].strip() if "," in line else line
-                channels.append({
-                    "extinf": line,
-                    "url": url,
-                    "name": name,
-                })
-            i += 2
-        else:
-            i += 1
-    return channels
+# ============================================================
+# ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+# ============================================================
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
 
 
-def run_ffprobe(url: str) -> dict:
-    """
-    Возвращает:
-    {
-      "ok": bool,          # True только если реально получили стримы
-      "error": str|None,
-      "http_hint": str,    # "403", "timeout", ...
-      "audio": [...],
-      "video": [...],
-      "elapsed": float
-    }
-    """
-    cmd = [
-        "ffprobe",
-        "-v", "error",
-        "-user_agent", USER_AGENT,
-        "-analyzeduration", "2500000",
-        "-probesize", "1500000",
-        "-show_entries", "stream=index,codec_type,codec_name,channels,width,height:stream_tags=language,title",
-        "-of", "json",
-        url,
-    ]
-    start = time.monotonic()
+def safe_int(value, default=0):
     try:
-        proc = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=TIMEOUT_SEC,
-        )
-        elapsed = time.monotonic() - start
-        stderr = (proc.stderr or "").strip()
-
-        # Быстрые признаки ошибок
-        if "403" in stderr or "Forbidden" in stderr:
-            return {"ok": False, "error": "403", "http_hint": "403", "audio": [], "video": [], "elapsed": elapsed}
-        if "404" in stderr or "Not Found" in stderr:
-            return {"ok": False, "error": "404", "http_hint": "404", "audio": [], "video": [], "elapsed": elapsed}
-        if "401" in stderr:
-            return {"ok": False, "error": "401", "http_hint": "401", "audio": [], "video": [], "elapsed": elapsed}
-        if proc.returncode != 0:
-            err = stderr[:180] if stderr else "ffprobe_fail"
-            return {"ok": False, "error": err, "http_hint": "error", "audio": [], "video": [], "elapsed": elapsed}
-
-        data = json.loads(proc.stdout or "{}")
-        streams = data.get("streams") or []
-        if not streams:
-            return {"ok": False, "error": "no_streams", "http_hint": "empty", "audio": [], "video": [], "elapsed": elapsed}
-
-        audio, video = [], []
-        for s in streams:
-            entry = {
-                "index": s.get("index"),
-                "codec": s.get("codec_name"),
-            }
-            if s.get("codec_type") == "audio":
-                entry["channels"] = s.get("channels")
-                tags = s.get("tags") or {}
-                if tags.get("language"):
-                    entry["lang"] = tags["language"]
-                if tags.get("title"):
-                    entry["title"] = tags["title"]
-                audio.append(entry)
-            elif s.get("codec_type") == "video":
-                entry["width"] = s.get("width")
-                entry["height"] = s.get("height")
-                video.append(entry)
-
-        return {
-            "ok": True,
-            "error": None,
-            "http_hint": "200",
-            "audio": audio,
-            "video": video,
-            "elapsed": elapsed,
-        }
-
-    except subprocess.TimeoutExpired:
-        return {"ok": False, "error": "timeout", "http_hint": "timeout", "audio": [], "video": [], "elapsed": TIMEOUT_SEC}
-    except Exception as e:
-        return {"ok": False, "error": str(e)[:180], "http_hint": "exception", "audio": [], "video": [], "elapsed": time.monotonic() - start}
+        return int(value)
+    except (TypeError, ValueError):
+        return default
 
 
-def format_audio(audio_list: list) -> str:
-    if not audio_list:
-        return "—"
-    parts = []
-    for a in audio_list:
-        lang = a.get("lang") or a.get("title") or "?"
-        ch = a.get("channels") or "?"
-        codec = a.get("codec") or "?"
-        parts.append(f"{lang}({codec}/{ch}ch)")
-    return " | ".join(parts)
+def safe_float(value, default=None):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
 
 
-def format_video(video_list: list) -> str:
-    if not video_list:
-        return "—"
-    v = video_list[0]
-    w = v.get("width") or "?"
-    h = v.get("height") or "?"
-    codec = v.get("codec") or "?"
-    return f"{w}x{h} {codec}"
+def parse_fraction(value):
+    """Преобразует дробь вида 25/1 в число FPS."""
+    if not value or value == "0/0":
+        return None
+
+    try:
+        numerator, denominator = value.split("/", 1)
+        denominator = float(denominator)
+
+        if denominator == 0:
+            return None
+
+        return round(float(numerator) / denominator, 3)
+    except (ValueError, ZeroDivisionError):
+        return None
 
 
-def load_progress() -> dict:
-    if PROGRESS_FILE.exists():
-        try:
-            return json.loads(PROGRESS_FILE.read_text(encoding="utf-8"))
-        except Exception:
-            pass
-    return {
-        "done": {},          # url → full record
-        "stats": {"ok": 0, "fail": 0, "multi": 0, "by_hint": {}},
-    }
+def atomic_write_text(path, content):
+    """Атомарная запись текстового файла."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
 
-
-def save_progress(progress: dict):
-    PROGRESS_FILE.write_text(
-        json.dumps(progress, ensure_ascii=False),
-        encoding="utf-8"
+    fd, temp_name = tempfile.mkstemp(
+        prefix=path.name + ".",
+        suffix=".tmp",
+        dir=str(path.parent),
     )
 
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as file:
+            file.write(content)
+
+        os.replace(temp_name, path)
+
+    except Exception:
+        try:
+            os.unlink(temp_name)
+        except OSError:
+            pass
+        raise
+
+
+def atomic_write_json(path, data):
+    content = json.dumps(
+        data,
+        ensure_ascii=False,
+        indent=2,
+    )
+    atomic_write_text(path, content + "\n")
+
+
+def normalize_url(url):
+    return (url or "").strip()
+
+
+def get_domain(url):
+    try:
+        return urlparse(url).netloc or ""
+    except Exception:
+        return ""
+
+
+def get_source(url):
+    try:
+        parsed = urlparse(url)
+        return {
+            "scheme": parsed.scheme,
+            "domain": parsed.netloc,
+            "path": parsed.path,
+            "query": parsed.query,
+        }
+    except Exception:
+        return {
+            "scheme": "",
+            "domain": "",
+            "path": "",
+            "query": "",
+        }
+
+
+def json_load_or_default(path, default):
+    try:
+        if path.exists():
+            with path.open("r", encoding="utf-8") as file:
+                return json.load(file)
+    except (OSError, json.JSONDecodeError):
+        print(
+            f"[WARN] Не удалось прочитать {path}; "
+            "используется пустое состояние.",
+            flush=True,
+        )
+
+    return default
+
+
+# ============================================================
+# ЧТЕНИЕ M3U
+# ============================================================
+
+def parse_m3u(path):
+    """
+    Читает M3U и связывает EXTINF с URL.
+    Допускает промежуточные #EXTVLCOPT, #KODIPROP и другие теги.
+    """
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Входной плейлист не найден: {path}"
+        )
+
+    entries = []
+    current = None
+
+    with path.open("r", encoding="utf-8-sig", errors="replace") as file:
+        for raw_line in file:
+            line = raw_line.strip()
+
+            if not line:
+                continue
+
+            if line.startswith("#EXTINF:"):
+                current = {
+                    "extinf": line,
+                    "name": extract_name(line),
+                    "group": extract_attribute(line, "group-title"),
+                    "tvg_id": extract_attribute(line, "tvg-id"),
+                    "tvg_name": extract_attribute(line, "tvg-name"),
+                    "tvg_logo": extract_attribute(line, "tvg-logo"),
+                    "tags": [],
+                    "url": None,
+                }
+                continue
+
+            if line.startswith("#"):
+                if current is not None:
+                    current["tags"].append(line)
+                continue
+
+            if line.startswith(("http://", "https://")):
+                if current is None:
+                    current = {
+                        "extinf": "",
+                        "name": line,
+                        "group": "",
+                        "tvg_id": "",
+                        "tvg_name": "",
+                        "tvg_logo": "",
+                        "tags": [],
+                        "url": None,
+                    }
+
+                current["url"] = normalize_url(line)
+                entries.append(current)
+                current = None
+
+    # Оставляем только записи с HTTP(S)-адресами.
+    return [
+        entry for entry in entries
+        if entry.get("url", "").startswith(("http://", "https://"))
+    ]
+
+
+def extract_attribute(line, attribute):
+    pattern = (
+        r'(?:^|\s)'
+        + re.escape(attribute)
+        + r'="([^"]*)"'
+    )
+
+    match = re.search(pattern, line)
+    return match.group(1) if match else ""
+
+
+def extract_name(extinf):
+    if not extinf:
+        return ""
+
+    # Название находится после последней запятой.
+    # Обычно это корректно для стандартного формата EXTINF.
+    if "," in extinf:
+        return extinf.rsplit(",", 1)[1].strip()
+
+    return ""
+
+
+def unique_entries(entries):
+    """
+    Сохраняет первое появление каждого URL.
+    Если URL повторяется, использует первую запись метаданных.
+    """
+
+    result = []
+    seen = set()
+
+    for entry in entries:
+        url = normalize_url(entry.get("url"))
+
+        if not url or url in seen:
+            continue
+
+        seen.add(url)
+
+        item = dict(entry)
+        item["url"] = url
+        result.append(item)
+
+    return result
+
+
+# ============================================================
+# ЗАПУСК FFPROBE
+# ============================================================
+
+def probe_url(entry):
+    url = entry["url"]
+
+    command = [
+        FFPROBE_BINARY,
+        "-v", "error",
+        "-hide_banner",
+        "-show_error",
+        "-show_format",
+        "-show_streams",
+        "-of", "json",
+        "-user_agent", USER_AGENT,
+        "-rw_timeout", str(TIMEOUT_SEC * 1_000_000),
+        "-analyzeduration", ANALYZE_DURATION,
+        "-probesize", PROBE_SIZE,
+        url,
+    ]
+
+    started = time.time()
+
+    result = {
+        "url": url,
+        "name": entry.get("name", ""),
+        "group": entry.get("group", ""),
+        "tvg_id": entry.get("tvg_id", ""),
+        "tvg_name": entry.get("tvg_name", ""),
+        "tvg_logo": entry.get("tvg_logo", ""),
+        "extinf": entry.get("extinf", ""),
+        "playlist_tags": entry.get("tags", []),
+        "source": get_source(url),
+        "checked_at": utc_now(),
+        "probe_ok": False,
+        "http_hint": None,
+        "duration_seconds": None,
+        "format": {},
+        "streams": [],
+        "stream_counts": {},
+        "audio_track_count": 0,
+        "video_track_count": 0,
+        "subtitle_track_count": 0,
+        "is_multi_audio": False,
+        "probe_error": None,
+        "probe_stderr": None,
+        "probe_elapsed_seconds": None,
+    }
+
+    try:
+        process = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=TIMEOUT_SEC,
+            check=False,
+        )
+
+        result["probe_elapsed_seconds"] = round(
+            time.time() - started, 3
+        )
+
+        if process.returncode != 0:
+            result["probe_error"] = (
+                f"ffprobe завершился с кодом {process.returncode}"
+            )
+
+            if process.stderr:
+                result["probe_stderr"] = process.stderr[-5000:]
+
+            return result
+
+        try:
+            data = json.loads(process.stdout or "{}")
+        except json.JSONDecodeError as exc:
+            result["probe_error"] = (
+                f"Не удалось разобрать JSON ffprobe: {exc}"
+            )
+            result["probe_stderr"] = (process.stderr or "")[-5000:]
+            return result
+
+        format_info = data.get("format") or {}
+        streams = data.get("streams") or []
+
+        result["format"] = format_info
+        result["duration_seconds"] = safe_float(
+            format_info.get("duration")
+        )
+
+        enriched_streams = []
+
+        counts = Counter()
+
+        for stream in streams:
+            item = dict(stream)
+
+            codec_type = item.get("codec_type", "unknown")
+            counts[codec_type] += 1
+
+            tags = item.get("tags") or {}
+            dispositions = item.get("disposition") or {}
+
+            item["language"] = (
+                tags.get("language")
+                or tags.get("LANGUAGE")
+                or ""
+            )
+
+            item["title"] = (
+                tags.get("title")
+                or tags.get("handler_name")
+                or ""
+            )
+
+            item["is_default"] = bool(
+                safe_int(dispositions.get("default"))
+            )
+
+            item["is_forced"] = bool(
+                safe_int(dispositions.get("forced"))
+            )
+
+            item["fps_avg"] = parse_fraction(
+                item.get("avg_frame_rate")
+            )
+
+            item["fps_r"] = parse_fraction(
+                item.get("r_frame_rate")
+            )
+
+            # Основные технические поля сохраняются вместе
+            # со всеми исходными полями ffprobe.
+            enriched_streams.append(item)
+
+        result["streams"] = enriched_streams
+        result["stream_counts"] = dict(counts)
+        result["audio_track_count"] = counts.get("audio", 0)
+        result["video_track_count"] = counts.get("video", 0)
+        result["subtitle_track_count"] = counts.get("subtitle", 0)
+
+        result["is_multi_audio"] = (
+            result["audio_track_count"] >= 2
+        )
+
+        result["probe_ok"] = True
+
+        # Успешный разбор не является доказательством HTTP 200.
+        result["http_hint"] = "OK"
+
+        return result
+
+    except subprocess.TimeoutExpired:
+        result["probe_elapsed_seconds"] = round(
+            time.time() - started, 3
+        )
+        result["probe_error"] = (
+            f"Тайм-аут ffprobe: более {TIMEOUT_SEC} секунд"
+        )
+        return result
+
+    except FileNotFoundError:
+        result["probe_error"] = (
+            f"Не найден исполняемый файл {FFPROBE_BINARY}. "
+            "Установите FFmpeg/ffprobe."
+        )
+        return result
+
+    except Exception as exc:
+        result["probe_elapsed_seconds"] = round(
+            time.time() - started, 3
+        )
+        result["probe_error"] = (
+            f"{type(exc).__name__}: {exc}"
+        )
+        return result
+
+
+# ============================================================
+# ЧЕЛОВЕКОЧИТАЕМЫЙ ТЕХНИЧЕСКИЙ ОТЧЁТ
+# ============================================================
+
+def format_bitrate(value):
+    number = safe_int(value, -1)
+
+    if number < 0:
+        return "неизвестно"
+
+    if number >= 1_000_000:
+        return f"{number / 1_000_000:.2f} Мбит/с"
+
+    if number >= 1_000:
+        return f"{number / 1_000:.1f} кбит/с"
+
+    return f"{number} бит/с"
+
+
+def format_size(value):
+    number = safe_int(value, -1)
+
+    if number < 0:
+        return "неизвестно"
+
+    units = ["Б", "КБ", "МБ", "ГБ", "ТБ"]
+    size = float(number)
+    unit_index = 0
+
+    while size >= 1024 and unit_index < len(units) - 1:
+        size /= 1024
+        unit_index += 1
+
+    return f"{size:.2f} {units[unit_index]}"
+
+
+def value_or_unknown(value):
+    if value is None or value == "":
+        return "неизвестно"
+
+    return str(value)
+
+
+def describe_stream(stream):
+    codec_type = stream.get("codec_type", "unknown")
+    codec_name = value_or_unknown(stream.get("codec_name"))
+    codec_long = value_or_unknown(stream.get("codec_long_name"))
+
+    lines = [
+        (
+            f"    Поток #{stream.get('index', '?')} "
+            f"[{codec_type}]"
+        ),
+        f"      Кодек: {codec_name} ({codec_long})",
+    ]
+
+    if codec_type == "video":
+        width = stream.get("width")
+        height = stream.get("height")
+
+        resolution = (
+            f"{width}x{height}"
+            if width and height
+            else "неизвестно"
+        )
+
+        lines.append(f"      Разрешение: {resolution}")
+        lines.append(
+            f"      FPS avg: {value_or_unknown(stream.get('fps_avg'))}"
+        )
+        lines.append(
+            f"      FPS r: {value_or_unknown(stream.get('fps_r'))}"
+        )
+        lines.append(
+            f"      Пиксельный формат: "
+            f"{value_or_unknown(stream.get('pix_fmt'))}"
+        )
+        lines.append(
+            f"      Профиль: {value_or_unknown(stream.get('profile'))}"
+        )
+        lines.append(
+            f"      Уровень: {value_or_unknown(stream.get('level'))}"
+        )
+        lines.append(
+            f"      Соотношение сторон: "
+            f"{value_or_unknown(stream.get('display_aspect_ratio'))}"
+        )
+        lines.append(
+            f"      Битрейт: {format_bitrate(stream.get('bit_rate'))}"
+        )
+
+    elif codec_type == "audio":
+        lines.append(
+            f"      Язык: {value_or_unknown(stream.get('language'))}"
+        )
+        lines.append(
+            f"      Название: {value_or_unknown(stream.get('title'))}"
+        )
+        lines.append(
+            f"      Частота дискретизации: "
+            f"{value_or_unknown(stream.get('sample_rate'))} Гц"
+        )
+        lines.append(
+            f"      Каналы: {value_or_unknown(stream.get('channels'))}"
+        )
+        lines.append(
+            f"      Раскладка каналов: "
+            f"{value_or_unknown(stream.get('channel_layout'))}"
+        )
+        lines.append(
+            f"      Битрейт: {format_bitrate(stream.get('bit_rate'))}"
+        )
+        lines.append(
+            f"      Профиль: {value_or_unknown(stream.get('profile'))}"
+        )
+
+    elif codec_type == "subtitle":
+        lines.append(
+            f"      Язык: {value_or_unknown(stream.get('language'))}"
+        )
+        lines.append(
+            f"      Название: {value_or_unknown(stream.get('title'))}"
+        )
+
+    lines.append(
+        f"      По умолчанию: "
+        f"{'да' if stream.get('is_default') else 'нет'}"
+    )
+    lines.append(
+        f"      Принудительный: "
+        f"{'да' if stream.get('is_forced') else 'нет'}"
+    )
+
+    tags = stream.get("tags") or {}
+
+    if tags:
+        lines.append("      Теги:")
+        for key, value in sorted(tags.items()):
+            lines.append(f"        {key}: {value}")
+
+    return lines
+
+
+def describe_channel(result):
+    lines = [
+        "=" * 100,
+        f"КАНАЛ: {value_or_unknown(result.get('name'))}",
+        "=" * 100,
+        f"URL: {result.get('url', '')}",
+        f"Домен: {result.get('source', {}).get('domain', '')}",
+        f"Путь: {result.get('source', {}).get('path', '')}",
+        f"Группа: {value_or_unknown(result.get('group'))}",
+        f"tvg-id: {value_or_unknown(result.get('tvg_id'))}",
+        f"tvg-name: {value_or_unknown(result.get('tvg_name'))}",
+        f"tvg-logo: {value_or_unknown(result.get('tvg_logo'))}",
+        f"Проверен: {result.get('checked_at', '')}",
+        (
+            "Время анализа: "
+            f"{value_or_unknown(result.get('probe_elapsed_seconds'))} сек."
+        ),
+        (
+            "Длительность: "
+            f"{value_or_unknown(result.get('duration_seconds'))} сек."
+        ),
+        (
+            "Формат: "
+            f"{value_or_unknown(result.get('format', {}).get('format_name'))}"
+        ),
+        (
+            "Общий битрейт: "
+            f"{format_bitrate(result.get('format', {}).get('bit_rate'))}"
+        ),
+        (
+            "Количество потоков: "
+            f"{len(result.get('streams', []))}"
+        ),
+        f"Видеодорожек: {result.get('video_track_count', 0)}",
+        f"Аудиодорожек: {result.get('audio_track_count', 0)}",
+        f"Субтитров: {result.get('subtitle_track_count', 0)}",
+        "",
+        "ТЕХНИЧЕСКИЕ ПОТОКИ:",
+    ]
+
+    for stream in result.get("streams", []):
+        lines.extend(describe_stream(stream))
+        lines.append("")
+
+    format_info = result.get("format") or {}
+    format_tags = format_info.get("tags") or {}
+
+    if format_tags:
+        lines.append("ТЕГИ ФОРМАТА:")
+
+        for key, value in sorted(format_tags.items()):
+            lines.append(f"  {key}: {value}")
+
+    playlist_tags = result.get("playlist_tags") or []
+
+    if playlist_tags:
+        lines.append("")
+        lines.append("ТЕГИ ИЗ M3U:")
+
+        for tag in playlist_tags:
+            lines.append(f"  {tag}")
+
+    lines.append("")
+    return lines
+
+
+# ============================================================
+# ФОРМИРОВАНИЕ M3U
+# ============================================================
+
+def m3u_escape(value):
+    return str(value or "").replace("\r", " ").replace("\n", " ")
+
+
+def make_multi_m3u(results):
+    lines = ["#EXTM3U"]
+
+    for result in results:
+        name = m3u_escape(result.get("name") or result.get("url"))
+        group = m3u_escape(result.get("group"))
+        tvg_id = m3u_escape(result.get("tvg_id"))
+        tvg_name = m3u_escape(result.get("tvg_name"))
+        tvg_logo = m3u_escape(result.get("tvg_logo"))
+
+        audio_count = result.get("audio_track_count", 0)
+        video_count = result.get("video_track_count", 0)
+
+        lines.append(
+            f'#EXTINF:-1 '
+            f'tvg-id="{tvg_id}" '
+            f'tvg-name="{tvg_name}" '
+            f'tvg-logo="{tvg_logo}" '
+            f'group-title="{group}",'
+            f'{name} [AUDIO:{audio_count} VIDEO:{video_count}]'
+        )
+
+        # Сохраняем дополнительные M3U-теги, если они есть.
+        for tag in result.get("playlist_tags", []):
+            if tag.startswith(
+                (
+                    "#EXTVLCOPT:",
+                    "#KODIPROP:",
+                    "#EXTGRP:",
+                )
+            ):
+                lines.append(tag)
+
+        lines.append(result["url"])
+
+    return "\n".join(lines) + "\n"
+
+
+# ============================================================
+# ОТЧЁТ ПО ВСЕМ РЕЗУЛЬТАТАМ
+# ============================================================
+
+def build_full_report(results, failures, total_urls, elapsed):
+    successful = len(results)
+    multi = [item for item in results if item.get("is_multi_audio")]
+
+    domains = Counter(
+        item.get("source", {}).get("domain", "")
+        for item in results
+        if item.get("source", {}).get("domain", "")
+    )
+
+    lines = [
+        "ПОЛНЫЙ ОТЧЁТ СКАНИРОВАНИЯ IPTV",
+        "=" * 80,
+        f"Дата создания: {utc_now()}",
+        f"Входной файл: {INPUT_M3U}",
+        f"Всего уникальных URL: {total_urls}",
+        f"Успешно обработано: {successful}",
+        f"Ошибок: {len(failures)}",
+        f"Каналов с двумя и более аудиодорожками: {len(multi)}",
+        f"Общее время выполнения: {elapsed:.1f} сек.",
+        "",
+        "ДОМЕНЫ УСПЕШНО ОБРАБОТАННЫХ ПОТОКОВ:",
+    ]
+
+    for domain, count in domains.most_common():
+        lines.append(f"  {domain}: {count}")
+
+    lines.extend([
+        "",
+        "КАНАЛЫ С НЕСКОЛЬКИМИ АУДИОДОРОЖКАМИ:",
+        "",
+    ])
+
+    for item in multi:
+        lines.extend(describe_channel(item))
+
+    lines.extend([
+        "",
+        "=" * 80,
+        "ОШИБКИ ОБРАБОТКИ",
+        "=" * 80,
+        "",
+    ])
+
+    for item in failures:
+        lines.append(f"Канал: {item.get('name', '')}")
+        lines.append(f"URL: {item.get('url', '')}")
+        lines.append(f"Ошибка: {item.get('probe_error', 'неизвестно')}")
+
+        if item.get("probe_stderr"):
+            lines.append(f"stderr: {item['probe_stderr']}")
+
+        lines.append("")
+
+    lines.extend([
+        "",
+        "ПРИМЕЧАНИЕ:",
+        "Успешный разбор ffprobe не гарантирует HTTP-статус 200.",
+        "Некоторые потоки могут требовать заголовки, cookies, токены",
+        "или определённые параметры доступа.",
+        "",
+    ])
+
+    return "\n".join(lines)
+
+
+# ============================================================
+# СОХРАНЕНИЕ РЕЗУЛЬТАТОВ И ПРОГРЕССА
+# ============================================================
+
+def save_progress(completed):
+    atomic_write_json(
+        PROGRESS_JSON,
+        {
+            "updated_at": utc_now(),
+            "completed": completed,
+        },
+    )
+
+
+def save_outputs(results, failures, total_urls, elapsed):
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    successful = sorted(
+        results,
+        key=lambda item: (
+            item.get("name", "").casefold(),
+            item.get("url", ""),
+        ),
+    )
+
+    multi = [
+        item for item in successful
+        if item.get("audio_track_count", 0) >= 2
+    ]
+
+    atomic_write_json(ALL_OK_JSON, {
+        "generated_at": utc_now(),
+        "input": str(INPUT_M3U),
+        "total_unique_urls": total_urls,
+        "successful_count": len(successful),
+        "channels": successful,
+    })
+
+    atomic_write_json(MULTI_JSON, {
+        "generated_at": utc_now(),
+        "input": str(INPUT_M3U),
+        "multi_audio_count": len(multi),
+        "channels": multi,
+    })
+
+    multi_lines = [
+        "ТЕХНИЧЕСКИЙ ОТЧЁТ: КАНАЛЫ С НЕСКОЛЬКИМИ АУДИОДОРОЖКАМИ",
+        f"Дата создания: {utc_now()}",
+        f"Количество каналов: {len(multi)}",
+        "",
+    ]
+
+    for item in multi:
+        multi_lines.extend(describe_channel(item))
+
+    atomic_write_text(
+        MULTI_TXT,
+        "\n".join(multi_lines),
+    )
+
+    atomic_write_text(
+        MULTI_M3U,
+        make_multi_m3u(multi),
+    )
+
+    atomic_write_text(
+        FULL_REPORT_TXT,
+        build_full_report(
+            successful,
+            failures,
+            total_urls,
+            elapsed,
+        ),
+    )
+
+    print(
+        "[SAVE] "
+        f"успешно={len(successful)}, "
+        f"многодорожечных={len(multi)}, "
+        f"ошибок={len(failures)}",
+        flush=True,
+    )
+
+
+# ============================================================
+# ОСНОВНАЯ ПРОГРАММА
+# ============================================================
 
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    if not INPUT_PLAYLIST.exists():
-        print(f"Нет {INPUT_PLAYLIST}. Сначала запусти iptv_cleaner.py")
-        return 1
+    if shutil.which(FFPROBE_BINARY) is None:
+        print(
+            f"[FATAL] Не найден ffprobe: {FFPROBE_BINARY}",
+            file=sys.stderr,
+        )
+        print(
+            "Установите FFmpeg и проверьте команду ffprobe -version.",
+            file=sys.stderr,
+        )
+        return 2
 
-    print(f"Читаю: {INPUT_PLAYLIST}")
-    channels = parse_m3u_unique(INPUT_PLAYLIST)
-    print(f"Уникальных URL: {len(channels)}")
+    if not INPUT_M3U.exists():
+        print(
+            f"[FATAL] Не найден входной плейлист: {INPUT_M3U}",
+            file=sys.stderr,
+        )
+        return 2
 
-    progress = load_progress()
-    done = progress["done"]
-    stats = progress["stats"]
-    if "by_hint" not in stats:
-        stats["by_hint"] = {}
+    print(f"[INFO] Читаю {INPUT_M3U}", flush=True)
 
-    todo = [ch for ch in channels if ch["url"] not in done]
-    print(f"Уже сделано : {len(done)}")
-    print(f"Осталось    : {len(todo)}")
-    print(f"Воркеров    : {MAX_WORKERS}, таймаут {TIMEOUT_SEC}с")
-    print("-" * 70)
+    entries = unique_entries(parse_m3u(INPUT_M3U))
+    total_urls = len(entries)
 
-    if todo:
-        start_all = time.monotonic()
-        completed = 0
+    if not entries:
+        print("[FATAL] В плейлисте не найдено HTTP(S)-потоков.", flush=True)
+        return 2
 
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-            futures = {pool.submit(run_ffprobe, ch["url"]): ch for ch in todo}
+    print(f"[INFO] Уникальных URL: {total_urls}", flush=True)
+    print(f"[INFO] Параллельных задач: {MAX_WORKERS}", flush=True)
 
-            for fut in as_completed(futures):
-                ch = futures[fut]
-                result = fut.result()
-                completed += 1
+    progress = json_load_or_default(
+        PROGRESS_JSON,
+        {"completed": {}},
+    )
 
-                record = {
-                    "name": ch["name"],
-                    "extinf": ch["extinf"],
-                    "url": ch["url"],
-                    "domain": urlparse(ch["url"]).netloc,
-                    "result": result,
-                }
-                done[ch["url"]] = record
+    completed = progress.get("completed", {})
 
-                hint = result.get("http_hint", "error")
-                stats["by_hint"][hint] = stats["by_hint"].get(hint, 0) + 1
+    if not isinstance(completed, dict):
+        completed = {}
 
-                if result["ok"]:
-                    stats["ok"] += 1
-                    n_audio = len(result["audio"])
-                    if n_audio >= 2:
-                        stats["multi"] += 1
-                        mark = f"★ MULTI({n_audio})"
-                    else:
-                        mark = "OK"
-                    extra = f"{format_video(result['video'])} | {format_audio(result['audio'])}"
-                else:
-                    stats["fail"] += 1
-                    mark = f"SKIP({hint})"
-                    extra = result.get("error", "")[:50]
+    # Повторно используем результаты по URL.
+    # Все текущие URL будут обработаны или восстановлены из прогресса.
+    pending = []
 
-                name_short = ch["name"][:42]
-                print(f"[{completed:4}/{len(todo)}] {mark:12} | {name_short:42} | {extra}")
+    for entry in entries:
+        old = completed.get(entry["url"])
 
-                if completed % SAVE_EVERY == 0:
-                    progress["done"] = done
-                    progress["stats"] = stats
-                    save_progress(progress)
-                    print(f"   💾 сохранено  ok={stats['ok']}  multi={stats['multi']}  fail={stats['fail']}")
-
-        progress["done"] = done
-        progress["stats"] = stats
-        save_progress(progress)
-        print("-" * 70)
-        print(f"Пробивка закончена за {(time.monotonic()-start_all)/60:.1f} мин")
-
-    # ===== Сбор результатов =====
-    ok_list = []
-    multi_list = []
-
-    for url, rec in done.items():
-        res = rec["result"]
-        if not res["ok"]:
+        if isinstance(old, dict) and old.get("probe_ok"):
             continue
-        item = {
-            "name": rec["name"],
-            "extinf": rec["extinf"],
-            "url": url,
-            "domain": rec["domain"],
-            "audio": res["audio"],
-            "video": res["video"],
-            "n_audio": len(res["audio"]),
-        }
-        ok_list.append(item)
-        if item["n_audio"] >= 2:
-            multi_list.append(item)
 
-    ALL_RESULTS_JSON.write_text(json.dumps(ok_list, ensure_ascii=False, indent=2), encoding="utf-8")
-    MULTI_RESULTS_JSON.write_text(json.dumps(multi_list, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Неудачные результаты тоже перепроверяются при новом запуске.
+        pending.append(entry)
 
-    # Отчёт
-    lines = []
-    lines.append("=" * 90)
-    lines.append("  ПОЛНЫЙ ОТЧЁТ ffprobe ПО ВСЕМУ ПЛЕЙЛИСТУ")
-    lines.append("=" * 90)
-    lines.append(f"Уникальных URL всего     : {len(channels)}")
-    lines.append(f"Успешно ответили (200)   : {stats['ok']}")
-    lines.append(f"Пропущено (403/timeout/…) : {stats['fail']}")
-    lines.append(f"Реальных мульти (≥2 audio): {len(multi_list)}")
-    lines.append("")
-    lines.append("По причинам пропуска:")
-    for h, c in sorted(stats.get("by_hint", {}).items(), key=lambda x: -x[1]):
-        if h != "200":
-            lines.append(f"  {h:12} : {c}")
-    lines.append("")
+    print(
+        f"[INFO] Уже успешно проверено: "
+        f"{total_urls - len(pending)}",
+        flush=True,
+    )
+    print(f"[INFO] Осталось проверить: {len(pending)}", flush=True)
 
-    by_dom = defaultdict(list)
-    for ch in multi_list:
-        by_dom[ch["domain"]].append(ch)
+    start_time = time.time()
+    newly_completed = 0
 
-    lines.append("=" * 90)
-    lines.append("  РЕАЛЬНЫЕ МУЛЬТИАУДИО-КАНАЛЫ (≥ 2 audio streams)")
-    lines.append("=" * 90)
+    try:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=MAX_WORKERS
+        ) as executor:
 
-    for domain, chs in sorted(by_dom.items(), key=lambda x: -len(x[1])):
-        lines.append("")
-        lines.append(f"▶ {domain}  ({len(chs)})")
-        lines.append("-" * 70)
-        for i, ch in enumerate(chs, 1):
-            lines.append(f"  [{i}] {ch['name']}")
-            lines.append(f"      Видео : {format_video(ch['video'])}")
-            lines.append(f"      Аудио : {format_audio(ch['audio'])}")
-            lines.append(f"      URL   : {ch['url']}")
+            future_to_entry = {
+                executor.submit(probe_url, entry): entry
+                for entry in pending
+            }
 
-    lines.append("")
-    lines.append("=" * 90)
-    REPORT_TXT.write_text("\n".join(lines), encoding="utf-8")
+            for future in concurrent.futures.as_completed(future_to_entry):
+                entry = future_to_entry[future]
+                url = entry["url"]
 
-    # Плейлист только мульти
-    m3u = ["#EXTM3U x-title=\"Real multi-audio (ffprobe verified)\""]
-    for ch in multi_list:
-        audio_info = format_audio(ch["audio"])
-        vid = format_video(ch["video"])
-        new_name = f"{ch['name']} [{vid}] [{audio_info}]"
-        extinf = ch["extinf"]
-        if "," in extinf:
-            prefix = extinf.rsplit(",", 1)[0]
-            extinf = f"{prefix},{new_name}"
-        m3u.append(extinf)
-        m3u.append(ch["url"])
-    MULTI_M3U.write_text("\n".join(m3u) + "\n", encoding="utf-8")
+                try:
+                    result = future.result()
+                except Exception as exc:
+                    result = {
+                        "url": url,
+                        "name": entry.get("name", ""),
+                        "source": get_source(url),
+                        "checked_at": utc_now(),
+                        "probe_ok": False,
+                        "is_multi_audio": False,
+                        "audio_track_count": 0,
+                        "video_track_count": 0,
+                        "subtitle_track_count": 0,
+                        "streams": [],
+                        "format": {},
+                        "probe_error": f"{type(exc).__name__}: {exc}",
+                    }
 
-    print()
-    print("=" * 60)
-    print("ИТОГО:")
-    print(f"  Успешно (200)        : {stats['ok']}")
-    print(f"  Пропущено            : {stats['fail']}")
-    print(f"  Реальных мульти (≥2) : {len(multi_list)}")
-    print("=" * 60)
-    print("Файлы:")
-    print(f"  {ALL_RESULTS_JSON}")
-    print(f"  {MULTI_RESULTS_JSON}")
-    print(f"  {REPORT_TXT}")
-    print(f"  {MULTI_M3U}")
-    print(f"  {PROGRESS_FILE}")
+                completed[url] = result
+                newly_completed += 1
+
+                if result.get("probe_ok"):
+                    status = "MULTI-AUDIO" if result.get(
+                        "is_multi_audio"
+                    ) else "OK"
+
+                    print(
+                        f"[{status}] "
+                        f"{result.get('name', '')} | "
+                        f"audio={result.get('audio_track_count', 0)} | "
+                        f"{url}",
+                        flush=True,
+                    )
+                else:
+                    print(
+                        f"[ERROR] {result.get('name', '')} | "
+                        f"{result.get('probe_error', '')} | {url}",
+                        flush=True,
+                    )
+
+                if newly_completed % SAVE_EVERY == 0:
+                    save_progress(completed)
+
+                    results = [
+                        item for item in completed.values()
+                        if item.get("probe_ok")
+                    ]
+
+                    failures = [
+                        item for item in completed.values()
+                        if not item.get("probe_ok")
+                    ]
+
+                    save_outputs(
+                        results,
+                        failures,
+                        total_urls,
+                        time.time() - start_time,
+                    )
+
+    except KeyboardInterrupt:
+        print(
+            "\n[WARN] Прервано пользователем. Сохраняю прогресс...",
+            flush=True,
+        )
+
+        save_progress(completed)
+
+        results = [
+            item for item in completed.values()
+            if item.get("probe_ok")
+        ]
+
+        failures = [
+            item for item in completed.values()
+            if not item.get("probe_ok")
+        ]
+
+        save_outputs(
+            results,
+            failures,
+            total_urls,
+            time.time() - start_time,
+        )
+
+        return 130
+
+    # Финальное сохранение.
+    save_progress(completed)
+
+    # В отчёты попадают только URL из текущего плейлиста.
+    current_urls = {entry["url"] for entry in entries}
+
+    current_results = [
+        completed[url]
+        for url in current_urls
+        if url in completed and completed[url].get("probe_ok")
+    ]
+
+    current_failures = [
+        completed[url]
+        for url in current_urls
+        if url in completed and not completed[url].get("probe_ok")
+    ]
+
+    elapsed = time.time() - start_time
+
+    save_outputs(
+        current_results,
+        current_failures,
+        total_urls,
+        elapsed,
+    )
+
+    multi_count = sum(
+        1 for item in current_results
+        if item.get("audio_track_count", 0) >= 2
+    )
+
+    print("\n[DONE] Сканирование завершено.", flush=True)
+    print(f"[DONE] Всего URL: {total_urls}", flush=True)
+    print(f"[DONE] Успешно: {len(current_results)}", flush=True)
+    print(f"[DONE] Ошибки: {len(current_failures)}", flush=True)
+    print(f"[DONE] Многодорожечные: {multi_count}", flush=True)
+    print(f"[DONE] Отчёты: {OUTPUT_DIR.resolve()}", flush=True)
+
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
