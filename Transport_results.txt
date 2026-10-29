@@ -2,7 +2,7 @@
 ======================================================================
 КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
 ======================================================================
-Время UTC: 2026-10-29T05:20:09.874196+00:00
+Время UTC: 2026-10-29T12:43:31.899553+00:00
 Python: 3.11.17
 ffprobe: /usr/bin/ffprobe
 
@@ -12,14 +12,14 @@ ffprobe: /usr/bin/ffprobe
 ПРОВЕРКА: http://stream.mcquack.net/412/index.m3u8
 ======================================================================
 HTTP: 200
-Время ответа: 0.45 с.
+Время ответа: 0.30 с.
 Конечный URL: http://stream.mcquack.net/412/index.m3u8
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
 [Плейлист] Тип: мастер-плейлист
   URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
   Разрешение: 1920x1080
-  Битрейт: 4.87 Мбит/с
+  Битрейт: 4.88 Мбит/с
   Кодеки: avc1.4d4028,mp4a.40.2
   FPS: 25.000
 
@@ -118,7 +118,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 ======================================================================
 HTTP: 200
-Время ответа: 0.35 с.
+Время ответа: 0.25 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -150,7 +150,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 ======================================================================
 HTTP: 200
-Время ответа: 0.17 с.
+Время ответа: 0.14 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -182,7 +182,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 ======================================================================
 HTTP: 200
-Время ответа: 0.18 с.
+Время ответа: 0.14 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -219,10 +219,10 @@ HTTP 200: 4
 Ошибок узлов: 10
 Успешных анализов ffprobe: 4
 Ошибок ffprobe: 0
-Завершено UTC: 2026-10-29T05:20:19.191474+00:00
+Завершено UTC: 2026-10-29T12:43:38.651069+00:00
 [OK] Проверка завершена.
 
 ========================================
-Run finished at 2026-10-29 05:20:19 UTC
+Run finished at 2026-10-29 12:43:38 UTC
 Python exit code: 0
 ========================================
