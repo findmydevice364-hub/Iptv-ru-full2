@@ -2,7 +2,7 @@
 ======================================================================
 КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
 ======================================================================
-Время UTC: 2026-10-30T12:35:35.051210+00:00
+Время UTC: 2026-10-30T22:08:47.317482+00:00
 Python: 3.11.17
 ffprobe: /usr/bin/ffprobe
 
@@ -12,7 +12,7 @@ ffprobe: /usr/bin/ffprobe
 ПРОВЕРКА: http://stream.mcquack.net/412/index.m3u8
 ======================================================================
 HTTP: 200
-Время ответа: 0.31 с.
+Время ответа: 0.40 с.
 Конечный URL: http://stream.mcquack.net/412/index.m3u8
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -118,7 +118,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 ======================================================================
 HTTP: 200
-Время ответа: 0.27 с.
+Время ответа: 0.32 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -150,7 +150,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 ======================================================================
 HTTP: 200
-Время ответа: 0.13 с.
+Время ответа: 0.14 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -182,7 +182,7 @@ Content-Type: application/vnd.apple.mpegurl
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 ======================================================================
 HTTP: 200
-Время ответа: 0.14 с.
+Время ответа: 0.15 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 Content-Type: application/vnd.apple.mpegurl
 [OK] Получен валидный HLS-плейлист.
@@ -219,10 +219,10 @@ HTTP 200: 4
 Ошибок узлов: 10
 Успешных анализов ffprobe: 4
 Ошибок ffprobe: 0
-Завершено UTC: 2026-10-30T12:35:41.481206+00:00
+Завершено UTC: 2026-10-30T22:08:55.229956+00:00
 [OK] Проверка завершена.
 
 ========================================
-Run finished at 2026-10-30 12:35:41 UTC
+Run finished at 2026-10-30 22:08:55 UTC
 Python exit code: 0
 ========================================
