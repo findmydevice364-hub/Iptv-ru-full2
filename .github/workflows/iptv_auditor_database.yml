@@ -1,0 +1,54 @@
+name: IPTV Intelligence Auditor
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: iptv-intelligence-auditor
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install aiohttp
+
+      - name: Run IPTV audit
+        run: python Ru_Iptv_auditor_database.py
+
+      - name: Commit database and reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add output/
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update IPTV audit database and reports"
+            git push
+          else
+            echo "No audit changes to commit"
+          fi
