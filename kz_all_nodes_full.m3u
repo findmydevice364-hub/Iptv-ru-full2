@@ -1,0 +1,181 @@
+#EXTM3U url-tvg="https://iptvx.one/epg/epg.xml.gz"
+
+# === Узел ID TV (sc.id-tv.kz) — российские каналы ===
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="pervyy",Первый канал Евразия
+http://sc.id-tv.kz/1KanalEvraziya.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="pervyy-sng",Первый канал СНГ
+https://sc.id-tv.kz/1KanalVsemSet_36_37.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="russia24",Россия 24
+https://sc.id-tv.kz/Rossiya24_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="russiak",Россия К
+https://sc.id-tv.kz/RossiyaK_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="rtr-planeta",РТР Планета
+https://sc.id-tv.kz/RTR_Planeta_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="ntv-mir",НТВ Мир
+https://sc.id-tv.kz/NTV_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="mir24",Мир 24
+https://sc.id-tv.kz/Mir24_38_39.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="mir",Мир +3
+https://sc.id-tv.kz/Mir_36_37.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="rentv",РЕН ТВ International
+https://sc.id-tv.kz/RenTV_36_37.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="sts",СТС International
+https://sc.id-tv.kz/STS.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="sts",СТС +3
+https://sc.id-tv.kz/STS_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="sts",СТС International +3
+https://sc.id-tv.kz/STS_36_37.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="friday",Пятница International
+https://sc.id-tv.kz/friday_36_37.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="rbk",РБК
+https://sc.id-tv.kz/RBK_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="moya-planeta",Моя Планета
+https://sc.id-tv.kz/planeta_hd_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="euronews",Euronews
+https://sc.id-tv.kz/Euronews.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",tvg-id="euronews",Euronews +3
+https://sc.id-tv.kz/Euronews_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Amedia 2
+https://sc.id-tv.kz/A2_38_39.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Amedia Hit HD
+https://sc.id-tv.kz/amedia_hit_hd_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Cinema
+https://sc.id-tv.kz/Cinema_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Extreme Sports HD
+https://sc.id-tv.kz/ExtremeSportsHD_34_35.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Поехали!
+https://sc.id-tv.kz:80/poehali_38_39.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",H2
+https://sc.id-tv.kz:80/H2_38_39.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: ID TV)",Bollywood HD
+https://sc.id-tv.kz/bollywood_34_35.m3u8
+
+# === Узел Uplink (fs.uplink.kz) — Костанай ===
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="russia24",Россия 24
+http://fs.uplink.kz/rossia_24/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="russiak",Россия К
+http://fs.uplink.kz/rossia_k/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="rtr-planeta",РТР Планета
+http://fs.uplink.kz/rtr_planeta/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="ntv-mir",НТВ Мир
+http://fs.uplink.kz/ntv_mir/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="mir",МИР
+http://fs.uplink.kz/mir/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="match-planeta",Матч! Планета
+http://fs.uplink.kz/match_planeta/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",KHL Prime HD
+http://fs.uplink.kz/khl_prime/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="sts",СТС International
+http://fs.uplink.kz/sts/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="tnt",ТНТ-Казахстан
+https://fs.uplink.kz/tnt-kaz/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="tnt4",ТНТ4
+http://fs.uplink.kz/tnt4/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="rentv",РЕН ТВ
+http://fs.uplink.kz/ren/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",tvg-id="domashniy",Домашний International
+http://fs.uplink.kz/domashniy/video.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink)",Перец International
+http://fs.uplink.kz/perec/video.m3u8
+
+# === Uplink (token) — версия из smolnp, обновлено 04.09.2026 ===
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Дом Кино Премиум
+http://fs.uplink.kz/dom_kino_premium/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Русский Иллюзион
+http://fs.uplink.kz/russkiy_illusion/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Viju Nature
+http://fs.uplink.kz/viju_nature/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Домашний Int.
+http://fs.uplink.kz/domashniy/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Europa Plus
+http://fs.uplink.kz/europa_plus/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: Uplink+token)",Жара
+http://fs.uplink.kz/zhara/tracks-v1a1/mono.ts.m3u8?token=onlinetv
+
+# === Узел MegaNet (iptv.mega.net.ru) — Казахстан ===
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",Живая Планета
+http://iptv.mega.net.ru:8888/Givaa_Planeta/index.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",День Победы HD
+http://iptv.mega.net.ru:8888/Den_pobedy_hd/index.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",RTG HD
+http://iptv.mega.net.ru:8888/RTG_HD/index.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",Extreme Sports
+http://iptv.mega.net.ru:8888/Extreme_Sport/index.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",Amedia Hit HD
+http://iptv.mega.net.ru:8888/Amedia_Hit_HD/index.m3u8
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: MegaNet)",Дом Кино Премиум HD
+http://iptv.mega.net.ru:8888/Dom_Kino_Premium_HD/index.m3u8
+
+# === Узел Transtelecom (статический список) ===
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: TTC)",tvg-id="russia24",Russia 24 (TTC)
+http://92.46.58.98:7777/udp/239.0.0.123:1234
+#EXTINF:-1 group-title="🇷🇺 Россия (KZ: TTC)",tvg-id="rtr-planeta",RTR Planeta (TTC)
+http://92.46.58.98:7777/udp/239.0.0.124:1234
+
+# === Узел ID TV — казахстанские каналы ===
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",31 канал
+https://sc.id-tv.kz/31Kanal_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",7 канал
+https://sc.id-tv.kz/7_kanal_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Astana TV
+https://sc.id-tv.kz/Astana_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Atameken Business
+https://sc.id-tv.kz/Atameken_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",ID Fashion
+https://sc.id-tv.kz/IDFashion_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Ел Арна
+https://sc.id-tv.kz/ElArna_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",КТК
+https://sc.id-tv.kz/KTK_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Новое ТВ
+https://sc.id-tv.kz/New_Television_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",СТВ Казахстан
+https://sc.id-tv.kz/STV_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Хабар 24
+https://sc.id-tv.kz/Khabar_24_38_39.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (ID TV)",Халык Арна
+https://sc.id-tv.kz/HalykArna_38_39.m3u8
+
+# === Узел Uplink — казахстанские каналы ===
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",QAZAQSTAN
+http://fs.uplink.kz/qazaqstan/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",Almaty
+http://fs.uplink.kz/alamty/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",Хабар
+http://fs.uplink.kz/habar/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",НТК
+http://fs.uplink.kz/ntk/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",Balapan
+http://fs.uplink.kz/balapan/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",ATAMEKEN BUSINESS
+http://fs.uplink.kz/atameken/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",7 канал
+http://fs.uplink.kz/7_kanal/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",Astana TV
+http://fs.uplink.kz/astana/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",31 канал
+https://fs.uplink.kz/31kanal/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",Jibek Joly
+https://fs.uplink.kz/jibek_joly/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",КТК
+http://fs.uplink.kz/ktk/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",24 KZ
+https://fs.uplink.kz/24KZ/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",МИР
+http://fs.uplink.kz/mir/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",QAZSPORT HD
+http://fs.uplink.kz/qazsport_hd/video.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (Uplink)",QOSTANAI
+https://fs.uplink.kz/qostanai/video.m3u8
+
+# === KаzTRK — региональные (onrez.kaztrk.kz) ===
+#EXTINF:-1 group-title="🇰🇿 Казахстан (KazTRK)",Aqtóbe
+http://onrez.kaztrk.kz/regional/aktobetv/index.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (KazTRK)",Ertis (Павлодар)
+http://onrez.kaztrk.kz/regional/pavlodartv/index.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (KazTRK)",Jambyl (Тараз)
+http://onrez.kaztrk.kz/regional/taraztv/index.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (KazTRK)",Qostanai
+http://onrez.kaztrk.kz/regional/kostanaytv/index.m3u8
+#EXTINF:-1 group-title="🇰🇿 Казахстан (KazTRK)",Semei
+http://onrez.kaztrk.kz/regional/semeytv/index.m3u8

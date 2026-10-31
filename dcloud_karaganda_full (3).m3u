@@ -1,0 +1,119 @@
+#EXTM3U
+
+# --- Пост 280: базовая сборка (31 канал) ---
+
+#EXTINF:-1,31 канал
+http://195.245.97.133:8800/play/31_kanal/index.m3u8
+#EXTINF:-1,Kazakh TV
+http://195.245.97.133:8800/play/Kazakh_TV/index.m3u8
+#EXTINF:-1,Megahit
+http://195.245.97.133:8800/play/megahit/index.m3u8
+#EXTINF:-1,Paramount comedy
+http://195.245.97.133:8800/play/Pcomedy/index.m3u8
+#EXTINF:-1,QAZSPORT HD
+http://195.245.97.133:8800/play/QAZSPORT/index.m3u8
+#EXTINF:-1,Saryarqa
+http://195.245.97.133:8800/play/Saryarqa/index.m3u8
+#EXTINF:-1,Transcoder
+http://195.245.97.133:8800/play/a00b/index.m3u8
+#EXTINF:-1,Асыл-Арна
+http://195.245.97.133:8800/play/Asil_arna/index.m3u8
+#EXTINF:-1,Балапан HD
+http://195.245.97.133:8800/play/Balapan_HD/index.m3u8
+#EXTINF:-1,Ел Арна
+http://195.245.97.133:8800/play/El_Arna/index.m3u8
+#EXTINF:-1,КТК
+http://195.245.97.133:8800/play/KTK/index.m3u8
+#EXTINF:-1,Казахстан
+http://195.245.97.133:8800/play/Qazaqstan/index.m3u8
+#EXTINF:-1,Карагандинский
+http://195.245.97.133:8800/play/1_KARAGANDA/index.m3u8
+#EXTINF:-1,КиноТВ
+http://195.245.97.133:8800/play/kinotv/index.m3u8
+#EXTINF:-1,Кинокомедия
+http://195.245.97.133:8800/play/Kkomedy/index.m3u8
+#EXTINF:-1,Киномикс
+http://195.245.97.133:8800/play/Kmix/index.m3u8
+#EXTINF:-1,Киносвидание
+http://195.245.97.133:8800/play/Ksvidanie/index.m3u8
+#EXTINF:-1,Киносемья
+http://195.245.97.133:8800/play/kinosem/index.m3u8
+#EXTINF:-1,Кинохит
+http://195.245.97.133:8800/play/Khit/index.m3u8
+#EXTINF:-1,Мульт
+http://195.245.97.133:8800/play/mult/index.m3u8
+#EXTINF:-1,НТК
+http://195.245.97.133:8800/play/HTK/index.m3u8
+#EXTINF:-1,Первый канал Евразия
+http://195.245.97.133:8800/play/1_Evrazija/index.m3u8
+#EXTINF:-1,ПервыйСНГ
+http://195.245.97.133:8800/play/SNG/index.m3u8
+#EXTINF:-1,РТР
+http://195.245.97.133:8800/play/Rtr/index.m3u8
+#EXTINF:-1,РенТВ
+http://195.245.97.133:8800/play/Ren/index.m3u8
+#EXTINF:-1,Русский бестселлер
+http://195.245.97.133:8800/play/Rbest/index.m3u8
+#EXTINF:-1,СТС
+http://195.245.97.133:8800/play/sts/index.m3u8
+#EXTINF:-1,ТНТ
+http://195.245.97.133:8800/play/tnt/index.m3u8
+#EXTINF:-1,Хабар
+http://195.245.97.133:8800/play/Habar/index.m3u8
+#EXTINF:-1,Хабар HD
+http://195.245.97.133:8800/play/Xabar_HD/index.m3u8
+#EXTINF:-1,Хабар-24
+http://195.245.97.133:8800/play/Xabar_24/index.m3u8
+
+# --- Пост 395: расширенный русскоязычный плейлист (доп. каналы) ---
+
+#EXTINF:-1,Россия 24
+http://195.245.97.133:8800/play/trossiya24/index.m3u8
+#EXTINF:-1,Disney
+http://195.245.97.133:8800/play/tdis/index.m3u8
+#EXTINF:-1,QAlem
+http://195.245.97.133:8800/play/tqalem/index.m3u8
+#EXTINF:-1,Qhit
+http://195.245.97.133:8800/play/tqhit/index.m3u8
+#EXTINF:-1,Россия 1
+http://195.245.97.133:8800/play/trossiya1/index.m3u8
+#EXTINF:-1,RuTV
+http://195.245.97.133:8800/play/trutv/index.m3u8
+#EXTINF:-1,V Sport
+http://195.245.97.133:8800/play/tvs/index.m3u8
+#EXTINF:-1,Восьмой канал
+http://195.245.97.133:8800/play/t8/index.m3u8
+#EXTINF:-1,Домашний
+http://195.245.97.133:8800/play/tdom/index.m3u8
+#EXTINF:-1,Звезда! International
+http://195.245.97.133:8800/play/tzvezdaint/index.m3u8
+#EXTINF:-1,МАТЧ!
+http://195.245.97.133:8800/play/tmatch/index.m3u8
+#EXTINF:-1,МИР 24
+http://195.245.97.133:8800/play/tmir24/index.m3u8
+#EXTINF:-1,МУЛЬТ
+http://195.245.97.133:8800/play/tmult/index.m3u8
+#EXTINF:-1,Моя планета
+http://195.245.97.133:8800/play/tmoyaplaneta/index.m3u8
+#EXTINF:-1,Мужской
+http://195.245.97.133:8800/play/myzskoy/index.m3u8
+#EXTINF:-1,НТВ
+http://195.245.97.133:8800/play/tntv/index.m3u8
+#EXTINF:-1,Первый СНГ
+http://195.245.97.133:8800/play/psng/index.m3u8
+#EXTINF:-1,Первый канал
+http://195.245.97.133:8800/play/tperviy/index.m3u8
+#EXTINF:-1,РЕН ТВ
+http://195.245.97.133:8800/play/tren/index.m3u8
+#EXTINF:-1,Россия К
+http://195.245.97.133:8800/play/trossiyak/index.m3u8
+#EXTINF:-1,СТС (резерв)
+http://195.245.97.133:8800/play/tsts/index.m3u8
+#EXTINF:-1,Сарафан
+http://195.245.97.133:8800/play/tsarafan/index.m3u8
+#EXTINF:-1,ТВ3
+http://195.245.97.133:8800/play/ttv3/index.m3u8
+#EXTINF:-1,ТВЦ
+http://195.245.97.133:8800/play/ttvts/index.m3u8
+#EXTINF:-1,ТНТ +3
+http://195.245.97.133:8800/play/ttnt3/index.m3u8
