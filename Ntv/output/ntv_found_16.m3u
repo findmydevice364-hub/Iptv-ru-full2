@@ -1,0 +1,737 @@
+#EXTM3U
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v1a1/2026/10/31/09/03/30-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v1a1/2026/10/31/09/03/36-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v1a1/2026/10/31/09/03/42-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v1a1/2026/10/31/09/03/48-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v2a1/2026/10/31/09/03/30-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v2a1/2026/10/31/09/03/36-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v2a1/2026/10/31/09/03/42-06000.ts
+#EXTINF:6.000,
+https://cdn-dvr.ntv.ru//svoya_igra/tracks-v2a1/2026/10/31/09/03/48-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn-dvr.ntv.ru/ntv0_hd/tracks-t1/mono.ts.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1920x1080 / 5430 kbps / avc1.4d4028,mp4a.40.2]
+https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v1a1/mono.ts.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2810 kbps / avc1.4d401f,mp4a.40.2]
+https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v2a1/mono.ts.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d401e,mp4a.40.2]
+https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v3a1/mono.ts.m3u8
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-t1/2026/10/31/09/03/46-02000.webvtt
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-t1/2026/10/31/09/03/48-02000.webvtt
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-t1/2026/10/31/09/03/50-02000.webvtt
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-t1/2026/10/31/09/03/52-02000.webvtt
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v1a1/2026/10/31/09/03/44-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v1a1/2026/10/31/09/03/46-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v1a1/2026/10/31/09/03/48-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v1a1/2026/10/31/09/03/50-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v2a1/2026/10/31/09/03/46-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v2a1/2026/10/31/09/03/48-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v2a1/2026/10/31/09/03/50-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v2a1/2026/10/31/09/03/52-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v3a1/2026/10/31/09/03/44-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v3a1/2026/10/31/09/03/46-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v3a1/2026/10/31/09/03/48-02000.ts
+#EXTINF:2.000,
+https://cdn-dvr.ntv.ru/ntv0_hd_multicast/tracks-v3a1/2026/10/31/09/03/50-02000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2800 kbps / avc1.4d401f,mp4a.40.2]
+https://cdn-dvr.ntv.ru/svoya_igra/tracks-v1a1/mono.ts.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d401e,mp4a.40.2]
+https://cdn-dvr.ntv.ru/svoya_igra/tracks-v2a1/mono.ts.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv0/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1920x1080 / 3870 kbps / avc1.4d0028,mp4a.40.2]
+https://cdn.ntv.ru/ntv0/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2820 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0/tracks-v3a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [854x480 / 1240 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0/tracks-v4a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv0/tracks-v5a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1920x1080 / 3800 kbps / avc1.4d0028,mp4a.40.2]
+https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [854x480 / 1230 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/2026/10/31/09/03/22-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/27-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/33-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/39-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/45-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv1/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv1/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv1/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/29-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/35-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/41-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/47-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv2/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/29-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/35-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/41-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/47-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv2/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/29-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/35-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/41-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/47-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv2/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv4/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv4/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv4/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/32-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/38-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/44-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/50-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/ntv7/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1740 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/ntv7/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/44-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/50-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 910 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/ntv7/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-t1/2026/10/31/09/03/25-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-t1/2026/10/31/09/03/31-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-t1/2026/10/31/09/03/37-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-t1/2026/10/31/09/03/43-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/th_hit/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v1a1/2026/10/31/09/03/25-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v1a1/2026/10/31/09/03/31-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v1a1/2026/10/31/09/03/37-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v1a1/2026/10/31/09/03/43-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1760 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/th_hit/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v2a1/2026/10/31/09/03/25-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v2a1/2026/10/31/09/03/31-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v2a1/2026/10/31/09/03/37-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_hit/tracks-v2a1/2026/10/31/09/03/43-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/th_hit/tracks-v2a1/mono.m3u8
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-t1/2026/10/31/09/03/28-02000.webvtt
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-t1/2026/10/31/09/03/30-02000.webvtt
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-t1/2026/10/31/09/03/32-02000.webvtt
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-t1/2026/10/31/09/03/34-02000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/th_pravo/tracks-t1/mono.m3u8
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/2026/10/31/09/03/26-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/2026/10/31/09/03/28-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/2026/10/31/09/03/30-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/2026/10/31/09/03/32-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/2026/10/31/09/03/34-02000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v2a1/2026/10/31/09/03/28-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v2a1/2026/10/31/09/03/30-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v2a1/2026/10/31/09/03/32-02000.ts
+#EXTINF:2.000,
+https://cdn.ntv.ru/th_pravo/tracks-v2a1/2026/10/31/09/03/34-02000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-t1/2026/10/31/09/03/27-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-t1/2026/10/31/09/03/33-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-t1/2026/10/31/09/03/39-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-t1/2026/10/31/09/03/45-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/th_serial/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v1a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v1a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v1a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v1a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1730 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/th_serial/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v2a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v2a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v2a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_serial/tracks-v2a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 900 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/th_serial/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-t1/2026/10/31/09/03/24-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-t1/2026/10/31/09/03/30-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-t1/2026/10/31/09/03/36-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-t1/2026/10/31/09/03/42-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/th_style/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v1a1/2026/10/31/09/03/30-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v1a1/2026/10/31/09/03/36-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v1a1/2026/10/31/09/03/42-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v1a1/2026/10/31/09/03/48-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1730 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/th_style/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v2a1/2026/10/31/09/03/30-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v2a1/2026/10/31/09/03/36-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v2a1/2026/10/31/09/03/42-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/th_style/tracks-v2a1/2026/10/31/09/03/48-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 910 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/th_style/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn.ntv.ru/unknown_russia/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1680 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/unknown_russia/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 890 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1740x808 / 3740 kbps / avc1.4d0028]
+https://cdn.ntv.ru/vitrina/tracks-v1/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1304x606 / 1630 kbps / avc1.4d001f]
+https://cdn.ntv.ru/vitrina/tracks-v2/mono.m3u8
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [870x404 / 1080 kbps / avc1.4d001e]
+https://cdn.ntv.ru/vitrina/tracks-v3/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv0/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1920x1080 / 3870 kbps / avc1.4d0028,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2820 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v3a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0/tracks-v3a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v4a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [854x480 / 1240 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0/tracks-v4a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv0/tracks-v5a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0/tracks-v5a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1920x1080 / 3800 kbps / avc1.4d0028,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1280x720 / 2770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [854x480 / 1230 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/27-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/33-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/39-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-t1/2026/10/31/09/03/45-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv1/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v1a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv1/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/27-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/33-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/39-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv1/tracks-v2a1/2026/10/31/09/03/45-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv1/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/29-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/35-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/41-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-t1/2026/10/31/09/03/47-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv2/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/29-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/35-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/41-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v1a1/2026/10/31/09/03/47-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv2/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/29-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/35-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/41-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv2/tracks-v2a1/2026/10/31/09/03/47-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv2/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/28-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/34-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/40-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-t1/2026/10/31/09/03/46-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv4/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v1a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1750 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv4/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/28-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/34-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/40-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv4/tracks-v2a1/2026/10/31/09/03/46-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv4/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/32-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/38-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/44-06000.webvtt
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-t1/2026/10/31/09/03/50-06000.webvtt
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/ntv7/tracks-t1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v1a1/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1740 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/ntv7/tracks-v1a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/44-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/ntv7/tracks-v2a1/2026/10/31/09/03/50-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 910 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/ntv7/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/th_hit/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1760 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/th_hit/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 920 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/th_hit/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/th_pravo/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1770 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 930 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/th_serial/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1730 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/th_serial/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 900 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/th_serial/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/th_style/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1730 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/th_style/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 910 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/th_style/tracks-v2a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной
+https://cdn2.ntv.ru/unknown_russia/tracks-t1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1024x576 / 1680 kbps / avc1.4d001f,mp4a.40.2]
+https://cdn2.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="НТВ",НТВ — основной [640x360 / 890 kbps / avc1.4d001e,mp4a.40.2]
+https://cdn2.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v1/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1740x808 / 3740 kbps / avc1.4d0028]
+https://cdn2.ntv.ru/vitrina/tracks-v1/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v2/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [1304x606 / 1630 kbps / avc1.4d001f]
+https://cdn2.ntv.ru/vitrina/tracks-v2/mono.m3u8
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/26-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/32-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/38-06000.ts
+#EXTINF:6.000,
+https://cdn2.ntv.ru/vitrina/tracks-v3/2026/10/31/09/03/44-06000.ts
+#EXTINF:-1 group-title="НТВ",НТВ — основной [870x404 / 1080 kbps / avc1.4d001e]
+https://cdn2.ntv.ru/vitrina/tracks-v3/mono.m3u8
