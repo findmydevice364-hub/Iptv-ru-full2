@@ -1,0 +1,602 @@
+НТВ — основной
+alias=ntv0 status=200 HLS=True valid=True latency_ms=2237.6 URL=https://cdn.ntv.ru/ntv0/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv0/playlist.m3u8 error=
+alias=ntv0 status=200 HLS=True valid=True latency_ms=2272.47 URL=https://cdn.ntv.ru/ntv0/index.m3u8 FINAL=https://cdn.ntv.ru/ntv0/index.m3u8 error=
+alias=ntv status=404 HLS=False valid=False latency_ms=2251.42 URL=https://cdn.ntv.ru/ntv/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv status=404 HLS=False valid=False latency_ms=1922.34 URL=https://cdn.ntv.ru/ntv/index.m3u8 FINAL=https://cdn.ntv.ru/ntv/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=2270.54 URL=https://cdn.ntv.ru/ntv_main/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_main/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=2230.74 URL=https://cdn.ntv.ru/ntv_main/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_main/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=2034.16 URL=https://cdn.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=2266.74 URL=https://cdn.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2403.06 URL=https://cdn.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2701.44 URL=https://cdn.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2578.26 URL=https://cdn.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2235.48 URL=https://cdn.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=2124.08 URL=https://cdn.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=2243.78 URL=https://cdn.ntv.ru/Mir/index.m3u8 FINAL=https://cdn.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=2861.37 URL=https://cdn.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=2102.09 URL=https://cdn.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=2223.71 URL=https://cdn.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=1940.81 URL=https://cdn.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=vitrina status=200 HLS=True valid=True latency_ms=3330.36 URL=https://cdn.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn.ntv.ru/vitrina/playlist.m3u8 error=
+alias=vitrina status=200 HLS=True valid=True latency_ms=2298.35 URL=https://cdn.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn.ntv.ru/vitrina/index.m3u8 error=
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=3334.62 URL=https://cdn.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=2145.05 URL=https://cdn.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=2497.56 URL=https://cdn.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn.ntv.ru/svoya_igra/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=2045.85 URL=https://cdn.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn.ntv.ru/svoya_igra/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=200 HLS=True valid=True latency_ms=435.78 URL=https://cdn.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/playlist.m3u8 error=
+alias=th_pravo status=200 HLS=True valid=True latency_ms=449.6 URL=https://cdn.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/index.m3u8 error=
+alias=pravo status=404 HLS=False valid=False latency_ms=504.78 URL=https://cdn.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=531.59 URL=https://cdn.ntv.ru/pravo/index.m3u8 FINAL=https://cdn.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=200 HLS=True valid=True latency_ms=850.19 URL=https://cdn.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_style/playlist.m3u8 error=
+alias=th_style status=200 HLS=True valid=True latency_ms=265.63 URL=https://cdn.ntv.ru/th_style/index.m3u8 FINAL=https://cdn.ntv.ru/th_style/index.m3u8 error=
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=470.25 URL=https://cdn.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=568.98 URL=https://cdn.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=299.51 URL=https://cdn.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=503.75 URL=https://cdn.ntv.ru/style_life/index.m3u8 FINAL=https://cdn.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=495.7 URL=https://cdn.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/playlist.m3u8 error=
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=294.29 URL=https://cdn.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/index.m3u8 error=
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=512.14 URL=https://cdn.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=493.72 URL=https://cdn.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=200 HLS=True valid=True latency_ms=516.04 URL=https://cdn.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_serial/playlist.m3u8 error=
+alias=th_serial status=200 HLS=True valid=True latency_ms=528.57 URL=https://cdn.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn.ntv.ru/th_serial/index.m3u8 error=
+alias=serial status=404 HLS=False valid=False latency_ms=499.19 URL=https://cdn.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=506.0 URL=https://cdn.ntv.ru/serial/index.m3u8 FINAL=https://cdn.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_hit status=200 HLS=True valid=True latency_ms=496.07 URL=https://cdn.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_hit/playlist.m3u8 error=
+alias=th_hit status=200 HLS=True valid=True latency_ms=243.42 URL=https://cdn.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn.ntv.ru/th_hit/index.m3u8 error=
+alias=ntv0 status=200 HLS=True valid=True latency_ms=2050.92 URL=https://cdn2.ntv.ru/ntv0/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/playlist.m3u8 error=
+alias=ntv0 status=200 HLS=True valid=True latency_ms=1765.58 URL=https://cdn2.ntv.ru/ntv0/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/index.m3u8 error=
+alias=ntv status=404 HLS=False valid=False latency_ms=1759.56 URL=https://cdn2.ntv.ru/ntv/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv status=404 HLS=False valid=False latency_ms=4018.37 URL=https://cdn2.ntv.ru/ntv/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=298.08 URL=https://cdn2.ntv.ru/ntv_main/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_main/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=482.81 URL=https://cdn2.ntv.ru/ntv_main/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_main/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=457.96 URL=https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=306.97 URL=https://cdn2.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=921.39 URL=https://cdn2.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=691.22 URL=https://cdn2.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=1956.43 URL=https://cdn2.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=781.26 URL=https://cdn2.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=894.25 URL=https://cdn2.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn2.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=1489.31 URL=https://cdn2.ntv.ru/Mir/index.m3u8 FINAL=https://cdn2.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=1465.34 URL=https://cdn2.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=784.27 URL=https://cdn2.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=777.96 URL=https://cdn2.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn2.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=579.29 URL=https://cdn2.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn2.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=vitrina status=200 HLS=True valid=True latency_ms=1843.23 URL=https://cdn2.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/playlist.m3u8 error=
+alias=vitrina status=200 HLS=True valid=True latency_ms=901.63 URL=https://cdn2.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/index.m3u8 error=
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=852.84 URL=https://cdn2.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn2.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=903.46 URL=https://cdn2.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn2.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=748.31 URL=https://cdn2.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn2.ntv.ru/svoya_igra/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=539.08 URL=https://cdn2.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn2.ntv.ru/svoya_igra/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=200 HLS=True valid=True latency_ms=947.84 URL=https://cdn2.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/playlist.m3u8 error=
+alias=th_pravo status=200 HLS=True valid=True latency_ms=931.37 URL=https://cdn2.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/index.m3u8 error=
+alias=pravo status=404 HLS=False valid=False latency_ms=934.41 URL=https://cdn2.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn2.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=694.59 URL=https://cdn2.ntv.ru/pravo/index.m3u8 FINAL=https://cdn2.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=200 HLS=True valid=True latency_ms=254.03 URL=https://cdn2.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_style/playlist.m3u8 error=
+alias=th_style status=200 HLS=True valid=True latency_ms=521.3 URL=https://cdn2.ntv.ru/th_style/index.m3u8 FINAL=https://cdn2.ntv.ru/th_style/index.m3u8 error=
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=434.22 URL=https://cdn2.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn2.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=255.25 URL=https://cdn2.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn2.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=268.52 URL=https://cdn2.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn2.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=525.88 URL=https://cdn2.ntv.ru/style_life/index.m3u8 FINAL=https://cdn2.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=537.07 URL=https://cdn2.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/playlist.m3u8 error=
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=294.09 URL=https://cdn2.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/index.m3u8 error=
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=447.24 URL=https://cdn2.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn2.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=451.7 URL=https://cdn2.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn2.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=200 HLS=True valid=True latency_ms=271.04 URL=https://cdn2.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/playlist.m3u8 error=
+alias=th_serial status=200 HLS=True valid=True latency_ms=452.09 URL=https://cdn2.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/index.m3u8 error=
+alias=serial status=404 HLS=False valid=False latency_ms=434.18 URL=https://cdn2.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn2.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=507.42 URL=https://cdn2.ntv.ru/serial/index.m3u8 FINAL=https://cdn2.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_hit status=200 HLS=True valid=True latency_ms=488.23 URL=https://cdn2.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/playlist.m3u8 error=
+alias=th_hit status=200 HLS=True valid=True latency_ms=293.82 URL=https://cdn2.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/index.m3u8 error=
+alias=ntv0 status=0 HLS=False valid=False latency_ms=373.85 URL=https://cdn3.ntv.ru/ntv0/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0 status=0 HLS=False valid=False latency_ms=373.58 URL=https://cdn3.ntv.ru/ntv0/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv status=0 HLS=False valid=False latency_ms=373.6 URL=https://cdn3.ntv.ru/ntv/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv status=0 HLS=False valid=False latency_ms=373.52 URL=https://cdn3.ntv.ru/ntv/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_main status=0 HLS=False valid=False latency_ms=373.54 URL=https://cdn3.ntv.ru/ntv_main/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_main status=0 HLS=False valid=False latency_ms=373.45 URL=https://cdn3.ntv.ru/ntv_main/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0_hd status=0 HLS=False valid=False latency_ms=373.24 URL=https://cdn3.ntv.ru/ntv0_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0_hd status=0 HLS=False valid=False latency_ms=373.32 URL=https://cdn3.ntv.ru/ntv0_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_hd status=0 HLS=False valid=False latency_ms=717.05 URL=https://cdn3.ntv.ru/ntv_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_hd status=0 HLS=False valid=False latency_ms=716.72 URL=https://cdn3.ntv.ru/ntv_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_mir status=0 HLS=False valid=False latency_ms=716.69 URL=https://cdn3.ntv.ru/ntv_mir/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_mir status=0 HLS=False valid=False latency_ms=716.31 URL=https://cdn3.ntv.ru/ntv_mir/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Mir status=0 HLS=False valid=False latency_ms=716.34 URL=https://cdn3.ntv.ru/Mir/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Mir status=0 HLS=False valid=False latency_ms=716.26 URL=https://cdn3.ntv.ru/Mir/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_belarus status=0 HLS=False valid=False latency_ms=716.43 URL=https://cdn3.ntv.ru/ntv_belarus/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_belarus status=0 HLS=False valid=False latency_ms=716.21 URL=https://cdn3.ntv.ru/ntv_belarus/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Belarus status=0 HLS=False valid=False latency_ms=716.41 URL=https://cdn3.ntv.ru/Belarus/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Belarus status=0 HLS=False valid=False latency_ms=716.07 URL=https://cdn3.ntv.ru/Belarus/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=vitrina status=0 HLS=False valid=False latency_ms=716.42 URL=https://cdn3.ntv.ru/vitrina/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=vitrina status=0 HLS=False valid=False latency_ms=716.26 URL=https://cdn3.ntv.ru/vitrina/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=sledstvie_veli status=0 HLS=False valid=False latency_ms=716.14 URL=https://cdn3.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=sledstvie_veli status=0 HLS=False valid=False latency_ms=716.15 URL=https://cdn3.ntv.ru/sledstvie_veli/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=svoya_igra status=0 HLS=False valid=False latency_ms=716.2 URL=https://cdn3.ntv.ru/svoya_igra/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=svoya_igra status=0 HLS=False valid=False latency_ms=715.86 URL=https://cdn3.ntv.ru/svoya_igra/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_pravo status=0 HLS=False valid=False latency_ms=715.78 URL=https://cdn3.ntv.ru/th_pravo/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_pravo status=0 HLS=False valid=False latency_ms=715.59 URL=https://cdn3.ntv.ru/th_pravo/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=pravo status=0 HLS=False valid=False latency_ms=715.8 URL=https://cdn3.ntv.ru/pravo/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=pravo status=0 HLS=False valid=False latency_ms=715.81 URL=https://cdn3.ntv.ru/pravo/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_style status=0 HLS=False valid=False latency_ms=715.67 URL=https://cdn3.ntv.ru/th_style/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_style status=0 HLS=False valid=False latency_ms=715.71 URL=https://cdn3.ntv.ru/th_style/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=stil_zhizni status=0 HLS=False valid=False latency_ms=715.75 URL=https://cdn3.ntv.ru/stil_zhizni/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=stil_zhizni status=0 HLS=False valid=False latency_ms=715.78 URL=https://cdn3.ntv.ru/stil_zhizni/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=style_life status=0 HLS=False valid=False latency_ms=726.3 URL=https://cdn3.ntv.ru/style_life/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=style_life status=0 HLS=False valid=False latency_ms=725.88 URL=https://cdn3.ntv.ru/style_life/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=unknown_russia status=0 HLS=False valid=False latency_ms=725.97 URL=https://cdn3.ntv.ru/unknown_russia/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=unknown_russia status=0 HLS=False valid=False latency_ms=725.84 URL=https://cdn3.ntv.ru/unknown_russia/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=neizvestnaya_rossiya status=0 HLS=False valid=False latency_ms=725.91 URL=https://cdn3.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=neizvestnaya_rossiya status=0 HLS=False valid=False latency_ms=725.76 URL=https://cdn3.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_serial status=0 HLS=False valid=False latency_ms=725.81 URL=https://cdn3.ntv.ru/th_serial/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_serial status=0 HLS=False valid=False latency_ms=725.59 URL=https://cdn3.ntv.ru/th_serial/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=serial status=0 HLS=False valid=False latency_ms=725.73 URL=https://cdn3.ntv.ru/serial/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=serial status=0 HLS=False valid=False latency_ms=725.71 URL=https://cdn3.ntv.ru/serial/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_hit status=0 HLS=False valid=False latency_ms=725.65 URL=https://cdn3.ntv.ru/th_hit/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_hit status=0 HLS=False valid=False latency_ms=725.56 URL=https://cdn3.ntv.ru/th_hit/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0 status=404 HLS=False valid=False latency_ms=2295.14 URL=https://cdn-dvr.ntv.ru/ntv0/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0 status=404 HLS=False valid=False latency_ms=1937.11 URL=https://cdn-dvr.ntv.ru/ntv0/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv status=404 HLS=False valid=False latency_ms=1926.45 URL=https://cdn-dvr.ntv.ru/ntv/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv status=404 HLS=False valid=False latency_ms=2281.59 URL=https://cdn-dvr.ntv.ru/ntv/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=2266.0 URL=https://cdn-dvr.ntv.ru/ntv_main/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_main/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_main status=404 HLS=False valid=False latency_ms=2116.29 URL=https://cdn-dvr.ntv.ru/ntv_main/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_main/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=1894.05 URL=https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=1945.37 URL=https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=3340.23 URL=https://cdn-dvr.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2087.74 URL=https://cdn-dvr.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2053.0 URL=https://cdn-dvr.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=3311.68 URL=https://cdn-dvr.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=255.12 URL=https://cdn-dvr.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=443.18 URL=https://cdn-dvr.ntv.ru/Mir/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=283.66 URL=https://cdn-dvr.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=256.65 URL=https://cdn-dvr.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=533.02 URL=https://cdn-dvr.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=457.85 URL=https://cdn-dvr.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=vitrina status=404 HLS=False valid=False latency_ms=451.03 URL=https://cdn-dvr.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/vitrina/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=vitrina status=404 HLS=False valid=False latency_ms=533.29 URL=https://cdn-dvr.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/vitrina/index.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=522.86 URL=https://cdn-dvr.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=519.85 URL=https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=200 HLS=True valid=True latency_ms=509.25 URL=https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8 error=
+alias=svoya_igra status=200 HLS=True valid=True latency_ms=521.05 URL=https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8 error=
+alias=th_pravo status=404 HLS=False valid=False latency_ms=717.28 URL=https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=404 HLS=False valid=False latency_ms=568.86 URL=https://cdn-dvr.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=676.9 URL=https://cdn-dvr.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=915.28 URL=https://cdn-dvr.ntv.ru/pravo/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=404 HLS=False valid=False latency_ms=1662.46 URL=https://cdn-dvr.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_style/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=404 HLS=False valid=False latency_ms=583.17 URL=https://cdn-dvr.ntv.ru/th_style/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_style/index.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=722.51 URL=https://cdn-dvr.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=1123.62 URL=https://cdn-dvr.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=893.11 URL=https://cdn-dvr.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=911.25 URL=https://cdn-dvr.ntv.ru/style_life/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=404 HLS=False valid=False latency_ms=965.38 URL=https://cdn-dvr.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/unknown_russia/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=404 HLS=False valid=False latency_ms=1495.61 URL=https://cdn-dvr.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/unknown_russia/index.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=458.73 URL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=503.89 URL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=404 HLS=False valid=False latency_ms=466.37 URL=https://cdn-dvr.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=404 HLS=False valid=False latency_ms=255.99 URL=https://cdn-dvr.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=472.39 URL=https://cdn-dvr.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=865.86 URL=https://cdn-dvr.ntv.ru/serial/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_hit status=404 HLS=False valid=False latency_ms=474.99 URL=https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_hit status=404 HLS=False valid=False latency_ms=276.9 URL=https://cdn-dvr.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_hit/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=465.62 URL=https://cdn.ntv.ru/ntv-1/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv-1/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=562.09 URL=https://cdn.ntv.ru/ntv-1/index.m3u8 FINAL=https://cdn.ntv.ru/ntv-1/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=315.18 URL=https://cdn.ntv.ru/ntv-1_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv-1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=313.59 URL=https://cdn.ntv.ru/ntv-1_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv-1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1 status=200 HLS=True valid=True latency_ms=257.8 URL=https://cdn.ntv.ru/ntv1/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv1/playlist.m3u8 error=
+alias=ntv1 status=200 HLS=True valid=True latency_ms=459.66 URL=https://cdn.ntv.ru/ntv1/index.m3u8 FINAL=https://cdn.ntv.ru/ntv1/index.m3u8 error=
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=504.21 URL=https://cdn.ntv.ru/ntv1_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=1006.25 URL=https://cdn.ntv.ru/ntv1_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2 status=200 HLS=True valid=True latency_ms=450.86 URL=https://cdn.ntv.ru/ntv2/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv2/playlist.m3u8 error=
+alias=ntv2 status=200 HLS=True valid=True latency_ms=467.97 URL=https://cdn.ntv.ru/ntv2/index.m3u8 FINAL=https://cdn.ntv.ru/ntv2/index.m3u8 error=
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=481.94 URL=https://cdn.ntv.ru/ntv2_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv2_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=500.31 URL=https://cdn.ntv.ru/ntv2_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv2_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=480.33 URL=https://cdn.ntv.ru/ntv3/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv3/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=516.51 URL=https://cdn.ntv.ru/ntv3/index.m3u8 FINAL=https://cdn.ntv.ru/ntv3/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=330.53 URL=https://cdn.ntv.ru/ntv3_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv3_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=495.13 URL=https://cdn.ntv.ru/ntv3_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv3_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4 status=200 HLS=True valid=True latency_ms=488.98 URL=https://cdn.ntv.ru/ntv4/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv4/playlist.m3u8 error=
+alias=ntv4 status=200 HLS=True valid=True latency_ms=515.45 URL=https://cdn.ntv.ru/ntv4/index.m3u8 FINAL=https://cdn.ntv.ru/ntv4/index.m3u8 error=
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=496.65 URL=https://cdn.ntv.ru/ntv4_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv4_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=321.99 URL=https://cdn.ntv.ru/ntv4_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv4_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=306.11 URL=https://cdn.ntv.ru/ntv5/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv5/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=613.27 URL=https://cdn.ntv.ru/ntv5/index.m3u8 FINAL=https://cdn.ntv.ru/ntv5/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=305.71 URL=https://cdn.ntv.ru/ntv5_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv5_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=469.77 URL=https://cdn.ntv.ru/ntv5_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv5_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=267.11 URL=https://cdn.ntv.ru/ntv6/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv6/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=305.07 URL=https://cdn.ntv.ru/ntv6/index.m3u8 FINAL=https://cdn.ntv.ru/ntv6/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=525.4 URL=https://cdn.ntv.ru/ntv6_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv6_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=520.32 URL=https://cdn.ntv.ru/ntv6_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv6_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7 status=200 HLS=True valid=True latency_ms=251.83 URL=https://cdn.ntv.ru/ntv7/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv7/playlist.m3u8 error=
+alias=ntv7 status=200 HLS=True valid=True latency_ms=251.43 URL=https://cdn.ntv.ru/ntv7/index.m3u8 FINAL=https://cdn.ntv.ru/ntv7/index.m3u8 error=
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=455.45 URL=https://cdn.ntv.ru/ntv7_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv7_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=447.23 URL=https://cdn.ntv.ru/ntv7_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv7_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=307.85 URL=https://cdn.ntv.ru/ntv8/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv8/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=458.11 URL=https://cdn.ntv.ru/ntv8/index.m3u8 FINAL=https://cdn.ntv.ru/ntv8/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=488.85 URL=https://cdn.ntv.ru/ntv8_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv8_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=971.0 URL=https://cdn.ntv.ru/ntv8_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv8_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=304.71 URL=https://cdn.ntv.ru/ntv9/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv9/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=315.45 URL=https://cdn.ntv.ru/ntv9/index.m3u8 FINAL=https://cdn.ntv.ru/ntv9/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=453.11 URL=https://cdn.ntv.ru/ntv9_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv9_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=490.01 URL=https://cdn.ntv.ru/ntv9_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv9_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=197.97 URL=https://cdn2.ntv.ru/ntv-1/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv-1/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=530.6 URL=https://cdn2.ntv.ru/ntv-1/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv-1/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=325.12 URL=https://cdn2.ntv.ru/ntv-1_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv-1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=987.74 URL=https://cdn2.ntv.ru/ntv-1_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv-1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1 status=200 HLS=True valid=True latency_ms=568.15 URL=https://cdn2.ntv.ru/ntv1/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv1/playlist.m3u8 error=
+alias=ntv1 status=200 HLS=True valid=True latency_ms=435.85 URL=https://cdn2.ntv.ru/ntv1/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv1/index.m3u8 error=
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=1026.52 URL=https://cdn2.ntv.ru/ntv1_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=508.47 URL=https://cdn2.ntv.ru/ntv1_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2 status=200 HLS=True valid=True latency_ms=288.81 URL=https://cdn2.ntv.ru/ntv2/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv2/playlist.m3u8 error=
+alias=ntv2 status=200 HLS=True valid=True latency_ms=197.18 URL=https://cdn2.ntv.ru/ntv2/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv2/index.m3u8 error=
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=454.67 URL=https://cdn2.ntv.ru/ntv2_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv2_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=246.19 URL=https://cdn2.ntv.ru/ntv2_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv2_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=289.35 URL=https://cdn2.ntv.ru/ntv3/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv3/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=501.98 URL=https://cdn2.ntv.ru/ntv3/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv3/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=458.17 URL=https://cdn2.ntv.ru/ntv3_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv3_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=288.56 URL=https://cdn2.ntv.ru/ntv3_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv3_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4 status=200 HLS=True valid=True latency_ms=153.48 URL=https://cdn2.ntv.ru/ntv4/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv4/playlist.m3u8 error=
+alias=ntv4 status=200 HLS=True valid=True latency_ms=432.82 URL=https://cdn2.ntv.ru/ntv4/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv4/index.m3u8 error=
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=460.07 URL=https://cdn2.ntv.ru/ntv4_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv4_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=801.84 URL=https://cdn2.ntv.ru/ntv4_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv4_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=282.14 URL=https://cdn2.ntv.ru/ntv5/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv5/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=491.85 URL=https://cdn2.ntv.ru/ntv5/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv5/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=900.76 URL=https://cdn2.ntv.ru/ntv5_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv5_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=283.65 URL=https://cdn2.ntv.ru/ntv5_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv5_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=442.07 URL=https://cdn2.ntv.ru/ntv6/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv6/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=507.71 URL=https://cdn2.ntv.ru/ntv6/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv6/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=972.87 URL=https://cdn2.ntv.ru/ntv6_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv6_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=151.63 URL=https://cdn2.ntv.ru/ntv6_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv6_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7 status=200 HLS=True valid=True latency_ms=491.6 URL=https://cdn2.ntv.ru/ntv7/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv7/playlist.m3u8 error=
+alias=ntv7 status=200 HLS=True valid=True latency_ms=288.81 URL=https://cdn2.ntv.ru/ntv7/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv7/index.m3u8 error=
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=626.63 URL=https://cdn2.ntv.ru/ntv7_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv7_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=188.21 URL=https://cdn2.ntv.ru/ntv7_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv7_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=509.73 URL=https://cdn2.ntv.ru/ntv8/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv8/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=1051.43 URL=https://cdn2.ntv.ru/ntv8/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv8/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=141.59 URL=https://cdn2.ntv.ru/ntv8_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv8_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=467.83 URL=https://cdn2.ntv.ru/ntv8_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv8_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=451.19 URL=https://cdn2.ntv.ru/ntv9/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv9/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=458.86 URL=https://cdn2.ntv.ru/ntv9/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv9/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=457.15 URL=https://cdn2.ntv.ru/ntv9_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv9_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=517.21 URL=https://cdn2.ntv.ru/ntv9_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv9_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=0 HLS=False valid=False latency_ms=173.93 URL=https://cdn3.ntv.ru/ntv-1/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv-1 status=0 HLS=False valid=False latency_ms=173.67 URL=https://cdn3.ntv.ru/ntv-1/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv-1_hd status=0 HLS=False valid=False latency_ms=173.41 URL=https://cdn3.ntv.ru/ntv-1_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv-1_hd status=0 HLS=False valid=False latency_ms=173.45 URL=https://cdn3.ntv.ru/ntv-1_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv1 status=0 HLS=False valid=False latency_ms=173.51 URL=https://cdn3.ntv.ru/ntv1/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv1 status=0 HLS=False valid=False latency_ms=173.43 URL=https://cdn3.ntv.ru/ntv1/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv1_hd status=0 HLS=False valid=False latency_ms=173.41 URL=https://cdn3.ntv.ru/ntv1_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv1_hd status=0 HLS=False valid=False latency_ms=173.33 URL=https://cdn3.ntv.ru/ntv1_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv2 status=0 HLS=False valid=False latency_ms=685.43 URL=https://cdn3.ntv.ru/ntv2/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv2 status=0 HLS=False valid=False latency_ms=684.89 URL=https://cdn3.ntv.ru/ntv2/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv2_hd status=0 HLS=False valid=False latency_ms=685.07 URL=https://cdn3.ntv.ru/ntv2_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv2_hd status=0 HLS=False valid=False latency_ms=684.74 URL=https://cdn3.ntv.ru/ntv2_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv3 status=0 HLS=False valid=False latency_ms=684.88 URL=https://cdn3.ntv.ru/ntv3/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv3 status=0 HLS=False valid=False latency_ms=684.87 URL=https://cdn3.ntv.ru/ntv3/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv3_hd status=0 HLS=False valid=False latency_ms=684.89 URL=https://cdn3.ntv.ru/ntv3_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv3_hd status=0 HLS=False valid=False latency_ms=684.5 URL=https://cdn3.ntv.ru/ntv3_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv4 status=0 HLS=False valid=False latency_ms=684.63 URL=https://cdn3.ntv.ru/ntv4/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv4 status=0 HLS=False valid=False latency_ms=684.77 URL=https://cdn3.ntv.ru/ntv4/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv4_hd status=0 HLS=False valid=False latency_ms=684.59 URL=https://cdn3.ntv.ru/ntv4_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv4_hd status=0 HLS=False valid=False latency_ms=684.47 URL=https://cdn3.ntv.ru/ntv4_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv5 status=0 HLS=False valid=False latency_ms=684.57 URL=https://cdn3.ntv.ru/ntv5/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv5 status=0 HLS=False valid=False latency_ms=684.45 URL=https://cdn3.ntv.ru/ntv5/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv5_hd status=0 HLS=False valid=False latency_ms=684.59 URL=https://cdn3.ntv.ru/ntv5_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv5_hd status=0 HLS=False valid=False latency_ms=684.54 URL=https://cdn3.ntv.ru/ntv5_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv6 status=0 HLS=False valid=False latency_ms=684.28 URL=https://cdn3.ntv.ru/ntv6/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv6 status=0 HLS=False valid=False latency_ms=684.15 URL=https://cdn3.ntv.ru/ntv6/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv6_hd status=0 HLS=False valid=False latency_ms=684.29 URL=https://cdn3.ntv.ru/ntv6_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv6_hd status=0 HLS=False valid=False latency_ms=683.91 URL=https://cdn3.ntv.ru/ntv6_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv7 status=0 HLS=False valid=False latency_ms=684.08 URL=https://cdn3.ntv.ru/ntv7/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv7 status=0 HLS=False valid=False latency_ms=683.83 URL=https://cdn3.ntv.ru/ntv7/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv7_hd status=0 HLS=False valid=False latency_ms=683.71 URL=https://cdn3.ntv.ru/ntv7_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv7_hd status=0 HLS=False valid=False latency_ms=683.96 URL=https://cdn3.ntv.ru/ntv7_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv8 status=0 HLS=False valid=False latency_ms=177.57 URL=https://cdn3.ntv.ru/ntv8/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv8 status=0 HLS=False valid=False latency_ms=177.15 URL=https://cdn3.ntv.ru/ntv8/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv8_hd status=0 HLS=False valid=False latency_ms=177.2 URL=https://cdn3.ntv.ru/ntv8_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv8_hd status=0 HLS=False valid=False latency_ms=177.19 URL=https://cdn3.ntv.ru/ntv8_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv9 status=0 HLS=False valid=False latency_ms=177.14 URL=https://cdn3.ntv.ru/ntv9/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv9 status=0 HLS=False valid=False latency_ms=177.05 URL=https://cdn3.ntv.ru/ntv9/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv9_hd status=0 HLS=False valid=False latency_ms=177.0 URL=https://cdn3.ntv.ru/ntv9_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv9_hd status=0 HLS=False valid=False latency_ms=177.07 URL=https://cdn3.ntv.ru/ntv9_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=507.48 URL=https://cdn-dvr.ntv.ru/ntv-1/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv-1/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1 status=404 HLS=False valid=False latency_ms=500.11 URL=https://cdn-dvr.ntv.ru/ntv-1/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv-1/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=502.18 URL=https://cdn-dvr.ntv.ru/ntv-1_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv-1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv-1_hd status=404 HLS=False valid=False latency_ms=502.95 URL=https://cdn-dvr.ntv.ru/ntv-1_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv-1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1 status=404 HLS=False valid=False latency_ms=454.94 URL=https://cdn-dvr.ntv.ru/ntv1/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv1/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1 status=404 HLS=False valid=False latency_ms=460.04 URL=https://cdn-dvr.ntv.ru/ntv1/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv1/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=254.84 URL=https://cdn-dvr.ntv.ru/ntv1_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv1_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv1_hd status=404 HLS=False valid=False latency_ms=503.65 URL=https://cdn-dvr.ntv.ru/ntv1_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv1_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2 status=404 HLS=False valid=False latency_ms=458.63 URL=https://cdn-dvr.ntv.ru/ntv2/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv2/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2 status=404 HLS=False valid=False latency_ms=340.81 URL=https://cdn-dvr.ntv.ru/ntv2/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv2/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=500.59 URL=https://cdn-dvr.ntv.ru/ntv2_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv2_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv2_hd status=404 HLS=False valid=False latency_ms=255.74 URL=https://cdn-dvr.ntv.ru/ntv2_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv2_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=527.64 URL=https://cdn-dvr.ntv.ru/ntv3/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv3/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3 status=404 HLS=False valid=False latency_ms=492.12 URL=https://cdn-dvr.ntv.ru/ntv3/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv3/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=310.38 URL=https://cdn-dvr.ntv.ru/ntv3_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv3_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv3_hd status=404 HLS=False valid=False latency_ms=300.29 URL=https://cdn-dvr.ntv.ru/ntv3_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv3_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4 status=404 HLS=False valid=False latency_ms=449.56 URL=https://cdn-dvr.ntv.ru/ntv4/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv4/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4 status=404 HLS=False valid=False latency_ms=503.43 URL=https://cdn-dvr.ntv.ru/ntv4/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv4/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=474.88 URL=https://cdn-dvr.ntv.ru/ntv4_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv4_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv4_hd status=404 HLS=False valid=False latency_ms=451.05 URL=https://cdn-dvr.ntv.ru/ntv4_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv4_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=439.0 URL=https://cdn-dvr.ntv.ru/ntv5/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv5/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5 status=404 HLS=False valid=False latency_ms=501.72 URL=https://cdn-dvr.ntv.ru/ntv5/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv5/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=255.33 URL=https://cdn-dvr.ntv.ru/ntv5_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv5_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv5_hd status=404 HLS=False valid=False latency_ms=487.17 URL=https://cdn-dvr.ntv.ru/ntv5_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv5_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=472.41 URL=https://cdn-dvr.ntv.ru/ntv6/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv6/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6 status=404 HLS=False valid=False latency_ms=466.89 URL=https://cdn-dvr.ntv.ru/ntv6/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv6/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=302.59 URL=https://cdn-dvr.ntv.ru/ntv6_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv6_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv6_hd status=404 HLS=False valid=False latency_ms=307.21 URL=https://cdn-dvr.ntv.ru/ntv6_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv6_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7 status=404 HLS=False valid=False latency_ms=522.36 URL=https://cdn-dvr.ntv.ru/ntv7/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv7/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7 status=404 HLS=False valid=False latency_ms=484.71 URL=https://cdn-dvr.ntv.ru/ntv7/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv7/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=473.57 URL=https://cdn-dvr.ntv.ru/ntv7_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv7_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv7_hd status=404 HLS=False valid=False latency_ms=458.0 URL=https://cdn-dvr.ntv.ru/ntv7_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv7_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=513.44 URL=https://cdn-dvr.ntv.ru/ntv8/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv8/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8 status=404 HLS=False valid=False latency_ms=528.4 URL=https://cdn-dvr.ntv.ru/ntv8/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv8/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=514.71 URL=https://cdn-dvr.ntv.ru/ntv8_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv8_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv8_hd status=404 HLS=False valid=False latency_ms=502.14 URL=https://cdn-dvr.ntv.ru/ntv8_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv8_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=532.69 URL=https://cdn-dvr.ntv.ru/ntv9/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv9/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9 status=404 HLS=False valid=False latency_ms=300.58 URL=https://cdn-dvr.ntv.ru/ntv9/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv9/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=499.72 URL=https://cdn-dvr.ntv.ru/ntv9_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv9_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv9_hd status=404 HLS=False valid=False latency_ms=697.82 URL=https://cdn-dvr.ntv.ru/ntv9_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv9_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias= status=200 HLS=True valid=True latency_ms=448.26 URL=https://cdn.ntv.ru/ntv0/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=448.6 URL=https://cdn.ntv.ru/ntv0/tracks-v5a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-v5a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=246.6 URL=https://cdn.ntv.ru/ntv0/tracks-v4a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-v4a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=505.41 URL=https://cdn.ntv.ru/ntv0/tracks-v3a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-v3a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=190.54 URL=https://cdn.ntv.ru/ntv0/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=385.64 URL=https://cdn.ntv.ru/ntv0/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=496.91 URL=https://cdn.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=485.43 URL=https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=503.82 URL=https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=488.5 URL=https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=367.2 URL=https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=147.3 URL=https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=437.5 URL=https://cdn.ntv.ru/vitrina/tracks-v3/mono.m3u8 FINAL=https://cdn.ntv.ru/vitrina/tracks-v3/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=249.58 URL=https://cdn.ntv.ru/vitrina/tracks-v2/mono.m3u8 FINAL=https://cdn.ntv.ru/vitrina/tracks-v2/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=269.34 URL=https://cdn.ntv.ru/vitrina/tracks-v1/mono.m3u8 FINAL=https://cdn.ntv.ru/vitrina/tracks-v1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=504.08 URL=https://cdn.ntv.ru/th_pravo/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=466.02 URL=https://cdn.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=189.25 URL=https://cdn.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=498.21 URL=https://cdn.ntv.ru/th_style/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_style/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=510.53 URL=https://cdn.ntv.ru/th_style/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_style/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=956.09 URL=https://cdn.ntv.ru/th_style/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_style/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=546.88 URL=https://cdn.ntv.ru/unknown_russia/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=976.23 URL=https://cdn.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=461.95 URL=https://cdn.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=446.03 URL=https://cdn.ntv.ru/th_serial/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_serial/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=492.64 URL=https://cdn.ntv.ru/th_serial/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_serial/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=501.43 URL=https://cdn.ntv.ru/th_serial/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_serial/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=245.21 URL=https://cdn.ntv.ru/th_hit/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_hit/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=343.06 URL=https://cdn.ntv.ru/th_hit/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_hit/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=142.21 URL=https://cdn.ntv.ru/th_hit/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/th_hit/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=202.69 URL=https://cdn2.ntv.ru/ntv0/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=477.69 URL=https://cdn2.ntv.ru/ntv0/tracks-v5a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-v5a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=295.95 URL=https://cdn2.ntv.ru/ntv0/tracks-v4a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-v4a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=488.32 URL=https://cdn2.ntv.ru/ntv0/tracks-v3a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-v3a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=289.8 URL=https://cdn2.ntv.ru/ntv0/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=479.56 URL=https://cdn2.ntv.ru/ntv0/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=201.41 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=185.54 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-v5a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=431.84 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-v4a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=149.93 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-v3a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=183.49 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=189.2 URL=https://cdn2.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=439.92 URL=https://cdn2.ntv.ru/vitrina/tracks-v3/mono.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/tracks-v3/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=464.45 URL=https://cdn2.ntv.ru/vitrina/tracks-v2/mono.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/tracks-v2/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=160.54 URL=https://cdn2.ntv.ru/vitrina/tracks-v1/mono.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/tracks-v1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=460.42 URL=https://cdn2.ntv.ru/th_pravo/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=446.33 URL=https://cdn2.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=188.26 URL=https://cdn2.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=487.6 URL=https://cdn2.ntv.ru/th_style/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_style/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=662.05 URL=https://cdn2.ntv.ru/th_style/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_style/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=188.69 URL=https://cdn2.ntv.ru/th_style/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_style/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=932.34 URL=https://cdn2.ntv.ru/unknown_russia/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=190.67 URL=https://cdn2.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=512.63 URL=https://cdn2.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=160.51 URL=https://cdn2.ntv.ru/th_serial/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=270.45 URL=https://cdn2.ntv.ru/th_serial/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=617.3 URL=https://cdn2.ntv.ru/th_serial/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=185.96 URL=https://cdn2.ntv.ru/th_hit/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=500.5 URL=https://cdn2.ntv.ru/th_hit/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=196.37 URL=https://cdn2.ntv.ru/th_hit/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=447.42 URL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-t1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-t1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=297.46 URL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v3a1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v3a1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=497.19 URL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v2a1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v2a1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=293.9 URL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v1a1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/tracks-v1a1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=251.66 URL=https://cdn-dvr.ntv.ru/svoya_igra/tracks-v2a1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/tracks-v2a1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=435.74 URL=https://cdn-dvr.ntv.ru/svoya_igra/tracks-v1a1/mono.ts.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/tracks-v1a1/mono.ts.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=423.91 URL=https://cdn.ntv.ru/ntv1/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv1/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=288.7 URL=https://cdn.ntv.ru/ntv1/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv1/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=438.79 URL=https://cdn.ntv.ru/ntv1/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv1/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=259.46 URL=https://cdn.ntv.ru/ntv2/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv2/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=249.56 URL=https://cdn.ntv.ru/ntv2/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv2/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=492.61 URL=https://cdn.ntv.ru/ntv2/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv2/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=309.38 URL=https://cdn.ntv.ru/ntv4/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv4/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=482.79 URL=https://cdn.ntv.ru/ntv4/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv4/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=313.84 URL=https://cdn.ntv.ru/ntv4/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv4/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=699.57 URL=https://cdn.ntv.ru/ntv7/tracks-t1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv7/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=289.09 URL=https://cdn.ntv.ru/ntv7/tracks-v2a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv7/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=706.25 URL=https://cdn.ntv.ru/ntv7/tracks-v1a1/mono.m3u8 FINAL=https://cdn.ntv.ru/ntv7/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=318.24 URL=https://cdn2.ntv.ru/ntv1/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv1/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=479.02 URL=https://cdn2.ntv.ru/ntv1/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv1/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=537.42 URL=https://cdn2.ntv.ru/ntv1/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv1/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=988.03 URL=https://cdn2.ntv.ru/ntv2/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv2/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=470.22 URL=https://cdn2.ntv.ru/ntv2/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv2/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=440.7 URL=https://cdn2.ntv.ru/ntv2/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv2/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=444.36 URL=https://cdn2.ntv.ru/ntv4/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv4/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=434.07 URL=https://cdn2.ntv.ru/ntv4/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv4/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=442.03 URL=https://cdn2.ntv.ru/ntv4/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv4/tracks-v1a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=491.87 URL=https://cdn2.ntv.ru/ntv7/tracks-t1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv7/tracks-t1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=243.75 URL=https://cdn2.ntv.ru/ntv7/tracks-v2a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv7/tracks-v2a1/mono.m3u8 error=
+alias= status=200 HLS=True valid=True latency_ms=486.14 URL=https://cdn2.ntv.ru/ntv7/tracks-v1a1/mono.m3u8 FINAL=https://cdn2.ntv.ru/ntv7/tracks-v1a1/mono.m3u8 error=
+
+НТВ HD
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=2034.16 URL=https://cdn.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=2266.74 URL=https://cdn.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2403.06 URL=https://cdn.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2701.44 URL=https://cdn.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=457.96 URL=https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=306.97 URL=https://cdn2.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=921.39 URL=https://cdn2.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=691.22 URL=https://cdn2.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv0_hd status=0 HLS=False valid=False latency_ms=373.24 URL=https://cdn3.ntv.ru/ntv0_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0_hd status=0 HLS=False valid=False latency_ms=373.32 URL=https://cdn3.ntv.ru/ntv0_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_hd status=0 HLS=False valid=False latency_ms=717.05 URL=https://cdn3.ntv.ru/ntv_hd/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_hd status=0 HLS=False valid=False latency_ms=716.72 URL=https://cdn3.ntv.ru/ntv_hd/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=1894.05 URL=https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/playlist.m3u8 error=
+alias=ntv0_hd status=200 HLS=True valid=True latency_ms=1945.37 URL=https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv0_hd/index.m3u8 error=
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=3340.23 URL=https://cdn-dvr.ntv.ru/ntv_hd/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_hd/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_hd status=404 HLS=False valid=False latency_ms=2087.74 URL=https://cdn-dvr.ntv.ru/ntv_hd/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_hd/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ Мир
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2578.26 URL=https://cdn.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2235.48 URL=https://cdn.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=2124.08 URL=https://cdn.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=2243.78 URL=https://cdn.ntv.ru/Mir/index.m3u8 FINAL=https://cdn.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=1956.43 URL=https://cdn2.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=781.26 URL=https://cdn2.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=894.25 URL=https://cdn2.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn2.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=1489.31 URL=https://cdn2.ntv.ru/Mir/index.m3u8 FINAL=https://cdn2.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=0 HLS=False valid=False latency_ms=716.69 URL=https://cdn3.ntv.ru/ntv_mir/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_mir status=0 HLS=False valid=False latency_ms=716.31 URL=https://cdn3.ntv.ru/ntv_mir/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Mir status=0 HLS=False valid=False latency_ms=716.34 URL=https://cdn3.ntv.ru/Mir/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Mir status=0 HLS=False valid=False latency_ms=716.26 URL=https://cdn3.ntv.ru/Mir/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=2053.0 URL=https://cdn-dvr.ntv.ru/ntv_mir/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_mir status=404 HLS=False valid=False latency_ms=3311.68 URL=https://cdn-dvr.ntv.ru/ntv_mir/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_mir/index.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=255.12 URL=https://cdn-dvr.ntv.ru/Mir/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/Mir/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Mir status=404 HLS=False valid=False latency_ms=443.18 URL=https://cdn-dvr.ntv.ru/Mir/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/Mir/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ Беларусь
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=2861.37 URL=https://cdn.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=2102.09 URL=https://cdn.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=2223.71 URL=https://cdn.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=1940.81 URL=https://cdn.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=1465.34 URL=https://cdn2.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn2.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=784.27 URL=https://cdn2.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn2.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=777.96 URL=https://cdn2.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn2.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=579.29 URL=https://cdn2.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn2.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=0 HLS=False valid=False latency_ms=716.43 URL=https://cdn3.ntv.ru/ntv_belarus/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_belarus status=0 HLS=False valid=False latency_ms=716.21 URL=https://cdn3.ntv.ru/ntv_belarus/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Belarus status=0 HLS=False valid=False latency_ms=716.41 URL=https://cdn3.ntv.ru/Belarus/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=Belarus status=0 HLS=False valid=False latency_ms=716.07 URL=https://cdn3.ntv.ru/Belarus/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=283.66 URL=https://cdn-dvr.ntv.ru/ntv_belarus/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=ntv_belarus status=404 HLS=False valid=False latency_ms=256.65 URL=https://cdn-dvr.ntv.ru/ntv_belarus/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/ntv_belarus/index.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=533.02 URL=https://cdn-dvr.ntv.ru/Belarus/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/Belarus/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=Belarus status=404 HLS=False valid=False latency_ms=457.85 URL=https://cdn-dvr.ntv.ru/Belarus/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/Belarus/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ Витрина
+alias=vitrina status=200 HLS=True valid=True latency_ms=3330.36 URL=https://cdn.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn.ntv.ru/vitrina/playlist.m3u8 error=
+alias=vitrina status=200 HLS=True valid=True latency_ms=2298.35 URL=https://cdn.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn.ntv.ru/vitrina/index.m3u8 error=
+alias=vitrina status=200 HLS=True valid=True latency_ms=1843.23 URL=https://cdn2.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/playlist.m3u8 error=
+alias=vitrina status=200 HLS=True valid=True latency_ms=901.63 URL=https://cdn2.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn2.ntv.ru/vitrina/index.m3u8 error=
+alias=vitrina status=0 HLS=False valid=False latency_ms=716.42 URL=https://cdn3.ntv.ru/vitrina/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=vitrina status=0 HLS=False valid=False latency_ms=716.26 URL=https://cdn3.ntv.ru/vitrina/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=vitrina status=404 HLS=False valid=False latency_ms=451.03 URL=https://cdn-dvr.ntv.ru/vitrina/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/vitrina/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=vitrina status=404 HLS=False valid=False latency_ms=533.29 URL=https://cdn-dvr.ntv.ru/vitrina/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/vitrina/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ — Следствие вели
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=3334.62 URL=https://cdn.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=2145.05 URL=https://cdn.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=852.84 URL=https://cdn2.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn2.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=903.46 URL=https://cdn2.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn2.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=0 HLS=False valid=False latency_ms=716.14 URL=https://cdn3.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=sledstvie_veli status=0 HLS=False valid=False latency_ms=716.15 URL=https://cdn3.ntv.ru/sledstvie_veli/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=522.86 URL=https://cdn-dvr.ntv.ru/sledstvie_veli/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/sledstvie_veli/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=sledstvie_veli status=404 HLS=False valid=False latency_ms=519.85 URL=https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/sledstvie_veli/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ — Своя игра
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=2497.56 URL=https://cdn.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn.ntv.ru/svoya_igra/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=2045.85 URL=https://cdn.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn.ntv.ru/svoya_igra/index.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=748.31 URL=https://cdn2.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn2.ntv.ru/svoya_igra/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=404 HLS=False valid=False latency_ms=539.08 URL=https://cdn2.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn2.ntv.ru/svoya_igra/index.m3u8 error=HTTP 404; response is not HLS
+alias=svoya_igra status=0 HLS=False valid=False latency_ms=716.2 URL=https://cdn3.ntv.ru/svoya_igra/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=svoya_igra status=0 HLS=False valid=False latency_ms=715.86 URL=https://cdn3.ntv.ru/svoya_igra/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=svoya_igra status=200 HLS=True valid=True latency_ms=509.25 URL=https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/playlist.m3u8 error=
+alias=svoya_igra status=200 HLS=True valid=True latency_ms=521.05 URL=https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/svoya_igra/index.m3u8 error=
+
+НТВ Право
+alias=th_pravo status=200 HLS=True valid=True latency_ms=435.78 URL=https://cdn.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/playlist.m3u8 error=
+alias=th_pravo status=200 HLS=True valid=True latency_ms=449.6 URL=https://cdn.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn.ntv.ru/th_pravo/index.m3u8 error=
+alias=pravo status=404 HLS=False valid=False latency_ms=504.78 URL=https://cdn.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=531.59 URL=https://cdn.ntv.ru/pravo/index.m3u8 FINAL=https://cdn.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=200 HLS=True valid=True latency_ms=947.84 URL=https://cdn2.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/playlist.m3u8 error=
+alias=th_pravo status=200 HLS=True valid=True latency_ms=931.37 URL=https://cdn2.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn2.ntv.ru/th_pravo/index.m3u8 error=
+alias=pravo status=404 HLS=False valid=False latency_ms=934.41 URL=https://cdn2.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn2.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=694.59 URL=https://cdn2.ntv.ru/pravo/index.m3u8 FINAL=https://cdn2.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=0 HLS=False valid=False latency_ms=715.78 URL=https://cdn3.ntv.ru/th_pravo/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_pravo status=0 HLS=False valid=False latency_ms=715.59 URL=https://cdn3.ntv.ru/th_pravo/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=pravo status=0 HLS=False valid=False latency_ms=715.8 URL=https://cdn3.ntv.ru/pravo/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=pravo status=0 HLS=False valid=False latency_ms=715.81 URL=https://cdn3.ntv.ru/pravo/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_pravo status=404 HLS=False valid=False latency_ms=717.28 URL=https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_pravo status=404 HLS=False valid=False latency_ms=568.86 URL=https://cdn-dvr.ntv.ru/th_pravo/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_pravo/index.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=676.9 URL=https://cdn-dvr.ntv.ru/pravo/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/pravo/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=pravo status=404 HLS=False valid=False latency_ms=915.28 URL=https://cdn-dvr.ntv.ru/pravo/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/pravo/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ Стиль жизни
+alias=th_style status=200 HLS=True valid=True latency_ms=850.19 URL=https://cdn.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_style/playlist.m3u8 error=
+alias=th_style status=200 HLS=True valid=True latency_ms=265.63 URL=https://cdn.ntv.ru/th_style/index.m3u8 FINAL=https://cdn.ntv.ru/th_style/index.m3u8 error=
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=470.25 URL=https://cdn.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=568.98 URL=https://cdn.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=299.51 URL=https://cdn.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=503.75 URL=https://cdn.ntv.ru/style_life/index.m3u8 FINAL=https://cdn.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=200 HLS=True valid=True latency_ms=254.03 URL=https://cdn2.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_style/playlist.m3u8 error=
+alias=th_style status=200 HLS=True valid=True latency_ms=521.3 URL=https://cdn2.ntv.ru/th_style/index.m3u8 FINAL=https://cdn2.ntv.ru/th_style/index.m3u8 error=
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=434.22 URL=https://cdn2.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn2.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=255.25 URL=https://cdn2.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn2.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=268.52 URL=https://cdn2.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn2.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=525.88 URL=https://cdn2.ntv.ru/style_life/index.m3u8 FINAL=https://cdn2.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=0 HLS=False valid=False latency_ms=715.67 URL=https://cdn3.ntv.ru/th_style/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_style status=0 HLS=False valid=False latency_ms=715.71 URL=https://cdn3.ntv.ru/th_style/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=stil_zhizni status=0 HLS=False valid=False latency_ms=715.75 URL=https://cdn3.ntv.ru/stil_zhizni/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=stil_zhizni status=0 HLS=False valid=False latency_ms=715.78 URL=https://cdn3.ntv.ru/stil_zhizni/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=style_life status=0 HLS=False valid=False latency_ms=726.3 URL=https://cdn3.ntv.ru/style_life/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=style_life status=0 HLS=False valid=False latency_ms=725.88 URL=https://cdn3.ntv.ru/style_life/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_style status=404 HLS=False valid=False latency_ms=1662.46 URL=https://cdn-dvr.ntv.ru/th_style/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_style/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_style status=404 HLS=False valid=False latency_ms=583.17 URL=https://cdn-dvr.ntv.ru/th_style/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_style/index.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=722.51 URL=https://cdn-dvr.ntv.ru/stil_zhizni/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/stil_zhizni/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=stil_zhizni status=404 HLS=False valid=False latency_ms=1123.62 URL=https://cdn-dvr.ntv.ru/stil_zhizni/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/stil_zhizni/index.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=893.11 URL=https://cdn-dvr.ntv.ru/style_life/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/style_life/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=style_life status=404 HLS=False valid=False latency_ms=911.25 URL=https://cdn-dvr.ntv.ru/style_life/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/style_life/index.m3u8 error=HTTP 404; response is not HLS
+
+Неизвестная Россия
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=495.7 URL=https://cdn.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/playlist.m3u8 error=
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=294.29 URL=https://cdn.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn.ntv.ru/unknown_russia/index.m3u8 error=
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=512.14 URL=https://cdn.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=493.72 URL=https://cdn.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=537.07 URL=https://cdn2.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/playlist.m3u8 error=
+alias=unknown_russia status=200 HLS=True valid=True latency_ms=294.09 URL=https://cdn2.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn2.ntv.ru/unknown_russia/index.m3u8 error=
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=447.24 URL=https://cdn2.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn2.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=451.7 URL=https://cdn2.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn2.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=0 HLS=False valid=False latency_ms=725.97 URL=https://cdn3.ntv.ru/unknown_russia/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=unknown_russia status=0 HLS=False valid=False latency_ms=725.84 URL=https://cdn3.ntv.ru/unknown_russia/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=neizvestnaya_rossiya status=0 HLS=False valid=False latency_ms=725.91 URL=https://cdn3.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=neizvestnaya_rossiya status=0 HLS=False valid=False latency_ms=725.76 URL=https://cdn3.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=unknown_russia status=404 HLS=False valid=False latency_ms=965.38 URL=https://cdn-dvr.ntv.ru/unknown_russia/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/unknown_russia/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=unknown_russia status=404 HLS=False valid=False latency_ms=1495.61 URL=https://cdn-dvr.ntv.ru/unknown_russia/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/unknown_russia/index.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=458.73 URL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=neizvestnaya_rossiya status=404 HLS=False valid=False latency_ms=503.89 URL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/neizvestnaya_rossiya/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ Сериал
+alias=th_serial status=200 HLS=True valid=True latency_ms=516.04 URL=https://cdn.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_serial/playlist.m3u8 error=
+alias=th_serial status=200 HLS=True valid=True latency_ms=528.57 URL=https://cdn.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn.ntv.ru/th_serial/index.m3u8 error=
+alias=serial status=404 HLS=False valid=False latency_ms=499.19 URL=https://cdn.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=506.0 URL=https://cdn.ntv.ru/serial/index.m3u8 FINAL=https://cdn.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=200 HLS=True valid=True latency_ms=271.04 URL=https://cdn2.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/playlist.m3u8 error=
+alias=th_serial status=200 HLS=True valid=True latency_ms=452.09 URL=https://cdn2.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn2.ntv.ru/th_serial/index.m3u8 error=
+alias=serial status=404 HLS=False valid=False latency_ms=434.18 URL=https://cdn2.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn2.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=507.42 URL=https://cdn2.ntv.ru/serial/index.m3u8 FINAL=https://cdn2.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=0 HLS=False valid=False latency_ms=725.81 URL=https://cdn3.ntv.ru/th_serial/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_serial status=0 HLS=False valid=False latency_ms=725.59 URL=https://cdn3.ntv.ru/th_serial/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=serial status=0 HLS=False valid=False latency_ms=725.73 URL=https://cdn3.ntv.ru/serial/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=serial status=0 HLS=False valid=False latency_ms=725.71 URL=https://cdn3.ntv.ru/serial/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_serial status=404 HLS=False valid=False latency_ms=466.37 URL=https://cdn-dvr.ntv.ru/th_serial/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_serial status=404 HLS=False valid=False latency_ms=255.99 URL=https://cdn-dvr.ntv.ru/th_serial/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_serial/index.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=472.39 URL=https://cdn-dvr.ntv.ru/serial/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/serial/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=serial status=404 HLS=False valid=False latency_ms=865.86 URL=https://cdn-dvr.ntv.ru/serial/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/serial/index.m3u8 error=HTTP 404; response is not HLS
+
+НТВ-Хит
+alias=th_hit status=200 HLS=True valid=True latency_ms=496.07 URL=https://cdn.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn.ntv.ru/th_hit/playlist.m3u8 error=
+alias=th_hit status=200 HLS=True valid=True latency_ms=243.42 URL=https://cdn.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn.ntv.ru/th_hit/index.m3u8 error=
+alias=th_hit status=200 HLS=True valid=True latency_ms=488.23 URL=https://cdn2.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/playlist.m3u8 error=
+alias=th_hit status=200 HLS=True valid=True latency_ms=293.82 URL=https://cdn2.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn2.ntv.ru/th_hit/index.m3u8 error=
+alias=th_hit status=0 HLS=False valid=False latency_ms=725.65 URL=https://cdn3.ntv.ru/th_hit/playlist.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_hit status=0 HLS=False valid=False latency_ms=725.56 URL=https://cdn3.ntv.ru/th_hit/index.m3u8 FINAL= error=ClientConnectorDNSError: Cannot connect to host cdn3.ntv.ru:443 ssl:default [Name or service not known]
+alias=th_hit status=404 HLS=False valid=False latency_ms=474.99 URL=https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_hit/playlist.m3u8 error=HTTP 404; response is not HLS
+alias=th_hit status=404 HLS=False valid=False latency_ms=276.9 URL=https://cdn-dvr.ntv.ru/th_hit/index.m3u8 FINAL=https://cdn-dvr.ntv.ru/th_hit/index.m3u8 error=HTTP 404; response is not HLS
+
