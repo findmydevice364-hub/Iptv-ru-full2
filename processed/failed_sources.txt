@@ -1,6 +1,5 @@
 https://iptv.axenov.dev/so
 https://smolnp.github.io/IPTVru/IPTVru.m3u
-https://telekarta-tv.ru/wp-content/uploads/kids-all.m3u
 https://smart-iptv.ru/radio.m3u
 https://tfrthuikijuyg.online/IPTV.m3u
 https://satexpresstv.ru/apk/setv.m3u
