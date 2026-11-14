@@ -1,7 +1,7 @@
 HLS Inspector Report
 Repository: findmydevice364-hub/Iptv-ru-full2
-Date UTC: 2026-11-13 19:56:04
-Commit: 6bf7ec551d4406b4e2c3da14c0715476b4fa3ca0
+Date UTC: 2026-11-14 06:51:17
+Commit: 386949ebdedaffaa830cdf42be50f647de9ac1b3
 ========================================
 
 ============================================================
@@ -10,7 +10,7 @@ Commit: 6bf7ec551d4406b4e2c3da14c0715476b4fa3ca0
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/tracks-v1a1/mono.ts.m3u8
   HTTP: 200
-  Время: 0.715 сек
+  Время: 1.104 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/tracks-v1a1/mono.ts.m3u8
 
@@ -20,9 +20,9 @@ URL: http://live-3.otcnet.ru/sportivny/tracks-v1a1/mono.ts.m3u8
 Target duration: 6
 Live: True
 ENDLIST: False
-  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/13/19/55/34-06000.ts (6.0 сек)
-  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/13/19/55/46-06000.ts (6.0 сек)
-  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/13/19/55/52-06000.ts (6.0 сек)
+  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/14/06/50/52-06000.ts (6.0 сек)
+  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/14/06/51/04-06000.ts (6.0 сек)
+  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v1a1/2026/11/14/06/51/10-06000.ts (6.0 сек)
 
 ============================================================
 2. ПОИСК МАСТЕРА НА ЭТОМ ЖЕ УЗЛЕ
@@ -30,43 +30,43 @@ ENDLIST: False
 
 [ЗАПРОС] http://live-3.otcnet.ru/master.m3u8
   HTTP: 404
-  Время: 0.166 сек
+  Время: 0.194 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/master.m3u8
 
 [ЗАПРОС] http://live-3.otcnet.ru/index.m3u8
   HTTP: 404
-  Время: 0.169 сек
+  Время: 0.195 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/index.m3u8
 
 [ЗАПРОС] http://live-3.otcnet.ru/playlist.m3u8
   HTTP: 404
-  Время: 0.167 сек
+  Время: 0.195 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/playlist.m3u8
 
 [ЗАПРОС] http://live-3.otcnet.ru/master.m3u
   HTTP: 404
-  Время: 0.171 сек
+  Время: 0.194 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/master.m3u
 
 [ЗАПРОС] http://live-3.otcnet.ru/index.m3u
   HTTP: 404
-  Время: 0.168 сек
+  Время: 0.194 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/index.m3u
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/master.m3u8
   HTTP: 404
-  Время: 0.168 сек
+  Время: 0.195 сек
   Content-Type: -
   Конечный URL: http://live-3.otcnet.ru/sportivny/master.m3u8
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/index.m3u8
   HTTP: 200
-  Время: 0.168 сек
+  Время: 0.196 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/index.m3u8
 
@@ -74,7 +74,7 @@ ENDLIST: False
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/index.m3u8
   HTTP: 200
-  Время: 0.166 сек
+  Время: 0.194 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/index.m3u8
 
@@ -84,15 +84,15 @@ URL: http://live-3.otcnet.ru/sportivny/index.m3u8
 
 Вариант #1
   URL: http://live-3.otcnet.ru/sportivny/tracks-v3a1/mono.ts.m3u8
-  Bandwidth: 1240000
-  Average bandwidth: 1000000
+  Bandwidth: 1220000
+  Average bandwidth: 990000
   Разрешение: (640, 360)
   Кодеки: avc1.4d401f,mp4a.40.2
   FPS: 25.0
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/tracks-v3a1/mono.ts.m3u8
   HTTP: 200
-  Время: 0.173 сек
+  Время: 0.216 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/tracks-v3a1/mono.ts.m3u8
 
@@ -102,13 +102,13 @@ URL: http://live-3.otcnet.ru/sportivny/tracks-v3a1/mono.ts.m3u8
 Target duration: 6
 Live: True
 ENDLIST: False
-  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/13/19/55/40-06000.ts (6.0 сек)
-  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/13/19/55/52-06000.ts (6.0 сек)
-  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/13/19/55/58-06000.ts (6.0 сек)
+  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/14/06/50/52-06000.ts (6.0 сек)
+  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/14/06/51/04-06000.ts (6.0 сек)
+  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v3a1/2026/11/14/06/51/10-06000.ts (6.0 сек)
 
 Вариант #2
   URL: http://live-3.otcnet.ru/sportivny/tracks-v2a1/mono.ts.m3u8
-  Bandwidth: 3560000
+  Bandwidth: 3570000
   Average bandwidth: 2860000
   Разрешение: (1280, 720)
   Кодеки: avc1.4d401f,mp4a.40.2
@@ -116,7 +116,7 @@ ENDLIST: False
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/tracks-v2a1/mono.ts.m3u8
   HTTP: 200
-  Время: 0.169 сек
+  Время: 0.195 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/tracks-v2a1/mono.ts.m3u8
 
@@ -126,21 +126,21 @@ URL: http://live-3.otcnet.ru/sportivny/tracks-v2a1/mono.ts.m3u8
 Target duration: 6
 Live: True
 ENDLIST: False
-  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/13/19/55/40-06000.ts (6.0 сек)
-  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/13/19/55/52-06000.ts (6.0 сек)
-  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/13/19/55/58-06000.ts (6.0 сек)
+  Сегмент 1: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/14/06/50/52-06000.ts (6.0 сек)
+  Сегмент 3: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/14/06/51/04-06000.ts (6.0 сек)
+  Сегмент 4: http://live-3.otcnet.ru/sportivny/tracks-v2a1/2026/11/14/06/51/10-06000.ts (6.0 сек)
 
 Вариант #3
   URL: http://live-3.otcnet.ru/sportivny/tracks-v1a1/mono.ts.m3u8
   Bandwidth: 4780000
-  Average bandwidth: 3840000
+  Average bandwidth: 3830000
   Разрешение: (1920, 1080)
   Кодеки: avc1.4d401f,mp4a.40.2
   FPS: 25.0
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/playlist.m3u8
   HTTP: 200
-  Время: 0.171 сек
+  Время: 0.195 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/playlist.m3u8
 
@@ -148,7 +148,7 @@ ENDLIST: False
 
 [ЗАПРОС] http://live-3.otcnet.ru/sportivny/playlist.m3u8
   HTTP: 200
-  Время: 0.168 сек
+  Время: 0.195 сек
   Content-Type: application/vnd.apple.mpegurl
   Конечный URL: http://live-3.otcnet.ru/sportivny/playlist.m3u8
 
@@ -158,15 +158,15 @@ URL: http://live-3.otcnet.ru/sportivny/playlist.m3u8
 
 Вариант #1
   URL: http://live-3.otcnet.ru/sportivny/tracks-v3a1/mono.ts.m3u8
-  Bandwidth: 1240000
-  Average bandwidth: 1000000
+  Bandwidth: 1220000
+  Average bandwidth: 990000
   Разрешение: (640, 360)
   Кодеки: avc1.4d401f,mp4a.40.2
   FPS: 25.0
 
 Вариант #2
   URL: http://live-3.otcnet.ru/sportivny/tracks-v2a1/mono.ts.m3u8
-  Bandwidth: 3560000
+  Bandwidth: 3570000
   Average bandwidth: 2860000
   Разрешение: (1280, 720)
   Кодеки: avc1.4d401f,mp4a.40.2
@@ -175,7 +175,7 @@ URL: http://live-3.otcnet.ru/sportivny/playlist.m3u8
 Вариант #3
   URL: http://live-3.otcnet.ru/sportivny/tracks-v1a1/mono.ts.m3u8
   Bandwidth: 4780000
-  Average bandwidth: 3840000
+  Average bandwidth: 3830000
   Разрешение: (1920, 1080)
   Кодеки: avc1.4d401f,mp4a.40.2
   FPS: 25.0
@@ -199,4 +199,4 @@ URL: http://live-3.otcnet.ru/sportivny/playlist.m3u8
 
 ========================================
 Script exit code: 0
-Finished UTC: 2026-11-13 19:56:07
+Finished UTC: 2026-11-14 06:51:21
