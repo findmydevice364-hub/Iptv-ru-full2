@@ -2,7 +2,7 @@
 ======================================================================
 КОМПЛЕКСНАЯ ДИАГНОСТИКА HLS / IPTV
 ======================================================================
-Время UTC: 2026-11-27T07:50:27.398755+00:00
+Время UTC: 2026-11-27T20:58:16.043565+00:00
 Python: 3.11.18
 ffprobe: /usr/bin/ffprobe
 
@@ -12,7 +12,7 @@ ffprobe: /usr/bin/ffprobe
 ПРОВЕРКА: http://stream.mcquack.net/412/index.m3u8
 ======================================================================
 HTTP: 403
-Время ответа: 0.46 с.
+Время ответа: 0.40 с.
 Конечный URL: http://stream.mcquack.net/412/index.m3u8
 Content-Type: text/html
 [X] Сервер вернул HTTP-ошибку.
@@ -93,7 +93,7 @@ Content-Type: text/html
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 ======================================================================
 HTTP: 403
-Время ответа: 0.42 с.
+Время ответа: 0.30 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=1&filter.tracks=v1a1
 Content-Type: text/html
 [X] Сервер вернул HTTP-ошибку.
@@ -104,7 +104,7 @@ Content-Type: text/html
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 ======================================================================
 HTTP: 403
-Время ответа: 0.42 с.
+Время ответа: 0.34 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8
 Content-Type: text/html
 [X] Сервер вернул HTTP-ошибку.
@@ -115,7 +115,7 @@ Content-Type: text/html
 ПРОВЕРКА: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 ======================================================================
 HTTP: 403
-Время ответа: 0.42 с.
+Время ответа: 0.29 с.
 Конечный URL: http://stream.mcquack.net/412/tracks-v1a1/mono.ts.m3u8?ads=0&filter.tracks=v1a1
 Content-Type: text/html
 [X] Сервер вернул HTTP-ошибку.
@@ -131,10 +131,10 @@ HTTP 200: 0
 Ошибок узлов: 14
 Успешных анализов ffprobe: 0
 Ошибок ffprobe: 0
-Завершено UTC: 2026-11-27T07:50:29.263360+00:00
+Завершено UTC: 2026-11-27T20:58:18.256387+00:00
 [X] Ни одного валидного HLS-плейлиста.
 
 ========================================
-Run finished at 2026-11-27 07:50:29 UTC
+Run finished at 2026-11-27 20:58:18 UTC
 Python exit code: 1
 ========================================
